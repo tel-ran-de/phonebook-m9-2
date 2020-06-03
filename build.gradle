@@ -1,0 +1,8 @@
+group 'com.telran'
+version '1.0-SNAPSHOT'
+
+wrapper {
+    gradleVersion = '6.4.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
