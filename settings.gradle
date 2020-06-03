@@ -1,4 +1,4 @@
-rootProject.name = 'phonebook-m1'
+rootProject.name = 'phonebook-m2'
 
 include('phonebook-api', 'phonebook-ui')
 

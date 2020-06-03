@@ -57,6 +57,8 @@ task copyUiBuild(type: Copy) {
 }
 
 task clearUiBuild(type: Delete) {
-    delete(file(project.ext.uiBuildDirectory).listFiles())
+    def files = file(project.ext.uiBuildDirectory).listFiles()
+    if (files)
+        delete(files)
 }
 
