@@ -15,34 +15,26 @@ public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected String id;
+    private String id;
     @Setter
-    protected String firstName;
+    private String firstName;
     @Setter
-    protected String lastName;
+    private String lastName;
+    @Setter
+    private String description;
 
-    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
+    @ElementCollection
     ArrayList<String> emails = new ArrayList<>();
+
     @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
     ArrayList<Phone> phones = new ArrayList<>();
 
-    public Contact(String firstName,
-                   String lastName,
-                   ArrayList<String> emails,
-                   ArrayList<Phone> phones) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emails = emails;
-        this.phones = phones;
-    }
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
+    ArrayList<Address> addresses = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "Person: "
-                + firstName + " "
-                + lastName + " "
-                + emails + " "
-                + phones;
+    public Contact(String firstName) {
+        this.firstName = firstName;
+
     }
 
 }

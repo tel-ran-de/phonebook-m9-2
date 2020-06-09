@@ -12,7 +12,6 @@ import java.util.ArrayList;
 @Getter
 public class User {
 
-    @Setter
     private String email;
     @Setter
     private String password;
@@ -22,27 +21,24 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private ArrayList<Contact> contacts = new ArrayList<>();
 
-    public User(String email, String password, Contact myProfile) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.myProfile = myProfile;
     }
 
     public void add(Contact contact) {
         contacts.add(contact);
-        System.out.println("Added contact: " + contact);
     }
 
     public void delete(Contact contact) {
         contacts.remove(contact);
-        System.out.println("Deleted contact: " + contact);
     }
 
     ArrayList<Contact> getContacts() {
         return contacts;
     }
 
-    ArrayList<Contact> getContacts(String query) {
+  /*  ArrayList<Contact> getContacts(String query) {
         ArrayList<Contact> contacts = new ArrayList<>();
 
         for (Contact contact : this.contacts) {
@@ -51,6 +47,6 @@ public class User {
             }
         }
         return contacts;
-    }
+    }*/
 
 }

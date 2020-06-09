@@ -18,10 +18,13 @@ public class Phone {
     private int countryCode;
     @Setter
     private int phoneNumber;
+    @Setter
+    private Contact contact;
 
-    public Phone(int countryCode, int phoneNumber) {
+    public Phone(int countryCode, int phoneNumber, Contact contact) {
         this.countryCode = countryCode;
         this.phoneNumber = phoneNumber;
+        this.contact = contact;
     }
 
     //  maxLengthOfPhoneNumber?
