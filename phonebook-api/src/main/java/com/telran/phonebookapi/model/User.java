@@ -6,20 +6,22 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
 public class User {
 
+    @Id
     private String email;
     @Setter
     private String password;
-    @Setter
+    @OneToOne
     private Contact myProfile;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private ArrayList<Contact> contacts = new ArrayList<>();
+    private List<Contact> contacts = new ArrayList<>();
 
     public User(String email, String password) {
         this.email = email;
@@ -34,7 +36,7 @@ public class User {
         contacts.remove(contact);
     }
 
-    ArrayList<Contact> getContacts() {
+    List<Contact> getContacts() {
         return contacts;
     }
 

@@ -4,9 +4,12 @@ package com.telran.phonebookapi.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -22,19 +25,47 @@ public class Contact {
     private String lastName;
     @Setter
     private String description;
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
     @ElementCollection
-    ArrayList<String> emails = new ArrayList<>();
+    private List<String> emails = new ArrayList<>();
 
     @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
-    ArrayList<Phone> phones = new ArrayList<>();
+    private List<Phone> phones = new ArrayList<>();
 
     @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
-    ArrayList<Address> addresses = new ArrayList<>();
+    private List<Address> addresses = new ArrayList<>();
 
-    public Contact(String firstName) {
+    public Contact(String firstName, User user) {
         this.firstName = firstName;
+        this.user = user;
 
+    }
+
+    public void add(Address address) {
+        addresses.add(address);
+    }
+
+    public void delete(Address address) {
+        addresses.remove(address);
+    }
+
+    public void add(Phone phone) {
+        phones.add(phone);
+    }
+
+    public void delete(Phone phone) {
+        phones.remove(phone);
+    }
+
+    public void add(String email) {
+        emails.add(email);
+    }
+
+    public void delete(String email) {
+        emails.remove(email);
     }
 
 }

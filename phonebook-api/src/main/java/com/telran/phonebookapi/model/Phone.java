@@ -3,6 +3,8 @@ package com.telran.phonebookapi.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -18,14 +20,11 @@ public class Phone {
     private int countryCode;
     @Setter
     private int phoneNumber;
-    @Setter
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Contact contact;
 
-    public Phone(int countryCode, int phoneNumber, Contact contact) {
-        this.countryCode = countryCode;
-        this.phoneNumber = phoneNumber;
+    public Phone(Contact contact) {
         this.contact = contact;
     }
-
-    //  maxLengthOfPhoneNumber?
 }
