@@ -44,27 +44,25 @@ public class Contact {
 
     }
 
-    public void add(Address address) {
+    public void addAddress(Address address) {
         addresses.add(address);
     }
 
-    public void delete(Address address) {
-        addresses.remove(address);
-    }
+    public void deleteAddress(int addressId) {addresses.remove(addressId); }
 
-    public void add(Phone phone) {
+    public void addPhone(Phone phone) {
         phones.add(phone);
     }
 
-    public void delete(Phone phone) {
-        phones.remove(phone);
+    public void deletePhone(int phoneId) {
+        phones.remove(phoneId);
     }
 
-    public void add(String email) {
+    public void addEmail(String email) {
         emails.add(email);
     }
 
-    public void delete(String email) {
+    public void deleteEmail(String email) {
         emails.remove(email);
     }
 
