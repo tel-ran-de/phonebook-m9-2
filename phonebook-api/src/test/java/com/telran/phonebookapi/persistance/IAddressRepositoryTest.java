@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class IAddressRepositoryTest {
+
     @Autowired
     TestEntityManager entityManager;
 

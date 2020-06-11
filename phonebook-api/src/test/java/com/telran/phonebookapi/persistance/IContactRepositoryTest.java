@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class IContactRepositoryTest {
+
     @Autowired
     TestEntityManager entityManager;
 

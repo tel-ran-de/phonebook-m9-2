@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class IPhoneRepositoryTest {
+
     @Autowired
     TestEntityManager entityManager;
 
