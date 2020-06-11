@@ -28,12 +28,8 @@ public class User {
         this.password = password;
     }
 
-    public void add(Contact contact) {
+    public void addContact(Contact contact) {
         contacts.add(contact);
-    }
-
-    public void delete(Contact contact) {
-        contacts.remove(contact);
     }
 
     List<Contact> getContacts() {
