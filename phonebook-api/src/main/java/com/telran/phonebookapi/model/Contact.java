@@ -48,22 +48,12 @@ public class Contact {
         addresses.add(address);
     }
 
-    public void deleteAddress(int addressId) {addresses.remove(addressId); }
-
     public void addPhone(Phone phone) {
         phones.add(phone);
     }
 
-    public void deletePhone(int phoneId) {
-        phones.remove(phoneId);
-    }
-
     public void addEmail(String email) {
         emails.add(email);
-    }
-
-    public void deleteEmail(String email) {
-        emails.remove(email);
     }
 
 }
