@@ -33,13 +33,14 @@ class IPhoneRepositoryTest {
         entityManager.persist(mama);
         entityManager.persist(mamaPhone);
 
-        entityManager.flush();
-
         mama.addPhone(mamaPhone);
         mamaPhone.setCountryCode(7);
         mamaPhone.setPhoneNumber(634872);
 
-        List<Phone> foundPhones = phoneRepository.findByContact(mama);
+        entityManager.flush();
+        entityManager.clear();
+
+        List<Phone> foundPhones = phoneRepository.findAll();
         assertEquals(1, foundPhones.size());
 
         assertEquals(7, foundPhones.get(0).getCountryCode());

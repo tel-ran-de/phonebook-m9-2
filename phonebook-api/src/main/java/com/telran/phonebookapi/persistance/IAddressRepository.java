@@ -10,5 +10,4 @@ public interface IAddressRepository extends CrudRepository<Address, Integer> {
 
     List<Address> findAll();
 
-    List<Address> findByContact(Contact contact);
 }

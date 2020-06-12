@@ -31,16 +31,16 @@ class IAddressRepositoryTest {
         entityManager.persist(ivan);
         entityManager.persist(mama);
         entityManager.persist(mamaAddress);
-
-        entityManager.flush();
-
         mama.addAddress(mamaAddress);
+
         mamaAddress.setCountry("Russia");
         mamaAddress.setCity("SPb");
         mamaAddress.setStreet("Nevskiy pr., 23- 19");
         mamaAddress.setZip("190000");
 
-        List<Address> foundAddresses = addressRepository.findByContact(mama);
+        entityManager.flush();
+        entityManager.clear();
+        List<Address> foundAddresses = addressRepository.findAll();
         assertEquals(1, foundAddresses.size());
 
         assertEquals("Nevskiy pr., 23- 19", foundAddresses.get(0).getStreet());
