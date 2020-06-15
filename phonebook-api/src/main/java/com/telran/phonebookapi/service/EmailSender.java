@@ -2,21 +2,22 @@ package com.telran.phonebookapi.service;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class EmailService {
+import javax.mail.SendFailedException;
+
+@Component
+public class EmailSender {
 
     private JavaMailSender javaMailSender;
 
-    public EmailService(JavaMailSender javaMailSender) {
+    public EmailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendMail(String toEmail, String subject, String message) {
+    public void sendMail(String toEmail, String subject, String message) throws SendFailedException {
 
-        var mailMessage = new SimpleMailMessage();
-
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(toEmail);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
@@ -24,5 +25,6 @@ public class EmailService {
         mailMessage.setFrom("johndoe@example.com");
 
         javaMailSender.send(mailMessage);
+
     }
 }
