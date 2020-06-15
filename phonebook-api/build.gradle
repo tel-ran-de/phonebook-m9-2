@@ -24,11 +24,11 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    //  implementation(project(':phonebook-ui'))
+    //implementation(project(':phonebook-ui'))
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    //  runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:postgresql'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'com.h2database:h2'

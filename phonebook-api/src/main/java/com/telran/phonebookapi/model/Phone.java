@@ -15,7 +15,7 @@ public class Phone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
     @Setter
     private int countryCode;
     @Setter
