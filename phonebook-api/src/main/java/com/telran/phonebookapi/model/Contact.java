@@ -18,7 +18,7 @@ public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
     @Setter
     private String firstName;
     @Setter
