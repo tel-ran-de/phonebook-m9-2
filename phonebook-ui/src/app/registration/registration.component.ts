@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from "@angular/router";
-import { ConfirmedValidator } from "./confirmed.validator";
-import { UserService } from "../services/user.service";
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from "@angular/router";
+import {ConfirmedValidator} from "./confirmed.validator";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-registration',
@@ -14,10 +14,15 @@ export class RegistrationComponent implements OnInit {
 
   title = 'Sign up';
   angForm: FormGroup;
-  loading: boolean;
+  loading: false;
+  submitted: boolean;
   error: string;
 
-  constructor(private fb: FormBuilder, private router: Router, private userService: UserService) {
+  constructor(private fb: FormBuilder,
+              private router: Router,
+              private userService: UserService,
+              private route: ActivatedRoute) {
+
     this.createForm();
   }
 
@@ -35,17 +40,24 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
-    this.router.navigate(['user/activatemail']);
-    // stop here if form is invalid
-    if (this.angForm.invalid) {
-      return;
+    this.submitted = true;
+    // this.router.navigate(['user/activateEmail']);
+    // let user: User = new User();
+    // user.email = this.angForm.value.email;
+    // user.password = this.angForm.value.password;
+
+    // @ts-ignore
+    this.loading = true;
+    this.userService.newUserRegistration(this.angForm.value)
+      .subscribe(
+        data => {
+          this.router.navigate(['user/activateEmail']);
+        },
+        error => {
+          //    this.userService.error(error);;
+          this.loading = false;
+        }
+      )
   }
 
-    this.userService.newUserRegistration(this.angForm.value)
-      .subscribe(_ => this.router.navigate(['../activate-email'], {relativeTo: this.route}),
-        error => {
-          this.userService.error(error);
-          this.loading = false;
-        });
-  }
 }

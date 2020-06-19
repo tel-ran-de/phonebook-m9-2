@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { ActivateEmailComponent } from './activate-email/activate-email.component';
 import { ActivationComponent } from './activation/activation.component';
+import { UserService } from "./service/user.service";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { ActivationComponent } from './activation/activation.component';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

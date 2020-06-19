@@ -5,9 +5,11 @@ import { ActivateEmailComponent } from "./activate-email/activate-email.componen
 import { ActivationComponent } from "./activation/activation.component";
 
 const routes: Routes = [
+  { path: '', redirectTo: 'user/registration', pathMatch:'full'},
   { path: 'user/registration', component: RegistrationComponent },
-  { path: 'user/activatemail', component: ActivateEmailComponent},
+  { path: 'user/activateEmail', component: ActivateEmailComponent},
   { path: 'user/activation', component: ActivationComponent},
+
 ];
 
 @NgModule({

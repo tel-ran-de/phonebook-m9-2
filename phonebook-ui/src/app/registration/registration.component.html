@@ -9,7 +9,7 @@
     *ngIf="angForm.controls['email'].invalid && (angForm.controls['email'].dirty || angForm.controls['email'].touched)"
     class="alert alert-danger">
     <div *ngIf="angForm.controls['email'].errors.required">
-      email is required.
+      Email is required.
     </div>
     <div *ngIf="angForm.controls['email'].errors.email">
       Email must be a valid email address.
@@ -35,7 +35,7 @@
     *ngIf="angForm.controls['confirm_password'].invalid && (angForm.controls['confirm_password'].dirty || angForm.controls['confirm_password'].touched)"
     class="alert alert-danger">
     <div *ngIf="angForm.controls['confirm_password'].errors.confirmedValidator">
-      Password not match
+      Password do not match.
     </div>
   </div>
   <button type="submit" [disabled]="angForm.pristine || angForm.invalid" class="btn btn-info my-1 btn-block">Sign up</button>

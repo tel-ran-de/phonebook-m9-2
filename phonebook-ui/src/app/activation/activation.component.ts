@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {UserService} from "../services/user.service";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-activation',
@@ -10,13 +10,14 @@ import {UserService} from "../services/user.service";
 
 export class ActivationComponent implements OnInit {
 
-  public successMessage = 'Thank you, you email address has been verified and confirmed!';
+  public successMessage = 'Thank you, your email address has been verified and confirmed!';
   public failMessage = 'Your email address has not been verified';
 
   confirmationMessage: string;
 
-  constructor(private route: ActivatedRoute, private userService: UserService) {
-  }
+  constructor(private route: ActivatedRoute,
+              private userService: UserService) {
+}
 
   ngOnInit(): void {
     this.sendToken()

@@ -5,6 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './activate-email.component.html',
   styleUrls: ['./activate-email.component.css']
 })
+
+// pending
 export class ActivateEmailComponent implements OnInit {
 
   constructor() { }
