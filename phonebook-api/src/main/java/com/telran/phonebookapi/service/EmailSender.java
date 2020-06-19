@@ -5,13 +5,14 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class EmailSender {
 
-    @Value("${phonebook-m9-2.email-from}")
-    String fromMail;
+    private final JavaMailSender javaMailSender;
 
-    private JavaMailSender javaMailSender;
+    @Value("{$phonebook-m9-2.email-from}")
+    String fromMail;
 
     public EmailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
@@ -27,6 +28,5 @@ public class EmailSender {
         mailMessage.setFrom(fromMail);
 
         javaMailSender.send(mailMessage);
-
     }
 }
