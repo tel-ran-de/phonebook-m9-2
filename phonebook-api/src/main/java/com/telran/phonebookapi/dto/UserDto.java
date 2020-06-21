@@ -1,6 +1,5 @@
 package com.telran.phonebookapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.telran.phonebookapi.model.Contact;
 import lombok.NoArgsConstructor;
 

@@ -1,22 +1,10 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.UserDto;
-import com.telran.phonebookapi.model.ActivationToken;
-import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IActivationTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessagePreparator;
-
-import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
