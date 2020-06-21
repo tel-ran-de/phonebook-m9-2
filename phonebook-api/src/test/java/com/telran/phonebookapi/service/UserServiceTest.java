@@ -7,6 +7,12 @@ import com.telran.phonebookapi.persistance.IActivationTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import java.util.Objects;
 
@@ -21,7 +27,6 @@ class UserServiceTest {
     UserService userService;
     IActivationTokenRepository activationTokenRepository;
     EmailSender emailSender;
-
 
     @BeforeEach
     public void init() {
@@ -50,6 +55,7 @@ class UserServiceTest {
         verify(activationTokenRepository, times(1)).save(argThat(token ->
                 token.getUser().getEmail().equals(userDto.email)
         ));
+        verify(emailSender, times(1)).sendMail(eq(userDto.email), anyString(),anyString());
     }
 }
 

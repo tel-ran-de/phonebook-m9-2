@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @Service
@@ -17,6 +18,8 @@ public class UserService {
     static final String USER_ALREADY_EXISTS = "Error! User already exists";
     static final String ACTIVATION_SUBJECT = "User activation";
     static final String ACTIVATION_MESSAGE = "Please, follow the link to activate your account: ";
+    static final String NOT_ACTIVE_LINK = "Your link is not active anymore";
+
 
     @Value("{$angular.activation.path}")
     String activationPath;
@@ -41,13 +44,17 @@ public class UserService {
             user.setActive(false);
             userRepository.save(user);
             activationTokenRepository.save(new ActivationToken(token, user));
-         emailSender.sendMail(user.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
+            emailSender.sendMail(user.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
                     + activationPath + token);
         }
     }
 
     public void activateUser(String token) {
-        userRepository.findById(activationTokenRepository.findById(token).get()
-                .getUser().getEmail()).get().setActive(true);
+        if (activationTokenRepository.findById(token).isEmpty()) {
+            throw new EntityNotFoundException(NOT_ACTIVE_LINK);
+        } else {
+            userRepository.findById(activationTokenRepository.findById(token).get()
+                    .getUser().getEmail()).get().setActive(true);
+        }
     }
 }
