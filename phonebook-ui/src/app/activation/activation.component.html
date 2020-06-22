@@ -2,12 +2,13 @@
 <main role="main">
   <section class="jumbotron text-center">
     <div class="container">
-      <h4>Thank you for choosing our app! Your registration is now complete</h4>
+      <div>
+      <h4>{{confirmationMessage}}</h4>
       <a routerLink="/user/login">
         <button class="btn btn-info my-4 btn-block" type="submit">Login</button>
       </a>
-      <h4  style="color: red">Registration failed: Invalid confirmation token</h4>
-    </div>
+      </div>
+      </div>
   </section>
 </main>
 <app-footer></app-footer>

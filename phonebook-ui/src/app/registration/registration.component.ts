@@ -41,10 +41,6 @@ export class RegistrationComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    // this.router.navigate(['user/activateEmail']);
-    // let user: User = new User();
-    // user.email = this.angForm.value.email;
-    // user.password = this.angForm.value.password;
 
     // @ts-ignore
     this.loading = true;
@@ -54,7 +50,7 @@ export class RegistrationComponent implements OnInit {
           this.router.navigate(['user/activateEmail']);
         },
         error => {
-          //    this.userService.error(error);;
+          this.userService.error(error);
           this.loading = false;
         }
       )

@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'user/registration', pathMatch:'full'},
   { path: 'user/registration', component: RegistrationComponent },
   { path: 'user/activateEmail', component: ActivateEmailComponent},
-  { path: 'user/activation', component: ActivationComponent},
+  { path: 'user/activation/:token', component: ActivationComponent},
 
 ];
 
