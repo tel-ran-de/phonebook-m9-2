@@ -30,7 +30,6 @@ public class UserService {
     final EmailSender emailSender;
 
 
-    @Autowired
     public UserService(IUserRepository userRepository, IActivationTokenRepository activationTokenRepository, EmailSender emailSender) {
         this.userRepository = userRepository;
         this.activationTokenRepository = activationTokenRepository;
