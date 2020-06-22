@@ -5,6 +5,7 @@ import com.telran.phonebookapi.model.ActivationToken;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IActivationTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class UserService {
     final EmailSender emailSender;
 
 
+    @Autowired
     public UserService(IUserRepository userRepository, IActivationTokenRepository activationTokenRepository, EmailSender emailSender) {
         this.userRepository = userRepository;
         this.activationTokenRepository = activationTokenRepository;
@@ -50,11 +52,11 @@ public class UserService {
     }
 
     public void activateUser(String token) {
-        if (activationTokenRepository.findById(token).isEmpty()) {
-            throw new EntityNotFoundException(NOT_ACTIVE_LINK);
-        } else {
-            userRepository.findById(activationTokenRepository.findById(token).get()
-                    .getUser().getEmail()).get().setActive(true);
+        ActivationToken activationToken = activationTokenRepository.findById(token).
+                orElseThrow(()->new EntityNotFoundException(NOT_ACTIVE_LINK));
+        User user = activationToken.getUser();
+        user.setActive(true);
+        userRepository.save(user);
         }
     }
-}
+

@@ -43,7 +43,9 @@ class UserServiceTest {
         verify(activationTokenRepository, times(1)).save(argThat(token ->
                 token.getUser().getEmail().equals(userDto.email)
         ));
-        verify(emailSender, times(1)).sendMail(eq(userDto.email), anyString(),anyString());
+        verify(emailSender, times(1)).sendMail(eq(userDto.email),
+                eq(UserService.ACTIVATION_SUBJECT),
+                anyString());
     }
 }
 
