@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import { UserService } from "../service/user.service";
-import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-activation',
   templateUrl: './activation.component.html',
   styleUrls: ['./activation.component.css']
 })
-
 export class ActivationComponent implements OnInit {
 
-  public successMessage = 'Thank you! Your registration is complete!';
-  public failMessage = 'Registration failed';
   private subscription: Subscription;
-  confirmationMessage: string;
+  RegistrationSuccess = true;
 
   constructor(private route: ActivatedRoute,
               private userService: UserService) {
@@ -28,10 +25,9 @@ export class ActivationComponent implements OnInit {
     const token = this.route.snapshot.paramMap.get('token');
 
     this.subscription = this.userService.sendRequestToConfirmRegistration(token).subscribe(_ => {
-        this.confirmationMessage = this.successMessage;
       },
       _ => {
-        this.confirmationMessage = this.failMessage;
+        this.RegistrationSuccess = false;
       });
   }
 

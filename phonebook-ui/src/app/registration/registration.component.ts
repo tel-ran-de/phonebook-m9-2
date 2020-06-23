@@ -3,6 +3,8 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConfirmedValidator} from "./confirmed.validator";
 import {UserService} from "../service/user.service";
+import {HttpErrorResponse} from "@angular/common/http";
+import {throwError} from "rxjs";
 
 @Component({
   selector: 'app-registration',
@@ -20,8 +22,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private router: Router,
-              private userService: UserService,
-              private route: ActivatedRoute) {
+              private userService: UserService) {
 
     this.createForm();
   }
@@ -47,13 +48,26 @@ export class RegistrationComponent implements OnInit {
     this.userService.newUserRegistration(this.angForm.value)
       .subscribe(
         data => {
-          this.router.navigate(['user/activateEmail']);
+          this.router.navigate(['user/activate-email']);
         },
         error => {
-          this.userService.error(error);
+          // @ts-ignore
+          this.error = handleError(error);
           this.loading = false;
         }
       )
+
+    function handleError(error: HttpErrorResponse) {
+      if (error.error instanceof ErrorEvent) {
+        // network error
+        console.error(`No internet connection`);
+      } else {
+        // the response may contain hints of what went wrong
+        console.error(`Error code: ${error.status}`);
+      }
+      // user facing error message
+      return throwError(`Something bad happened; please try again later.`);
+    }
   }
 
 }

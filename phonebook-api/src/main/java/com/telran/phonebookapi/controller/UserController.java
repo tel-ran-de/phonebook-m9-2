@@ -8,16 +8,20 @@ public class UserController {
 
     @PostMapping("/api/user/registration")
     @CrossOrigin
-    public void registration(@RequestBody String body) {
-        // нужем сервис создать нового юзера
+    public void addUser(@RequestBody String body) {
         System.out.println(body);
     }
 
     @GetMapping("/api/user/activation")
     @CrossOrigin
-    public void activation(@RequestParam(name="token") String token) {
-        // нужен сервис подтверждения юзера
+    public void activateUser(@RequestParam(name = "token") String token) {
         System.out.println(token);
+    }
+
+    @PostMapping("/api/user/login")
+    @CrossOrigin
+    public void loginUser(@RequestBody String body) {
+        System.out.println(body);
     }
 
 }
