@@ -5,7 +5,6 @@ import com.telran.phonebookapi.model.ActivationToken;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IActivationTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class UserService {
     static final String NOT_ACTIVE_LINK = "Your link is not active anymore";
 
 
-    @Value("{$angular.activation.path}")
+    @Value("${angular.activation.path}")
     String activationPath;
 
     final IUserRepository userRepository;
@@ -58,4 +57,3 @@ public class UserService {
         userRepository.save(user);
         }
     }
-
