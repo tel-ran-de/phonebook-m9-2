@@ -15,7 +15,7 @@ public class UserService {
     final IUserRepository userRepository;
     final IRecoveryTokenRepository recoveryTokenRepository;
 
-    static final String USER_DOES_NOT_EXIST = "Error! This user doesn't exist in out DB";
+    static final String USER_DOES_NOT_EXIST = "Error! This user doesn't exist in our DB";
     static final String INCORRECT_TOKEN = "Error! Registration failed: Invalid confirmation token";
     static final String TEXT = "Please click the link to recover your password ";
     static final String RECOVERY_LINK = "/user/password-recovery/";

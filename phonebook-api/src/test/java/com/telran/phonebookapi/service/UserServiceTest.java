@@ -10,7 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
+import java.util.UUID;
+
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,45 +30,39 @@ class UserServiceTest {
     @InjectMocks
     UserService userService;
 
-//    @BeforeEach
-//    public void setUp() {
-//        userRepository = mock(IUserRepository.class);
-//        passRecoveryRepository = mock(IPassRecoveryTokenRepository.class);
-//        passRecoveryService = new PassRecoveryService(userRepository, passRecoveryRepository, emailSender);
-//    }
-
     @Test
     public void testSendRecoveryToken_tokenIsSavedToRepo() {
+        String email = "johndoe@mail.com";
+        User ourUser = new User(email, "1234");
 
-        User ourUser = new User("johndoe@mail.com", "1234");
-        RecoveryToken recoveryToken = new RecoveryToken("token", ourUser);
-        recoveryTokenRepository.save(recoveryToken);
+        when(userRepository.findById(email)).thenReturn(Optional.of(ourUser));
 
-        userService.sendRecoveryToken("johndoe@mail.com");
+        userService.sendRecoveryToken(email);
 
         verify(recoveryTokenRepository, times(1)).save(any());
 
         verify(recoveryTokenRepository, times(1)).save(argThat(token ->
-                token.getId().equals("token") && token.getUser().equals(ourUser)));
+                token.getUser().getEmail().equals(email)));
 
-        verify(emailSender, times(1)).sendMail(eq(ourUser.getEmail()), anyString(), anyString());
-
+        verify(emailSender, times(1)).sendMail(eq(email), anyString(), anyString());
     }
 
     @Test
     public void testCreateNewPassword_newPasswordIsSaved() {
         User ourUser = new User("johndoe@mail.com", "1234");
+        String token = UUID.randomUUID().toString();
+        RecoveryToken recoveryToken = new RecoveryToken(token, ourUser);
 
-//        String token = "testToken";
-//        RecoveryToken recoveryToken = new RecoveryToken(token, ourUser);
-//        recoveryTokenRepository.save(recoveryToken);
+        when(recoveryTokenRepository.findById(token)).thenReturn(Optional.of(recoveryToken));
 
-        userService.createNewPassword("token", "4321");
+        userService.createNewPassword(token, "4321");
 
-        verify(userService, times (1)).createNewPassword("token", "4321");
+        verify(userRepository, times(1)).save(any());
 
-        verify(recoveryTokenRepository, times(1)).save(argThat(recoveryToken ->
-                recoveryToken.getId().equals("token") && recoveryToken.getUser().getPassword().equals(ourUser.getPassword())));
+        verify(userRepository, times(1)).save(argThat(user ->
+                user.getPassword().equals("4321")));
+
+        verify(recoveryTokenRepository, times(1)).findById(token);
     }
 }
 
