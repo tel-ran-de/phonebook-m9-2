@@ -1,7 +1,9 @@
 package com.telran.phonebookapi.service;
 
+import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.model.RecoveryToken;
 import com.telran.phonebookapi.model.User;
+import com.telran.phonebookapi.persistance.IActivationTokenRepository;
 import com.telran.phonebookapi.persistance.IRecoveryTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,9 @@ class UserServiceTest {
 
     @Mock
     IRecoveryTokenRepository recoveryTokenRepository;
+
+    @Mock
+    IActivationTokenRepository activationTokenRepository;
 
     @Mock
     EmailSender emailSender;
@@ -64,6 +69,26 @@ class UserServiceTest {
 
         verify(recoveryTokenRepository, times(1)).findById(token);
     }
-}
 
+    @Test
+    public void testAdd_user_passesToRepo() {
+
+        UserDto userDto = new UserDto("ivanov@gmail.com", "12345");
+
+        userService.addUser(userDto);
+
+        verify(userRepository, times(1)).save(any());
+        verify(userRepository, times(1)).save(argThat(user ->
+                user.getEmail().equals(userDto.email)
+                        && user.getPassword().equals(userDto.password)
+        ));
+        verify(activationTokenRepository, times(1)).save(any());
+        verify(activationTokenRepository, times(1)).save(argThat(token ->
+                token.getUser().getEmail().equals(userDto.email)
+        ));
+        verify(emailSender, times(1)).sendMail(eq(userDto.email),
+                eq(UserService.ACTIVATION_SUBJECT),
+                anyString());
+    }
+}
 
