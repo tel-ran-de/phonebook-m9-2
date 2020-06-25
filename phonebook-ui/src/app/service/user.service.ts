@@ -13,7 +13,7 @@ export class UserService {
   }
 
   sendRequestToConfirmRegistration(token: string) {
-    return this.http.get(`/api/user/confirm?token=${token}`)
+    return this.http.get(`/api/user/activation/{token}`)
   }
 
 }
