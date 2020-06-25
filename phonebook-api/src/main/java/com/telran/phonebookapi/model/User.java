@@ -12,11 +12,12 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class User {
-
     @Id
     private String email;
     @Setter
     private String password;
+    @Setter
+    private boolean isActive;
     @OneToOne
     private Contact myProfile;
 
