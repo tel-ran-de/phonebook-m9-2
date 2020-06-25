@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailSender {
 
-    @Value("${phonebook-m9-2.email-from}")
+    @Value("${com.telran.phonebook.email.from}")
     String fromMail;
 
     private JavaMailSender javaMailSender;
