@@ -14,3 +14,4 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 
 com.telran.phonebook.email.from=<email address>
 com.telran.phonebook.ui.host=
+com.telran.auth.jwt.secret
