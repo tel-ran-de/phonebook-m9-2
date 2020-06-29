@@ -23,7 +23,7 @@ public class UserService {
     static final String NOT_ACTIVE_LINK = "Your link is not active anymore";
     static final String USER_DOES_NOT_EXIST = "Error! This user doesn't exist in our DB";
     static final String INCORRECT_TOKEN = "Error! Registration failed: Invalid confirmation token";
-    static final String TEXT = "Please click the link to recover your password ";
+    static final String RECOVER_YOUR_PASSWORD_MESSAGE = "Please click the link to recover your password ";
     static final String UI_RECOVERY_LINK = "/user/password-recovery/";
     static final String UI_ACTIVATION_LINK = "/user/activation/";
 
@@ -75,7 +75,7 @@ public class UserService {
         RecoveryToken recoveryToken = new RecoveryToken(token, ourUser);
         recoveryTokenRepository.save(recoveryToken);
 
-        String message = TEXT + uiHost + UI_RECOVERY_LINK + recoveryToken;
+        String message = RECOVER_YOUR_PASSWORD_MESSAGE + uiHost + UI_RECOVERY_LINK + token;
 
         emailSender.sendMail(email, "Password recovery", message);
     }
