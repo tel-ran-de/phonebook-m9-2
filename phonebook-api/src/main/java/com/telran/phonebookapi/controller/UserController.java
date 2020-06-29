@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 public class UserController {
 
     UserService userService;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/api/user/activation/{token}")
-    public void activateUser(@Valid @PathVariable String token) {
+    public void activateUser(@PathVariable String token) {
         userService.activateUser(token);
     }
 

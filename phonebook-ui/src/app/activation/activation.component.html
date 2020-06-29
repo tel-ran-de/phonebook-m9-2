@@ -1,0 +1,17 @@
+<app-header></app-header>
+<main role="main">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <div *ngIf="RegistrationSuccess; else error">
+        <h4>Thank you! Your registration is complete!</h4>
+        <a routerLink="/user/login">
+          <button class="btn btn-info my-4 btn-block" type="submit">Login</button>
+        </a>
+      </div>
+      <ng-template #error>
+        <h4 style="color: red">Registration failed</h4>
+      </ng-template>
+    </div>
+  </section>
+</main>
+<app-footer></app-footer>
