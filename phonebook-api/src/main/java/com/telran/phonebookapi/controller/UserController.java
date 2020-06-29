@@ -17,21 +17,25 @@ public class UserController {
         this.userService = userService;
     }
 
+    @CrossOrigin
     @PostMapping("/api/user")
     public void addUser(@RequestBody UserDto userDto) {
         userService.addUser(userDto);
     }
 
+    @CrossOrigin
     @GetMapping("/api/user/activation/{token}")
     public void activateUser(@PathVariable String token) {
         userService.activateUser(token);
     }
 
+    @CrossOrigin
     @PostMapping("/api/user/password/recovery")
     public void recoverPassword(RecoveryPasswordDto recoveryPasswordDto) {
         userService.sendRecoveryToken(recoveryPasswordDto.email);
     }
 
+    @CrossOrigin
     @PutMapping("/api/user/password")
     public void changePassword(NewPasswordDto newPasswordDto) {
         userService.createNewPassword(newPasswordDto.token, newPasswordDto.password);

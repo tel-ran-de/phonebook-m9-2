@@ -14,7 +14,6 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/phonebook-ui",
-            "proxyConfig": "src/proxy.conf.json",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
