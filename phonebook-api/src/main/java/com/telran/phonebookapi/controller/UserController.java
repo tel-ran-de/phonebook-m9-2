@@ -4,11 +4,12 @@ import com.telran.phonebookapi.dto.NewPasswordDto;
 import com.telran.phonebookapi.dto.RecoveryPasswordDto;
 import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.service.UserService;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
-@Validated
+@CrossOrigin
 public class UserController {
 
     UserService userService;
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping("/api/user")
-    public void addUser(@RequestBody UserDto userDto) {
+    public void addUser(@Valid @RequestBody UserDto userDto) {
         userService.addUser(userDto);
     }
 
@@ -28,12 +29,12 @@ public class UserController {
     }
 
     @PostMapping("/api/user/password/recovery")
-    public void recoverPassword(RecoveryPasswordDto recoveryPasswordDto) {
+    public void recoverPassword(@Valid @RequestBody RecoveryPasswordDto recoveryPasswordDto) {
         userService.sendRecoveryToken(recoveryPasswordDto.email);
     }
 
     @PutMapping("/api/user/password")
-    public void changePassword(NewPasswordDto newPasswordDto) {
+    public void changePassword(@Valid @RequestBody NewPasswordDto newPasswordDto) {
         userService.createNewPassword(newPasswordDto.token, newPasswordDto.password);
     }
 }
