@@ -10,11 +10,11 @@ export class UserService {
   }
 
   newUserRegistration(user: User) {
-    return this.http.post<User>('/api/user/registration', user);
+    return this.http.post<User>('/api/user/', user);
   }
 
   sendRequestToConfirmRegistration(token: string) {
-    return this.http.get(`/api/user/activation/{token}`)
+    return this.http.get(`/api/user/activation/${token}`)
   }
 
 }
