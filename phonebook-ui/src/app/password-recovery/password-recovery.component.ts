@@ -10,9 +10,10 @@ import {ConfirmedValidator} from "./confirmed.validator";
   styleUrls: ['./password-recovery.component.css']
 })
 export class PasswordRecoveryComponent implements OnInit {
+  title = 'Password Recovery';
   PasswordRecoveryForm: FormGroup;
   loading: boolean;
-  submitted: boolean;
+  submitted: boolean = true;
 
   constructor(private fb: FormBuilder, private router: Router, private userService: UserService, private route: ActivatedRoute) {
     this.createForm();
@@ -33,15 +34,14 @@ export class PasswordRecoveryComponent implements OnInit {
   onSubmit() {
     const token = this.route.snapshot.paramMap.get('token');
 
-    this.submitted = true;
     this.loading = true;
-
-    // @ts-ignore
 
     this.userService.resetPassword(this.PasswordRecoveryForm.value, token)
       .subscribe(
         data => {
-          this.router.navigate(['user/login']);
+          this.loading = false;
+          this.submitted = false;
+          //this.router.navigate(['user/login']);
         },
         error => {
           console.log("error connection");

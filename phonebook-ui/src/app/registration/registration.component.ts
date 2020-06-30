@@ -16,8 +16,7 @@ export class RegistrationComponent implements OnInit {
 
   title = 'Sign up';
   angForm: FormGroup;
-  loading: false;
-  submitted: boolean;
+  loading: boolean;
   error: string;
 
   constructor(private fb: FormBuilder,
@@ -31,7 +30,7 @@ export class RegistrationComponent implements OnInit {
     this.angForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._-]+@[a-z0-9.-]+\\.[a-z]{2,10}$")]],
       password: ['', [Validators.required, Validators.minLength(8)],
-      [Validators.required, Validators.maxLength(20)]],
+        [Validators.required, Validators.maxLength(20)]],
       confirm_password: ['', [Validators.required]]
     }, {
       validators: ConfirmedValidator('password', 'confirm_password')
@@ -42,8 +41,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
-
     // @ts-ignore
     this.loading = true;
     this.userService.newUserRegistration(this.angForm.value)

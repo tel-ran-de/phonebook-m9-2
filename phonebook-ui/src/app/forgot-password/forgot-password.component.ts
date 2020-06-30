@@ -12,7 +12,6 @@ export class ForgotPasswordComponent implements OnInit {
 
   forgotPasswordForm: FormGroup;
   loading: boolean;
-  submitted: boolean;
 
   constructor(private fb: FormBuilder, private router: Router, private userService: UserService) {
     this.createForm();
@@ -29,7 +28,6 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
 
     this.userService.forgotPassword(this.forgotPasswordForm.value)
       .subscribe(
