@@ -5,10 +5,6 @@ CREATE TABLE public.users
     password character varying(255) COLLATE pg_catalog."default",
     my_profile_id integer,
     CONSTRAINT users_pkey PRIMARY KEY (email)
---     CONSTRAINT fknrmpupovi9tb6a9lnrnm9muen FOREIGN KEY (my_profile_id)
---         REFERENCES public.contact (id) MATCH SIMPLE
---         ON UPDATE NO ACTION
---         ON DELETE NO ACTION
 );
 
 CREATE TABLE public.contact
@@ -24,6 +20,12 @@ CREATE TABLE public.contact
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
+
+ALTER TABLE public.users
+    ADD CONSTRAINT fknrmpupovi9tb6a9lnrnm9muen FOREIGN KEY (my_profile_id)
+        REFERENCES public.contact (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION;
 
 CREATE TABLE public.activation_token
 (
