@@ -8,6 +8,7 @@ import com.telran.phonebookapi.persistance.IActivationTokenRepository;
 import com.telran.phonebookapi.persistance.IRecoveryTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -34,16 +35,17 @@ public class UserService {
     final IActivationTokenRepository activationTokenRepository;
     final IRecoveryTokenRepository recoveryTokenRepository;
     final EmailSender emailSender;
-
+    final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserService(IUserRepository userRepository,
                        IActivationTokenRepository activationTokenRepository,
                        EmailSender emailSender,
-                       IRecoveryTokenRepository recoveryTokenRepository) {
+                       IRecoveryTokenRepository recoveryTokenRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.activationTokenRepository = activationTokenRepository;
         this.emailSender = emailSender;
         this.recoveryTokenRepository = recoveryTokenRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public void addUser(UserDto userDto) {
@@ -51,7 +53,7 @@ public class UserService {
             throw new EntityExistsException(USER_ALREADY_EXISTS);
         } else {
             String token = UUID.randomUUID().toString();
-            User user = new User(userDto.email, userDto.password);
+            User user = new User(userDto.email, bCryptPasswordEncoder.encode(userDto.password));
             user.setActive(false);
             userRepository.save(user);
             activationTokenRepository.save(new ActivationToken(token, user));
