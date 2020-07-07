@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "Users")
 @NoArgsConstructor
@@ -24,28 +23,27 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Contact> contacts = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<UserRole> roles = new HashSet<>();
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public void addRole(UserRole role){
+        roles.add(role);
+    }
+
+    public void removeRole(UserRole role){
+        roles.remove(role);
     }
 
     public void addContact(Contact contact) {
         contacts.add(contact);
     }
 
-    List<Contact> getContacts() {
+    public List<Contact> getContacts() {
         return contacts;
     }
-
-  /*  ArrayList<Contact> getContacts(String query) {
-        ArrayList<Contact> contacts = new ArrayList<>();
-
-        for (Contact contact : this.contacts) {
-            if (contact.firstName.contains(query) || contact.lastName.contains(query)) {
-                contacts.add(contact);
-            }
-        }
-        return contacts;
-    }*/
-
 }

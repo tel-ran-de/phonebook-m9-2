@@ -7,7 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -19,24 +19,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
+
+import java.sql.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private final AuthenticationManager authenticationManager;
     private final ObjectMapper objectMapper;
+    private final JwtProperties jwtProperties;
 
     public JWTAuthenticationFilter(
             AuthenticationManager authenticationManager,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            JwtProperties jwtProperties) {
         super(new AntPathRequestMatcher("/api/user/login", "POST"));
         this.authenticationManager = authenticationManager;
         this.objectMapper = objectMapper;
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res)
-            throws AuthenticationException {
+                                                HttpServletResponse res) {
         try {
             UserDto userDto = objectMapper.readValue(req.getInputStream(), UserDto.class);
 
@@ -57,10 +62,15 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
+        List<String> authorities = auth.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
         String token = Jwts.builder()
-                .setExpiration(new Date())
+                .setExpiration(new Date(jwtProperties.getExpiration() * 1000))
                 .setSubject(((User) auth.getPrincipal()).getUsername())
-                .signWith(SignatureAlgorithm.HS512, "secret".getBytes(StandardCharsets.UTF_8))
+                .claim("authorities", authorities)
+                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8))
                 .compact();
 
         Cookie cookie = new Cookie("at", token);

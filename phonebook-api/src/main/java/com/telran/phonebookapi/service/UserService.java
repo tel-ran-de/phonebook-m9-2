@@ -4,6 +4,7 @@ import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.model.ActivationToken;
 import com.telran.phonebookapi.model.RecoveryToken;
 import com.telran.phonebookapi.model.User;
+import com.telran.phonebookapi.model.UserRole;
 import com.telran.phonebookapi.persistance.IActivationTokenRepository;
 import com.telran.phonebookapi.persistance.IRecoveryTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
@@ -31,16 +32,17 @@ public class UserService {
     @Value("${com.telran.phonebook.ui.host}")
     String uiHost;
 
-    final IUserRepository userRepository;
-    final IActivationTokenRepository activationTokenRepository;
-    final IRecoveryTokenRepository recoveryTokenRepository;
-    final EmailSender emailSender;
-    final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final IUserRepository userRepository;
+    private final IActivationTokenRepository activationTokenRepository;
+    private final IRecoveryTokenRepository recoveryTokenRepository;
+    private final EmailSender emailSender;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserService(IUserRepository userRepository,
                        IActivationTokenRepository activationTokenRepository,
                        EmailSender emailSender,
-                       IRecoveryTokenRepository recoveryTokenRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+                       IRecoveryTokenRepository recoveryTokenRepository,
+                       BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.activationTokenRepository = activationTokenRepository;
         this.emailSender = emailSender;
@@ -55,6 +57,7 @@ public class UserService {
             String token = UUID.randomUUID().toString();
             User user = new User(userDto.email, bCryptPasswordEncoder.encode(userDto.password));
             user.setActive(false);
+            user.addRole(UserRole.USER);
             userRepository.save(user);
             activationTokenRepository.save(new ActivationToken(token, user));
             emailSender.sendMail(user.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
