@@ -1,6 +1,7 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.AddressDto;
+import com.telran.phonebookapi.mapper.AddressMapper;
 import com.telran.phonebookapi.model.Address;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.persistance.IAddressRepository;
@@ -18,15 +19,23 @@ public class AddressService {
 
     IContactRepository contactRepository;
     IAddressRepository addressRepository;
+    AddressMapper addressMapper;
 
-    public AddressService(IContactRepository contactRepository, IAddressRepository addressRepository) {
+    public AddressService(IContactRepository contactRepository, IAddressRepository addressRepository, AddressMapper addressMapper) {
         this.contactRepository = contactRepository;
         this.addressRepository = addressRepository;
+        this.addressMapper = addressMapper;
     }
 
     public void add(AddressDto addressDto) {
         Contact contact = contactRepository.findById(addressDto.contactId).orElseThrow(() -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
         Address address = new Address(contact);
+        addressRepository.save(address);
+    }
+
+    public void editCountry(AddressDto addressDto) {
+        Address address = addressRepository.findById(addressDto.contactId).orElseThrow(() -> new EntityNotFoundException(ADDRESS_DOES_NOT_EXIST));
+        address.setCountry(addressDto.country);
         addressRepository.save(address);
     }
 
@@ -36,18 +45,29 @@ public class AddressService {
         addressRepository.save(address);
     }
 
+    public void editStreet(AddressDto addressDto) {
+        Address address = addressRepository.findById(addressDto.contactId).orElseThrow(() -> new EntityNotFoundException(ADDRESS_DOES_NOT_EXIST));
+        address.setStreet(addressDto.street);
+        addressRepository.save(address);
+    }
+
+    public void editZip(AddressDto addressDto) {
+        Address address = addressRepository.findById(addressDto.contactId).orElseThrow(() -> new EntityNotFoundException(ADDRESS_DOES_NOT_EXIST));
+        address.setZip(addressDto.zip);
+        addressRepository.save(address);
+    }
+
+
+    public AddressDto getById(int id) {
+        Address address = addressRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ADDRESS_DOES_NOT_EXIST));
+        AddressDto addressDto = addressMapper.mapAddressToDto(address);
+        return addressDto;
+    }
+
     public List<AddressDto> getByContactId(int contactId) {
-        List<Address> addresses = addressRepository.findAllById(contactId);
-        List<AddressDto> addressDtos = addresses.stream().map(address -> {
-            AddressDto addressDto = new AddressDto();
-            addressDto.contactId = address.getContact().getId();
-            addressDto.zip = address.getZip();
-            addressDto.country = address.getCountry();
-            addressDto.city = address.getCity();
-            addressDto.street = address.getStreet();
-            return addressDto;
-        }).collect(Collectors.toList());
-        return addressDtos;
+        return addressRepository.findById(contactId).stream()
+                .map(addressMapper::mapAddressToDto)
+                .collect(Collectors.toList());
     }
 
     public void removeById(int id) {

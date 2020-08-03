@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 public class UserDto {
@@ -24,5 +26,7 @@ public class UserDto {
     @Size(max = 20, min = 8, message = "The password is shorter than {min} or longer than {max}")
     @NotBlank
     public String password;
+
+    public List<ContactDto> contactDtos = new ArrayList<>();
 
 }

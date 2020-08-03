@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class AddressController {
 
     AddressService addressService;
@@ -25,6 +26,11 @@ public class AddressController {
     @PutMapping("api/address")
     public void editPhone(@RequestBody @Valid AddressDto addressDto) {
         addressService.editCity(addressDto);
+    }
+
+    @GetMapping("api/address/{id}")
+    public AddressDto getById(@PathVariable int id) {
+        return addressService.getById(id);
     }
 
     @GetMapping("api/contact/{contactId}/address")

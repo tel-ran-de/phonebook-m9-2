@@ -41,7 +41,6 @@ public class Contact {
     public Contact(String firstName, User user) {
         this.firstName = firstName;
         this.user = user;
-
     }
 
     public void addAddress(Address address) {

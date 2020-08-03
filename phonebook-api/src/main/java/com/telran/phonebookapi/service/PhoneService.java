@@ -1,6 +1,7 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.PhoneDto;
+import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.Phone;
 import com.telran.phonebookapi.persistance.IContactRepository;
@@ -18,10 +19,12 @@ public class PhoneService {
 
     IContactRepository contactRepository;
     IPhoneRepository phoneRepository;
+    PhoneMapper phoneMapper;
 
-    public PhoneService(IContactRepository contactRepository, IPhoneRepository phoneRepository) {
+    public PhoneService(IContactRepository contactRepository, IPhoneRepository phoneRepository, PhoneMapper phoneMapper) {
         this.contactRepository = contactRepository;
         this.phoneRepository = phoneRepository;
+        this.phoneMapper = phoneMapper;
     }
 
     public void add(PhoneDto phoneDto) {
@@ -31,22 +34,28 @@ public class PhoneService {
 
     }
 
-    public void edit(PhoneDto phoneDto) {
+    public void editCountryCode(PhoneDto phoneDto) {
+        Phone phone = phoneRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
+        phone.setCountryCode(phoneDto.countryCode);
+        phoneRepository.save(phone);
+    }
+
+    public void editNumber(PhoneDto phoneDto) {
         Phone phone = phoneRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
         phone.setPhoneNumber(phoneDto.phoneNumber);
         phoneRepository.save(phone);
     }
 
+    public PhoneDto getById(int id) {
+        Phone phone = phoneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
+        PhoneDto phoneDto = phoneMapper.mapPhoneToDto(phone);
+        return phoneDto;
+    }
+
     public List<PhoneDto> getByContactId(int contactId) {
-        List<Phone> phoneNumbers = phoneRepository.findAllById(contactId);
-        List<PhoneDto> phoneNumbersDtos = phoneNumbers.stream().map(phoneNumber -> {
-            PhoneDto phoneDto = new PhoneDto();
-            phoneDto.contactId = phoneNumber.getContact().getId();
-            phoneDto.countryCode = phoneNumber.getCountryCode();
-            phoneDto.phoneNumber = phoneNumber.getPhoneNumber();
-            return phoneDto;
-        }).collect(Collectors.toList());
-        return phoneNumbersDtos;
+        return phoneRepository.findById(contactId).stream()
+                .map(phoneMapper::mapPhoneToDto)
+                .collect(Collectors.toList());
     }
 
     public void removeById(int id) {

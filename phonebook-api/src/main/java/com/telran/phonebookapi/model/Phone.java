@@ -17,14 +17,20 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Setter
-    private int countryCode;
+    private String countryCode;
     @Setter
-    private int phoneNumber;
+    private String phoneNumber;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Contact contact;
 
     public Phone(Contact contact) {
+        this.contact = contact;
+    }
+
+    public Phone(String countryCode, String phoneNumber, Contact contact) {
+        this.countryCode = countryCode;
+        this.phoneNumber = phoneNumber;
         this.contact = contact;
     }
 }

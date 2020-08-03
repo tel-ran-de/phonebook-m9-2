@@ -1,17 +1,17 @@
 package com.telran.phonebookapi.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
+@AllArgsConstructor
 public class ContactDto {
 
     public int id;
 
-    @NotBlank
     public String firstName;
 
     public String lastName;
@@ -26,9 +26,11 @@ public class ContactDto {
 
     public List<String> emails = new ArrayList<>();
 
-    public ContactDto(@NotBlank String firstName, String lastName, String description) {
+    public ContactDto(int id, String firstName, String lastName, String description, String userId) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.description = description;
+        this.userId = userId;
     }
 }

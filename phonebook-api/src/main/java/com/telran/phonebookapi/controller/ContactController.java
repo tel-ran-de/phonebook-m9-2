@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class ContactController {
 
     ContactService contactService;
@@ -17,14 +18,19 @@ public class ContactController {
     }
 
     @PostMapping("api/user/{userId}/contact")
-    public void addContact(@RequestBody ContactDto contactDto, @PathVariable String userId) {
+    public void addContact(@Valid @RequestBody ContactDto contactDto, @PathVariable String userId) {
         contactDto.userId = userId;
         contactService.add(contactDto);
     }
 
     @PutMapping("api/contact")
-    public void editContactFirstName(@RequestBody @Valid ContactDto contactDto) {
+    public void editContactFirstName(@RequestBody ContactDto contactDto) {
         contactService.editFirstName(contactDto);
+    }
+
+    @GetMapping("api/contact/{id}")
+    public ContactDto getById(@PathVariable int id) {
+        return contactService.getById(id);
     }
 
     @GetMapping("api/user/{userId}/contact")

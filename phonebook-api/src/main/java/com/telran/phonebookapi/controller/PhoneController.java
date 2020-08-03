@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class PhoneController {
 
     PhoneService phoneService;
@@ -24,7 +25,12 @@ public class PhoneController {
 
     @PutMapping("api/phone")
     public void editPhone(@RequestBody @Valid PhoneDto phoneDto) {
-        phoneService.edit(phoneDto);
+        phoneService.editNumber(phoneDto);
+    }
+
+    @GetMapping("api/phone/{id}")
+    public PhoneDto getById(@PathVariable int id) {
+        return phoneService.getById(id);
     }
 
     @GetMapping("api/contact/{contactId}/phone")
