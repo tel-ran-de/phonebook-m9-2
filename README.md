@@ -15,3 +15,10 @@ https://www.postgresqltutorial.com/postgresql-create-database/.
 
 After, you need to configure application.properties_ with the database name, PostgreSQL username and password.  
 
+4. Using Swagger
+Swagger UI allows anyone to visualize and interact with the API’s resources without having any of the implementation logic in place. 
+It’s automatically generated from your OpenAPI (formerly known as Swagger) Specification, 
+with the visual documentation making it easy for back end implementation and client side consumption.
+
+To use Swagger Ui run the PhonebookApiApplication and visit the http://localhost:8080/swagger-ui.html page in your browser
+
