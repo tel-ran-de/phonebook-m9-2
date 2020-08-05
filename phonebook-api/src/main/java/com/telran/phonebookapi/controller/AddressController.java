@@ -5,10 +5,10 @@ import com.telran.phonebookapi.service.AddressService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/api/address")
 public class AddressController {
 
     AddressService addressService;
@@ -17,28 +17,22 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    @PostMapping("api/contact/{contactId}/address")
-    public void addAddress(@RequestBody AddressDto addressDto, @PathVariable int contactId) {
-        addressDto.contactId = contactId;
+    @PostMapping("")
+    public void addAddress(@RequestBody @Valid AddressDto addressDto) {
         addressService.add(addressDto);
     }
 
-    @PutMapping("api/address")
+    @PutMapping("")
     public void editPhone(@RequestBody @Valid AddressDto addressDto) {
-        addressService.editCity(addressDto);
+        addressService.editAllFields(addressDto);
     }
 
-    @GetMapping("api/address/{id}")
+    @GetMapping("/{id}")
     public AddressDto getById(@PathVariable int id) {
         return addressService.getById(id);
     }
 
-    @GetMapping("api/contact/{contactId}/address")
-    public List<AddressDto> getAddressesByContactId(@PathVariable int contactId) {
-        return addressService.getByContactId(contactId);
-    }
-
-    @DeleteMapping("api/address/{id}")
+    @DeleteMapping("/{id}")
     public void removeById(@PathVariable int id) {
         addressService.removeById(id);
     }

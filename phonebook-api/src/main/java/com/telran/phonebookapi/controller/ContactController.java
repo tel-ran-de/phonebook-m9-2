@@ -5,10 +5,10 @@ import com.telran.phonebookapi.service.ContactService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/api/contact")
 public class ContactController {
 
     ContactService contactService;
@@ -17,29 +17,28 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    @PostMapping("api/user/{userId}/contact")
-    public void addContact(@Valid @RequestBody ContactDto contactDto, @PathVariable String userId) {
-        contactDto.userId = userId;
+    @PostMapping("")
+    public void addContact(@Valid @RequestBody ContactDto contactDto) {
         contactService.add(contactDto);
     }
 
-    @PutMapping("api/contact")
-    public void editContactFirstName(@RequestBody ContactDto contactDto) {
-        contactService.editFirstName(contactDto);
-    }
-
-    @GetMapping("api/contact/{id}")
+    @GetMapping("/{id}")
     public ContactDto getById(@PathVariable int id) {
         return contactService.getById(id);
     }
 
-    @GetMapping("api/user/{userId}/contact")
-    public List<ContactDto> getContactsByUserId(@PathVariable String userId) {
-        return contactService.getByUserId(userId);
+    @GetMapping("/{id}/extended")
+    public ContactDto getByIdFullDetails(@PathVariable int id) {
+        return contactService.getByIdFullDetails(id);
     }
 
-    @DeleteMapping("api/contact/{contactId}")
-    public void removeById(@PathVariable int contactId) {
-        contactService.removeById(contactId);
+    @PutMapping("")
+    public void editContact(@Valid @RequestBody ContactDto contactDto) {
+        contactService.editAllFields(contactDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void removeById(@PathVariable int id) {
+        contactService.removeById(id);
     }
 }

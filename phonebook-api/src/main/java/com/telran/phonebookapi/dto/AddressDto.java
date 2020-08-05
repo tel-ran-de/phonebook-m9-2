@@ -18,4 +18,5 @@ public class AddressDto {
     public String country;
 
     public int contactId;
+
 }

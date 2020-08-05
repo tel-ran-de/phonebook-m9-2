@@ -9,8 +9,6 @@ import com.telran.phonebookapi.persistance.IPhoneRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PhoneService {
@@ -29,19 +27,13 @@ public class PhoneService {
 
     public void add(PhoneDto phoneDto) {
         Contact contact = contactRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
-        Phone phone = new Phone(contact);
+        Phone phone = new Phone(phoneDto.countryCode, phoneDto.phoneNumber, contact);
         phoneRepository.save(phone);
-
     }
 
-    public void editCountryCode(PhoneDto phoneDto) {
+    public void editAllFields(PhoneDto phoneDto) {
         Phone phone = phoneRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
         phone.setCountryCode(phoneDto.countryCode);
-        phoneRepository.save(phone);
-    }
-
-    public void editNumber(PhoneDto phoneDto) {
-        Phone phone = phoneRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
         phone.setPhoneNumber(phoneDto.phoneNumber);
         phoneRepository.save(phone);
     }
@@ -52,13 +44,8 @@ public class PhoneService {
         return phoneDto;
     }
 
-    public List<PhoneDto> getByContactId(int contactId) {
-        return phoneRepository.findById(contactId).stream()
-                .map(phoneMapper::mapPhoneToDto)
-                .collect(Collectors.toList());
-    }
-
     public void removeById(int id) {
+        phoneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
         phoneRepository.deleteById(id);
     }
 

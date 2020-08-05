@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/api/user")
 public class UserController {
 
     UserService userService;
@@ -18,22 +19,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/api/user")
+    @PostMapping("")
     public void addUser(@Valid @RequestBody UserDto userDto) {
         userService.addUser(userDto);
     }
 
-    @GetMapping("/api/user/activation/{token}")
+    @GetMapping("/activation/{token}")
     public void activateUser(@PathVariable String token) {
         userService.activateUser(token);
     }
 
-    @PostMapping("/api/user/password/recovery")
+    @PostMapping("/password/recovery")
     public void recoverPassword(@Valid @RequestBody RecoveryPasswordDto recoveryPasswordDto) {
         userService.sendRecoveryToken(recoveryPasswordDto.email);
     }
 
-    @PutMapping("/api/user/password")
+    @PutMapping("/password")
     public void changePassword(@Valid @RequestBody NewPasswordDto newPasswordDto) {
         userService.createNewPassword(newPasswordDto.token, newPasswordDto.password);
     }

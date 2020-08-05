@@ -12,6 +12,6 @@ public interface IContactRepository extends CrudRepository<Contact, Integer> {
 
     List<Contact> findByFirstName(String name);
 
-    List<Contact> findAllByEmails(String email);
+    List<Contact> getByUser(User user);
 
 }
