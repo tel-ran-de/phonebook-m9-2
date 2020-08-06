@@ -14,7 +14,8 @@ https://www.postgresqltutorial.com/connect-to-postgresql-database/.
 Third, you need to create PostgreSQL Database follow the instruction 
 https://www.postgresqltutorial.com/postgresql-create-database/.
 
-After, you need to configure application.properties_ with the database name, PostgreSQL username and password.  
+After, you need to configure application.properties_ with the database name, PostgreSQL username and password.
+https://www.jetbrains.com/help/idea/connecting-to-a-database.html#connect-to-postgresql-database
 
 2. Adding Flyway
 Flyway is an open-source database migration tool.
@@ -33,5 +34,9 @@ b. In the Data Sources and Drivers dialog, click the Add icon (+) and select Pos
 c. Specify database connection details: your PostgresSQL user name and password. 
 d. To ensure that the connection to the data source is successful, click Test Connection.
 
-https://www.jetbrains.com/help/idea/connecting-to-a-database.html#connect-to-postgresql-database
+4. Using Swagger
+Swagger UI allows anyone to visualize and interact with the API’s resources without having any of the implementation logic in place. 
+It’s automatically generated from your OpenAPI (formerly known as Swagger) Specification, 
+with the visual documentation making it easy for back end implementation and client side consumption.
 
+To use Swagger Ui run the PhonebookApiApplication and visit the http://localhost:8080/swagger-ui.html page in your browser

@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id "io.swagger.core.v3.swagger-gradle-plugin" version "2.1.4"
 }
 
 group = 'com.telran'
@@ -35,6 +36,9 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    testCompile group: 'io.swagger', name: 'swagger-parser', version:'1.0.34'
 }
 
 test {

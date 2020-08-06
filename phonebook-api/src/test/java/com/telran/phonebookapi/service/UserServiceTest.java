@@ -90,5 +90,6 @@ class UserServiceTest {
                 eq(UserService.ACTIVATION_SUBJECT),
                 anyString());
     }
+
 }
 
