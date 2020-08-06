@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -30,18 +31,17 @@ public class Contact {
     private User user;
 
     @ElementCollection
-    private List<String> emails = new ArrayList<>();
+    private final List<String> emails = new ArrayList<>();
 
     @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
-    private List<Phone> phones = new ArrayList<>();
+    private final List<Phone> phones = new ArrayList<>();
 
     @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
-    private List<Address> addresses = new ArrayList<>();
+    private final List<Address> addresses = new ArrayList<>();
 
     public Contact(String firstName, User user) {
         this.firstName = firstName;
         this.user = user;
-
     }
 
     public void addAddress(Address address) {
@@ -54,6 +54,18 @@ public class Contact {
 
     public void addEmail(String email) {
         emails.add(email);
+    }
+
+    public List<Phone> getPhoneNumbers() {
+        return Collections.unmodifiableList(phones);
+    }
+
+    public List<Address> getAddresses() {
+        return Collections.unmodifiableList(addresses);
+    }
+
+    public List<String> getEmails() {
+        return Collections.unmodifiableList(emails);
     }
 
 }

@@ -5,9 +5,11 @@ import com.telran.phonebookapi.exception.TokenNotFoundException;
 import com.telran.phonebookapi.exception.UserAlreadyExistsException;
 import com.telran.phonebookapi.exception.UserNotFoundException;
 import com.telran.phonebookapi.model.ActivationToken;
+import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.RecoveryToken;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IActivationTokenRepository;
+import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.IRecoveryTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +39,6 @@ public class UserService {
     private final EmailSender emailSender;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
     public UserService(IUserRepository userRepository,
                        IActivationTokenRepository activationTokenRepository,
                        EmailSender emailSender,
@@ -59,6 +60,11 @@ public class UserService {
             User user = new User(userDto.email, encodedPassword);
             user.setActive(false);
             userRepository.save(user);
+
+            userDto.contactDtos.stream()
+                    .map(contactIn -> new Contact(contactIn.firstName, user))
+                    .forEach(contactRepository::save);
+
             activationTokenRepository.save(new ActivationToken(token, user));
             emailSender.sendMail(user.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
                     + uiHost + UI_ACTIVATION_LINK + token);
