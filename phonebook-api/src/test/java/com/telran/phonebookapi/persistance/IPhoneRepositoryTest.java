@@ -34,8 +34,8 @@ class IPhoneRepositoryTest {
         entityManager.persist(mamaPhone);
 
         mama.addPhone(mamaPhone);
-        mamaPhone.setCountryCode(7);
-        mamaPhone.setPhoneNumber(634872);
+        mamaPhone.setCountryCode("7");
+        mamaPhone.setPhoneNumber("634872");
 
         entityManager.flush();
         entityManager.clear();
@@ -43,8 +43,8 @@ class IPhoneRepositoryTest {
         List<Phone> foundPhones = phoneRepository.findAll();
         assertEquals(1, foundPhones.size());
 
-        assertEquals(7, foundPhones.get(0).getCountryCode());
-        assertEquals(634872, foundPhones.get(0).getPhoneNumber());
+        assertEquals("7", foundPhones.get(0).getCountryCode());
+        assertEquals("634872", foundPhones.get(0).getPhoneNumber());
 
     }
 

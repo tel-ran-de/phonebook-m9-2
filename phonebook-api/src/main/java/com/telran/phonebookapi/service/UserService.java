@@ -2,9 +2,11 @@ package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.model.ActivationToken;
+import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.RecoveryToken;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IActivationTokenRepository;
+import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.IRecoveryTokenRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,16 +36,19 @@ public class UserService {
     final IActivationTokenRepository activationTokenRepository;
     final IRecoveryTokenRepository recoveryTokenRepository;
     final EmailSender emailSender;
+    final IContactRepository contactRepository;
 
 
     public UserService(IUserRepository userRepository,
                        IActivationTokenRepository activationTokenRepository,
                        EmailSender emailSender,
-                       IRecoveryTokenRepository recoveryTokenRepository) {
+                       IRecoveryTokenRepository recoveryTokenRepository,
+                       IContactRepository contactRepository) {
         this.userRepository = userRepository;
         this.activationTokenRepository = activationTokenRepository;
         this.emailSender = emailSender;
         this.recoveryTokenRepository = recoveryTokenRepository;
+        this.contactRepository = contactRepository;
     }
 
     public void addUser(UserDto userDto) {
@@ -54,6 +59,11 @@ public class UserService {
             User user = new User(userDto.email, userDto.password);
             user.setActive(false);
             userRepository.save(user);
+
+            userDto.contactDtos.stream()
+                    .map(contactIn -> new Contact(contactIn.firstName, user))
+                    .forEach(contactRepository::save);
+
             activationTokenRepository.save(new ActivationToken(token, user));
             emailSender.sendMail(user.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
                     + uiHost + UI_ACTIVATION_LINK + token);

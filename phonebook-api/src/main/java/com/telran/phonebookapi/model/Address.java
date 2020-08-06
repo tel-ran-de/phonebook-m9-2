@@ -30,4 +30,12 @@ public class Address {
     public Address(Contact contact) {
         this.contact = contact;
     }
+
+    public Address(String zip, String country, String city, String street, Contact contact) {
+        this.street = street;
+        this.zip = zip;
+        this.city = city;
+        this.country = country;
+        this.contact =contact;
+    }
 }
