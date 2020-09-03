@@ -26,4 +26,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ErrorDto handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         return new ErrorDto(ex.getMessage());
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorDto handleUserEntityNotFoundException(EntityNotFoundException ex) {
+        return new ErrorDto(ex.getMessage());
+    }
 }

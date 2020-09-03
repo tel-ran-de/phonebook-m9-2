@@ -29,19 +29,11 @@ class IContactRepositoryTest {
         entityManager.persist(ivan);
         entityManager.persist(mama);
 
-        mama.addEmail("mama@gmail.com");
-
         entityManager.flush();
         entityManager.clear();
         List<Contact> foundContacts = contactRepository.findByFirstName("Mama");
         assertEquals(1, foundContacts.size());
         assertEquals("Mama", foundContacts.get(0).getFirstName());
-
-        List<String> foundEmails = foundContacts.get(0).getEmails();
-        assertEquals(1, foundEmails.size());
-
-        assertEquals("mama@gmail.com", foundEmails.get(0));
-
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.telran.phonebookapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ContactDto {
 
     public List<AddressDto> addresses = new ArrayList<>();
 
-    public List<String> emails = new ArrayList<>();
+    public List<EmailDto> emails = new ArrayList<>();
 
     public ContactDto(int id, String firstName, String lastName, String description, String userId) {
         this.id = id;

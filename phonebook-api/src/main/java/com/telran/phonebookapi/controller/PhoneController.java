@@ -5,6 +5,7 @@ import com.telran.phonebookapi.service.PhoneService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -35,5 +36,10 @@ public class PhoneController {
     @DeleteMapping("/{id}")
     public void removeById(@PathVariable int id) {
         phoneService.removeById(id);
+    }
+
+    @GetMapping("/{contactId}/all")
+    public List<PhoneDto> getAllPhoneNumbers(@PathVariable int contactId) {
+        return phoneService.getAllPhoneNumbersByContactId(contactId);
     }
 }

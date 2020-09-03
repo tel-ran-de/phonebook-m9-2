@@ -9,6 +9,8 @@ import com.telran.phonebookapi.persistance.IPhoneRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PhoneService {
@@ -49,4 +51,9 @@ public class PhoneService {
         phoneRepository.deleteById(id);
     }
 
+    public List<PhoneDto> getAllPhoneNumbersByContactId(int contactId) {
+        return phoneRepository.findAllByContactId(contactId).stream()
+                .map(phoneMapper::mapPhoneToDto)
+                .collect(Collectors.toList());
+    }
 }

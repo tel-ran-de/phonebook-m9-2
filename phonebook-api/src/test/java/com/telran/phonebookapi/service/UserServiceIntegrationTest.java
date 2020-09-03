@@ -42,6 +42,7 @@ class UserServiceIntegrationTest {
         activationTokenRepository.save(activationToken);
 
         userService.activateUser(token);
+
         assertTrue(userRepository.findById(user.getEmail()).get().isActive());
     }
 
@@ -69,7 +70,9 @@ class UserServiceIntegrationTest {
     @Test()
     public void testActivateUser_userAlreadyExist() {
         User user = new User("ivanov@gmail.com", "12345");
-        UserDto userDto = new UserDto(user.getEmail(), user.getPassword());
+        UserDto userDto = UserDto.builder()
+                .email(user.getEmail())
+                .build();
 
         userRepository.save(user);
 

@@ -3,11 +3,8 @@ package com.telran.phonebookapi.service;
 import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.exception.TokenNotFoundException;
 import com.telran.phonebookapi.exception.UserAlreadyExistsException;
-import com.telran.phonebookapi.exception.UserNotFoundException;
-import com.telran.phonebookapi.model.ActivationToken;
-import com.telran.phonebookapi.model.Contact;
-import com.telran.phonebookapi.model.RecoveryToken;
-import com.telran.phonebookapi.model.User;
+import com.telran.phonebookapi.mapper.UserMapper;
+import com.telran.phonebookapi.model.*;
 import com.telran.phonebookapi.persistance.IActivationTokenRepository;
 import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.IRecoveryTokenRepository;
@@ -16,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @Service
@@ -34,21 +32,27 @@ public class UserService {
     private String uiHost;
 
     private final IUserRepository userRepository;
+    private final IContactRepository contactRepository;
     private final IActivationTokenRepository activationTokenRepository;
     private final IRecoveryTokenRepository recoveryTokenRepository;
     private final EmailSender emailSender;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    UserMapper userMapper;
 
     public UserService(IUserRepository userRepository,
+                       IContactRepository contactRepository,
                        IActivationTokenRepository activationTokenRepository,
                        EmailSender emailSender,
                        IRecoveryTokenRepository recoveryTokenRepository,
-                       BCryptPasswordEncoder bCryptPasswordEncoder) {
+                       BCryptPasswordEncoder bCryptPasswordEncoder,
+                       UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.contactRepository = contactRepository;
         this.activationTokenRepository = activationTokenRepository;
         this.emailSender = emailSender;
         this.recoveryTokenRepository = recoveryTokenRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userMapper = userMapper;
     }
 
     public void addUser(UserDto userDto) {
@@ -59,6 +63,10 @@ public class UserService {
             String encodedPassword = bCryptPasswordEncoder.encode(userDto.password);
             User user = new User(userDto.email, encodedPassword);
             user.setActive(false);
+            user.addRole(UserRole.USER);
+            Contact profile = new Contact();
+            user.setMyProfile(profile);
+            contactRepository.save(profile);
             userRepository.save(user);
 
             userDto.contactDtos.stream()
@@ -81,7 +89,7 @@ public class UserService {
     }
 
     public void sendRecoveryToken(String email) {
-        User ourUser = userRepository.findById(email).orElseThrow(() -> new UserNotFoundException(USER_DOES_NOT_EXIST));
+        User ourUser = userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
         String token = UUID.randomUUID().toString();
         RecoveryToken recoveryToken = new RecoveryToken(token, ourUser);
         recoveryTokenRepository.save(recoveryToken);
@@ -101,4 +109,7 @@ public class UserService {
         recoveryTokenRepository.delete(token);
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
+    }
 }

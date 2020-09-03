@@ -1,12 +1,9 @@
 package com.telran.phonebookapi.mapper;
 
 import com.telran.phonebookapi.dto.ContactDto;
-import com.telran.phonebookapi.model.Address;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.User;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 

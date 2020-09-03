@@ -4,12 +4,16 @@ import com.telran.phonebookapi.dto.NewPasswordDto;
 import com.telran.phonebookapi.dto.RecoveryPasswordDto;
 import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -38,5 +42,16 @@ public class UserController {
     public void changePassword(@Valid @RequestBody NewPasswordDto newPasswordDto) {
         userService.createNewPassword(newPasswordDto.token, newPasswordDto.password);
     }
+
+    @GetMapping("")
+    @PreAuthorize("isAuthenticated()")
+    public UserDto getUser(Authentication auth) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        return UserDto.builder()
+                .roles(userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .email(userDetails.getUsername())
+                .build();
+    }
+
 }
 

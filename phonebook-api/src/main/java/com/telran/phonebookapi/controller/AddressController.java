@@ -5,6 +5,7 @@ import com.telran.phonebookapi.service.AddressService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -23,7 +24,7 @@ public class AddressController {
     }
 
     @PutMapping("")
-    public void editPhone(@RequestBody @Valid AddressDto addressDto) {
+    public void editAddress(@RequestBody @Valid AddressDto addressDto) {
         addressService.editAllFields(addressDto);
     }
 
@@ -37,4 +38,8 @@ public class AddressController {
         addressService.removeById(id);
     }
 
+    @GetMapping("/{contactId}/all")
+    public List<AddressDto> getAllAddresses(@PathVariable int contactId) {
+        return addressService.getAllAddressesByContactId(contactId);
+    }
 }

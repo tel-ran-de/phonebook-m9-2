@@ -1,6 +1,5 @@
 package com.telran.phonebookapi.model;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,12 +25,13 @@ public class Contact {
     private String lastName;
     @Setter
     private String description;
+    @Setter
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ElementCollection
-    private final List<String> emails = new ArrayList<>();
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
+    private final List<Email> emails = new ArrayList<>();
 
     @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
     private final List<Phone> phones = new ArrayList<>();
@@ -52,7 +52,7 @@ public class Contact {
         phones.add(phone);
     }
 
-    public void addEmail(String email) {
+    public void addEmail(Email email) {
         emails.add(email);
     }
 
@@ -64,7 +64,7 @@ public class Contact {
         return Collections.unmodifiableList(addresses);
     }
 
-    public List<String> getEmails() {
+    public List<Email> getEmails() {
         return Collections.unmodifiableList(emails);
     }
 
