@@ -14,10 +14,11 @@ class UserMapperTest {
     void UserDTO() {
         User user = new User("test@gmail.com", "112233");
 
-        UserDto userDto = new UserDto("test@gmail.com", "112233");
+        UserDto userDto = UserDto.builder()
+                .email("test@gmail.com")
+                .build();
 
         UserDto userDtoMapped = userMapper.mapUserToDto(user);
         assertEquals(userDto.email, userDtoMapped.email);
-        assertEquals(userDto.password, userDtoMapped.password);
     }
 }

@@ -1,10 +1,12 @@
 package com.telran.phonebookapi.controller;
 
 import com.telran.phonebookapi.dto.ContactDto;
+import com.telran.phonebookapi.dto.UserEmailDto;
 import com.telran.phonebookapi.service.ContactService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -41,4 +43,25 @@ public class ContactController {
     public void removeById(@PathVariable int id) {
         contactService.removeById(id);
     }
+
+    @PostMapping("/all")
+    public List<ContactDto> requestAllContactsByUserEmail(@Valid @RequestBody UserEmailDto userEmailDto) {
+        return contactService.getAllContactsByUserId(userEmailDto);
+    }
+
+    @PostMapping("/profile")
+    public void addProfile(@Valid @RequestBody ContactDto contactDto) {
+        contactService.addProfile(contactDto);
+    }
+
+    @PutMapping("/profile")
+    public void editProfile(@Valid @RequestBody ContactDto contactDto) {
+        contactService.editProfile(contactDto);
+    }
+
+    @PostMapping("/get-profile")
+    public ContactDto getProfile(@Valid @RequestBody UserEmailDto userEmailDto) {
+        return contactService.getProfile(userEmailDto);
+    }
+
 }

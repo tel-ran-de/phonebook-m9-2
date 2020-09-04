@@ -10,4 +10,6 @@ public interface IUserRepository extends CrudRepository<User, String> {
 
     List<User> findAll();
 
+    Optional<User> findByEmailAndIsActiveIsTrue(String userName);
+
 }

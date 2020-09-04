@@ -24,7 +24,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     compile 'org.flywaydb:flyway-core:6.5.0'
 
@@ -39,7 +40,7 @@ dependencies {
     }
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-    testCompile group: 'io.swagger', name: 'swagger-parser', version:'1.0.34'
+    testCompile group: 'io.swagger', name: 'swagger-parser', version: '1.0.34'
 }
 
 test {

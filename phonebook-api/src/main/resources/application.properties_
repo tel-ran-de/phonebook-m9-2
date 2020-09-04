@@ -22,3 +22,8 @@ spring.flyway.url=jdbc:postgresql://localhost:5432/Phonebook
 spring.flyway.locations=classpath:db/migration
 spring.flyway.user=
 spring.flyway.password=
+
+com.telran.auth.jwt.secret=
+//minutes
+com.telran.auth.jwt.access-token.expiration=1440
+
