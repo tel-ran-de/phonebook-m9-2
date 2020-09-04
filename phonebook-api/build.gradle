@@ -47,6 +47,11 @@ test {
     useJUnitPlatform()
 }
 
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
 // ui tasks
 
 ext {
