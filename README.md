@@ -13,6 +13,10 @@ Second, you need to connect to PostgreSQL Database Server. All steps you can see
 https://www.postgresqltutorial.com/connect-to-postgresql-database/.
 Third, you need to create PostgreSQL Database follow the instruction 
 https://www.postgresqltutorial.com/postgresql-create-database/.
+The second way to run a Postgres DB on a local machine is the following:
+First - go to the folder "postgres" in terminal.
+Second - run the command "docker-compose up".
+This way works if there is Docker installed on the machine. Also, the port serving the DB will be different - 5442
 
 After, you need to configure application.properties_ with the database name, PostgreSQL username and password.
 https://www.jetbrains.com/help/idea/connecting-to-a-database.html#connect-to-postgresql-database
