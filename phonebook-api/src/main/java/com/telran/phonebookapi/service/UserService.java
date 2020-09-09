@@ -62,16 +62,11 @@ public class UserService {
             String token = UUID.randomUUID().toString();
             String encodedPassword = bCryptPasswordEncoder.encode(userDto.password);
             User user = new User(userDto.email, encodedPassword);
-            user.setActive(false);
             user.addRole(UserRole.USER);
             Contact profile = new Contact();
             user.setMyProfile(profile);
             contactRepository.save(profile);
             userRepository.save(user);
-
-            userDto.contactDtos.stream()
-                    .map(contactIn -> new Contact(contactIn.firstName, user))
-                    .forEach(contactRepository::save);
 
             activationTokenRepository.save(new ActivationToken(token, user));
             emailSender.sendMail(user.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
