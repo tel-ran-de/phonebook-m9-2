@@ -1,7 +1,7 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.ContactDto;
-import com.telran.phonebookapi.mapper.ContactMapper;
+import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IContactRepository;
@@ -12,6 +12,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,13 +35,10 @@ class ContactServiceTest {
     @InjectMocks
     ContactService contactService;
 
-    @Spy
-    ContactMapper contactMapper;
-
     @Test
     public void testAdd_userExists_userWithContact() {
 
-        User user = new User("test@gmail.com", "test");
+        User user = new User("test@gmail.com", "12345678");
         when(userRepository.findById(user.getEmail())).thenReturn(Optional.of(user));
 
         ContactDto contactDto = new ContactDto();
@@ -71,7 +69,7 @@ class ContactServiceTest {
     @Test
     public void testEditAllFields_contactExist_AllFieldsChanged() {
 
-        User user = new User("test@gmail.com", "test");
+        User user = new User("test@gmail.com", "12345678");
 
         Contact oldContact = new Contact("TestName", user);
         ContactDto contactDto = new ContactDto();
@@ -112,7 +110,7 @@ class ContactServiceTest {
     @Test
     public void testRemoveById_contactExists_ContactDeleted() {
 
-        User user = new User("test@gmail.com", "test");
+        User user = new User("test@gmail.com", "12345678");
         Contact contact = new Contact("Name", user);
         contact.setLastName("Surname");
         contact.setDescription("person");
@@ -129,7 +127,7 @@ class ContactServiceTest {
 
     @Test
     public void testGetById_userWithContact_Contact() {
-        User user = new User("test@gmail.com", "test");
+        User user = new User("test@gmail.com", "12345678");
         Contact contact = new Contact("Name", user);
         contact.setLastName("Surname");
         contact.setDescription("person");
@@ -137,14 +135,44 @@ class ContactServiceTest {
         ContactDto contactDto = new ContactDto(1, "Name", "Surname", "person", "test@gmail.com");
 
         when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(contact));
-        ContactDto contactFounded = contactService.getById(contactDto.id);
+        Contact contactFounded = contactService.getById(contactDto.id);
 
-        assertEquals(contactDto.firstName, contactFounded.firstName);
-        assertEquals(contactDto.lastName, contactFounded.lastName);
-        assertEquals(contactDto.description, contactFounded.description);
+        assertEquals(contactDto.firstName, contactFounded.getFirstName());
+        assertEquals(contactDto.lastName, contactFounded.getLastName());
+        assertEquals(contactDto.description, contactFounded.getDescription());
 
-        verify(contactMapper, times(1)).mapContactToDto(contact);
         verify(contactRepository, times(1)).findById(argThat(
                 id -> id.intValue() == contactDto.id));
+
+    }
+
+    @Test void testGetAllContactsByUserId_userWitContacts_ListContacts() {
+        User user = new User("test@gmail.com", "12345678");
+        Contact contact01 = new Contact("TestName01", user);
+        Contact contact02 = new Contact("TestName02", user);
+
+        ContactDto contactDto01 = ContactDto.builder()
+                .firstName("TestName01")
+                .userId("test@gmail.com")
+                .build();
+        ContactDto contactDto02 = ContactDto.builder()
+                .firstName("TestName02")
+                .userId("test@gmail.com")
+                .build();
+
+        UserDto userDto = UserDto.builder()
+                .email("test@gmail.com")
+                .password("pass")
+                .build();
+
+        when(contactRepository.findAllByUserEmail(user.getEmail())).thenReturn(Arrays.asList(contact01, contact02));
+        List<Contact> contactsFounded = contactService.getAllContactsByUserId(userDto);
+
+        assertEquals(contactsFounded.size(), 2);
+        assertEquals(contactsFounded.get(0).getFirstName(), contactDto01.firstName);
+        assertEquals(contactsFounded.get(1).getFirstName(), contactDto02.firstName);
+
+        verify(contactRepository, times(1)).findAllByUserEmail(user.getEmail());
+
     }
 }

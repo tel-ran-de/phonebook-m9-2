@@ -1,12 +1,18 @@
 package com.telran.phonebookapi.controller;
 
 import com.telran.phonebookapi.dto.ContactDto;
+import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.dto.UserEmailDto;
+import com.telran.phonebookapi.mapper.AddressMapper;
+import com.telran.phonebookapi.mapper.ContactMapper;
+import com.telran.phonebookapi.mapper.EmailMapper;
+import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.service.ContactService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -14,9 +20,17 @@ import java.util.List;
 public class ContactController {
 
     ContactService contactService;
+    ContactMapper contactMapper;
+    AddressMapper addressMapper;
+    PhoneMapper phoneMapper;
+    EmailMapper emailMapper;
 
-    public ContactController(ContactService contactService) {
+    public ContactController(ContactService contactService, ContactMapper contactMapper, AddressMapper addressMapper, PhoneMapper phoneMapper, EmailMapper emailMapper) {
         this.contactService = contactService;
+        this.emailMapper = emailMapper;
+        this.addressMapper = addressMapper;
+        this.phoneMapper = phoneMapper;
+        this.contactMapper = contactMapper;
     }
 
     @PostMapping("")
@@ -26,12 +40,12 @@ public class ContactController {
 
     @GetMapping("/{id}")
     public ContactDto getById(@PathVariable int id) {
-        return contactService.getById(id);
+        return contactMapper.mapContactToDto(contactService.getById(id));
     }
 
     @GetMapping("/{id}/extended")
     public ContactDto getByIdFullDetails(@PathVariable int id) {
-        return contactService.getByIdFullDetails(id);
+        return contactMapper.mapContactToDto(contactService.getByIdFullDetails(id));
     }
 
     @PutMapping("")
@@ -45,8 +59,24 @@ public class ContactController {
     }
 
     @PostMapping("/all")
-    public List<ContactDto> requestAllContactsByUserEmail(@Valid @RequestBody UserEmailDto userEmailDto) {
-        return contactService.getAllContactsByUserId(userEmailDto);
+    public List<ContactDto> requestAllContactsByUserEmail(@Valid @RequestBody UserDto userDto) {
+
+        return contactService.getAllContactsByUserId(userDto).stream()
+                .map(contact -> {
+                    ContactDto contactDto = new ContactDto(contact.getId(), contact.getFirstName(), contact.getLastName(), contact.getDescription(), contact.getUser().getEmail(), phoneMapper.mapListPhoneToDto(contact.getPhones()), addressMapper.mapListAddressToDto(contact.getAddresses()), emailMapper.mapListEmailToDto(contact.getEmails()));
+//                    return ContactDto.builder()
+//                            .id(contact.getId())
+//                            .firstName(contact.getFirstName())
+//                            .lastName(contact.getLastName())
+//                            .description(contact.getDescription())
+//                            .userId(contact.getUser().getEmail())
+//                            .phoneNumbers(phoneMapper.mapListPhoneToDto(contact.getPhones()))
+//                            .addresses(addressMapper.mapListAddressToDto(contact.getAddresses()))
+//                            .emails(emailMapper.mapListEmailToDto(contact.getEmails()));
+                    return contactDto;
+                })
+                .collect(Collectors.toList());
+
     }
 
     @PostMapping("/profile")
@@ -61,7 +91,7 @@ public class ContactController {
 
     @PostMapping("/get-profile")
     public ContactDto getProfile(@Valid @RequestBody UserEmailDto userEmailDto) {
-        return contactService.getProfile(userEmailDto);
+        return contactMapper.mapContactToDto(contactService.getProfile(userEmailDto));
     }
 
 }
