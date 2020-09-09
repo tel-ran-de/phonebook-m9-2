@@ -4,6 +4,7 @@ import com.telran.phonebookapi.dto.PhoneDto;
 import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.Phone;
+import com.telran.phonebookapi.model.PhoneCountryCode;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.IPhoneRepository;
@@ -37,6 +38,8 @@ class PhoneServiceTest {
     @Spy
     PhoneMapper phoneMapper;
 
+    PhoneCountryCode phoneCountryCode;
+
     @Test
     public void testAdd_contactExists_contactWithPhoneNumber() {
         User user = new User("test@gmail.com", "test");
@@ -46,11 +49,11 @@ class PhoneServiceTest {
 
         PhoneDto phoneDto = new PhoneDto();
         phoneDto.contactId = 0;
-        phoneDto.phoneNumber = "12345678";
+        phoneDto.phoneNumber = 12345678;
         phoneService.add(phoneDto);
 
         verify(phoneRepository, times(1)).save(any());
-        verify(phoneRepository, times(1)).save(argThat(phone -> phone.getPhoneNumber().equals(phoneDto.phoneNumber) &&
+        verify(phoneRepository, times(1)).save(argThat(phone -> phone.getPhoneNumber() == phoneDto.phoneNumber &&
                 phone.getContact().getId() == phoneDto.contactId)
         );
     }
@@ -60,7 +63,7 @@ class PhoneServiceTest {
 
         PhoneDto phoneDto = new PhoneDto();
         phoneDto.contactId = 0;
-        phoneDto.phoneNumber = "12345678";
+        phoneDto.phoneNumber = 12345678;
 
         Exception exception = assertThrows(EntityNotFoundException.class, () -> phoneService.add(phoneDto));
 
@@ -78,8 +81,7 @@ class PhoneServiceTest {
 
         PhoneDto phoneDto = new PhoneDto();
         phoneDto.id = 0;
-        phoneDto.phoneNumber = "12345678";
-        phoneDto.countryCode = "+49";
+        phoneDto.phoneNumber = 12345678;
 
         when(phoneRepository.findById(phoneDto.id)).thenReturn(Optional.of(oldPhone));
 
@@ -87,8 +89,7 @@ class PhoneServiceTest {
 
         verify(phoneRepository, times(1)).save(any());
         verify(phoneRepository, times(1)).save(argThat(phone ->
-                phone.getPhoneNumber().equals(phoneDto.phoneNumber) && phone.getCountryCode().equals(phoneDto.countryCode)
-                        && phone.getContact().getId() == phoneDto.contactId)
+                phone.getPhoneNumber() == phoneDto.phoneNumber && phone.getContact().getId() == phoneDto.contactId)
         );
     }
 
@@ -112,7 +113,7 @@ class PhoneServiceTest {
         User user = new User("test@gmail.com", "test");
 
         Contact contact = new Contact("TestName", user);
-        Phone phone = new Phone("+49", "12345678", contact);
+        Phone phone = new Phone(phoneCountryCode, 12345678, contact);
 
         PhoneDto phoneDto = new PhoneDto();
         phoneDto.id = 0;
@@ -131,9 +132,9 @@ class PhoneServiceTest {
 
         User user = new User("test@gmail.com", "test");
         Contact contact = new Contact("TestName", user);
-        Phone phone = new Phone("+49", "12345678", contact);
+        Phone phone = new Phone(phoneCountryCode, 12345678, contact);
 
-        PhoneDto phoneDto = new PhoneDto(0, "+49", "12345678", 0);
+        PhoneDto phoneDto = new PhoneDto(0, phoneCountryCode, 12345678, 0);
 
         when(phoneRepository.findById(phoneDto.id)).thenReturn(Optional.of(phone));
         PhoneDto phoneFounded = phoneService.getById(phoneDto.id);

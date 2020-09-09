@@ -1,5 +1,6 @@
 package com.telran.phonebookapi.dto;
 
+import com.telran.phonebookapi.model.PhoneCountryCode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +12,9 @@ public class PhoneDto {
 
     public int id;
     @NotBlank
-    public String countryCode;
+    public PhoneCountryCode countryCode;
     @NotBlank
-    public String phoneNumber;
+    public long phoneNumber;
 
     public int contactId;
 }

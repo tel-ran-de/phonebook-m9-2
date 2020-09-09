@@ -4,6 +4,7 @@ import com.telran.phonebookapi.dto.PhoneDto;
 import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.Phone;
+import com.telran.phonebookapi.model.PhoneCountryCode;
 import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.IPhoneRepository;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class PhoneService {
 
     public void editAllFields(PhoneDto phoneDto) {
         Phone phone = phoneRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
-        phone.setCountryCode(phoneDto.countryCode);
+        phone.setCode(phoneDto.countryCode);
         phone.setPhoneNumber(phoneDto.phoneNumber);
         phoneRepository.save(phone);
     }
