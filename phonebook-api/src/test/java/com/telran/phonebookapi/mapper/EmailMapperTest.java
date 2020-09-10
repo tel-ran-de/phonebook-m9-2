@@ -26,4 +26,15 @@ public class EmailMapperTest {
 
     }
 
+    @Test
+    public void DtoToEmail(){
+        User user = new User("test@gmail.com", "112233");
+        Contact contact = new Contact("Name", user);
+        EmailDto emailDto = new EmailDto(0,"mail@mail.com",0);
+
+        Email emailFromDto = emailMapper.mapDtoToEmail(emailDto);
+        assertEquals("mail@mail.com", emailFromDto.getEmail());
+
+    }
+
 }

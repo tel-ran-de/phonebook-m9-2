@@ -31,4 +31,8 @@ public class Email {
         this.contact = contact;
     }
 
+    //TODO
+    public Email(String email, int contactId) {
+        this.email = email;
+    }
 }

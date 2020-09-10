@@ -27,22 +27,27 @@ public class EmailService {
         this.emailMapper = emailMapper;
     }
 
-    public void add(EmailDto emailDto) {
-        Contact contact = contactRepository.findById(emailDto.contactId).orElseThrow(() -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
-        Email email = new Email(emailDto.email, contact);
+    public void add(String email, int contactId) {
+        Contact contact = contactRepository.findById(contactId).orElseThrow(()
+                -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
+        Email newEmail = new Email(email, contact);
+        emailRepository.save(newEmail);
+    }
+
+//    public void edit(EmailDto emailDto) {
+//        Email email = emailRepository.findById(emailDto.id).orElseThrow(() -> new EntityNotFoundException(EMAIL_DOES_NOT_EXIST));
+//        email.setEmail(emailDto.email);
+//        emailRepository.save(email);
+//    }
+    public void edit(String newEmail, int emailId) {
+        Email email = emailRepository.findById(emailId).orElseThrow(() -> new EntityNotFoundException(EMAIL_DOES_NOT_EXIST));
+        email.setEmail(newEmail);
         emailRepository.save(email);
     }
 
-    public void edit(EmailDto emailDto) {
-        Email email = emailRepository.findById(emailDto.id).orElseThrow(() -> new EntityNotFoundException(EMAIL_DOES_NOT_EXIST));
-        email.setEmail(emailDto.email);
-        emailRepository.save(email);
-    }
-
-    public EmailDto getById(int id) {
-        Email email = emailRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(EMAIL_DOES_NOT_EXIST));
-        EmailDto emailDto = emailMapper.mapEmailToDto(email);
-        return emailDto;
+    public Email getById(int id) {
+        //        EmailDto emailDto = emailMapper.mapEmailToDto(email);
+        return emailRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(EMAIL_DOES_NOT_EXIST));
     }
 
     public void removeById(int id) {

@@ -1,27 +1,21 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.EmailDto;
-import com.telran.phonebookapi.dto.PhoneDto;
 import com.telran.phonebookapi.mapper.EmailMapper;
-import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.Email;
-import com.telran.phonebookapi.model.Phone;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.IEmailRepository;
-import com.telran.phonebookapi.persistance.IPhoneRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -41,6 +35,9 @@ public class EmailServiceTest {
     @Spy
     EmailMapper emailMapper;
 
+    @Captor
+    ArgumentCaptor<Email> emailCaptor;
+
     @Test
     public void testAdd_contactExists_contactWithEmailNumber() {
         User user = new User("test@gmail.com", "test");
@@ -48,62 +45,64 @@ public class EmailServiceTest {
 
         when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
 
-        EmailDto emailDto = new EmailDto();
-        emailDto.contactId = 0;
-        emailDto.email = "mail@mail.com";
-        emailService.add(emailDto);
+        Email email = new Email("mail@mail.com", contact);
+        emailService.add(email.getEmail(), contact.getId());
 
         verify(emailRepository, times(1)).save(any());
-        verify(emailRepository,times(1)).save(argThat(email->email.getEmail().equals(emailDto.email)&&
-                email.getContact().getId() == emailDto.contactId));
+        verify(emailRepository).save(emailCaptor.capture());
 
+        List<Email> capturedEmails = emailCaptor.getAllValues();
+        assertEquals(1, capturedEmails.size());
+        assertEquals(email.getEmail(), capturedEmails.get(0).getEmail());
     }
 
+//    @Test
+//    public void testAdd_contactDoesNotExist_EntityNotFoundException() {
+//
+//        EmailDto emailDto = new EmailDto();
+//        emailDto.contactId = 0;
+//        emailDto.email = "mail@mail.com";
+//
+//        Exception exception = assertThrows(EntityNotFoundException.class, ()->emailService.add(emailDto));
+//
+//        verify(contactRepository, times(1)).findById(any());
+//        assertEquals("Error! This contact doesn't exist in our DB", exception.getMessage());
+//    }
+
     @Test
-    public void testAdd_contactDoesNotExist_EntityNotFoundException() {
-
-        EmailDto emailDto = new EmailDto();
-        emailDto.contactId = 0;
-        emailDto.email = "mail@mail.com";
-
-        Exception exception = assertThrows(EntityNotFoundException.class, ()->emailService.add(emailDto));
-
-        verify(contactRepository, times(1)).findById(any());
-        assertEquals("Error! This contact doesn't exist in our DB", exception.getMessage());
-    }
-
-    @Test
-    public void testEditAllFields_emailExist_AllFieldsChanged() {
+    public void testEditEmail_emailExist_EmailChanged() {
 
         User user = new User("test@gmail.com", "test");
+        Contact contact = new Contact("TestName", user);
+        when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
 
-        Contact oldContact = new Contact("TestName", user);
-        Email oldEmail = new Email(oldContact);
+        Email email = new Email("mail@mail.com", contact);
+        emailService.add(email.getEmail(), contact.getId());
+        when(emailRepository.findById(email.getId())).thenReturn(Optional.of(email));
 
-        EmailDto emailDto = new EmailDto();
-        emailDto.id = 0;
-        emailDto.email = "mail@mail.com";
+        emailService.edit("newmail@mail.com",email.getId());
 
-        when(emailRepository.findById(emailDto.id)).thenReturn(Optional.of(oldEmail));
+        verify(emailRepository, times(2)).save(any());
 
-        emailService.edit(emailDto);
+        Email emailFounded = emailService.getById(email.getId());
+        assertEquals(email.getEmail(), emailFounded.getEmail());
+        assertEquals(contact.getId(), emailFounded.getContact().getId());
+        assertEquals(email.getId(), emailFounded.getId());
 
-        verify(emailRepository, times(1)).save(any());
-        verify(emailRepository, times(1)).save(argThat(email->
-                email.getEmail().equals(emailDto.email)&& email.getContact().getId()==emailDto.contactId));
-
+        verify(emailRepository, times(2)).findById(argThat(
+                id -> id == email.getId()));
     }
 
-    @Test
-    public void testEditAny_emailDoesNotExist_EntityNotFoundException() {
-
-        EmailDto emailDto = new EmailDto();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> emailService.edit(emailDto));
-
-        verify(emailRepository, times(1)).findById(any());
-        assertEquals("Error! This email doesn't exist in our DB", exception.getMessage());
-    }
+//    @Test
+//    public void testEditAny_emailDoesNotExist_EntityNotFoundException() {
+//
+//        EmailDto emailDto = new EmailDto();
+//
+//        Exception exception = assertThrows(EntityNotFoundException.class, () -> emailService.edit(emailDto));
+//
+//        verify(emailRepository, times(1)).findById(any());
+//        assertEquals("Error! This email doesn't exist in our DB", exception.getMessage());
+//    }
 
     @Captor
     ArgumentCaptor<Email> emailArgumentCaptor;
@@ -137,12 +136,11 @@ public class EmailServiceTest {
         EmailDto emailDto = new EmailDto(0, "mail@mail.com",0);
 
         when(emailRepository.findById(emailDto.id)).thenReturn(Optional.of(email));
-        EmailDto emailFounded = emailService.getById(emailDto.id);
+        Email emailFounded = emailService.getById(emailDto.id);
 
-        assertEquals(emailDto.email, emailFounded.email);
+        assertEquals(emailDto.email, emailFounded.getEmail());
 
-        verify(emailMapper, times(1)).mapEmailToDto(email);
         verify(emailRepository, times(1)).findById(argThat(
-                id -> id.intValue() == emailDto.id));
+                id -> id == emailDto.id));
     }
 }
