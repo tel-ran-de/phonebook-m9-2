@@ -19,8 +19,6 @@ class IPhoneRepositoryTest {
     @Autowired
     IPhoneRepository phoneRepository;
 
-    PhoneCountryCode phoneCountryCode;
-
     @Test
     public void testFindByName_oneRecord_found() {
 
@@ -33,7 +31,6 @@ class IPhoneRepositoryTest {
         entityManager.persist(mamaPhone);
 
         mama.addPhone(mamaPhone);
-        mamaPhone.setCode(phoneCountryCode);
         mamaPhone.setPhoneNumber(634872);
 
         entityManager.flush();

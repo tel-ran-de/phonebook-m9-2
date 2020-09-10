@@ -19,20 +19,22 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Setter
-    private PhoneCountryCode code;
-    @Setter
     private long phoneNumber;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Contact contact;
+    @Setter
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private CountryCode countryCode;
 
     public Phone(Contact contact) {
         this.contact = contact;
     }
 
-    public Phone(PhoneCountryCode code, long phoneNumber, Contact contact) {
-        this.code = code;
+    public Phone(long phoneNumber, Contact contact, CountryCode countryCode) {
         this.phoneNumber = phoneNumber;
         this.contact = contact;
+        this.countryCode =countryCode;
     }
 }

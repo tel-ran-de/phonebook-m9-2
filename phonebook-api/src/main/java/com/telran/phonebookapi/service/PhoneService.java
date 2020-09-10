@@ -3,9 +3,10 @@ package com.telran.phonebookapi.service;
 import com.telran.phonebookapi.dto.PhoneDto;
 import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
+import com.telran.phonebookapi.model.CountryCode;
 import com.telran.phonebookapi.model.Phone;
-import com.telran.phonebookapi.model.PhoneCountryCode;
 import com.telran.phonebookapi.persistance.IContactRepository;
+import com.telran.phonebookapi.persistance.ICountryCodeRepository;
 import com.telran.phonebookapi.persistance.IPhoneRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,23 +21,25 @@ public class PhoneService {
 
     IContactRepository contactRepository;
     IPhoneRepository phoneRepository;
+    ICountryCodeRepository countryCodeRepository;
     PhoneMapper phoneMapper;
 
-    public PhoneService(IContactRepository contactRepository, IPhoneRepository phoneRepository, PhoneMapper phoneMapper) {
+    public PhoneService(IContactRepository contactRepository, IPhoneRepository phoneRepository, ICountryCodeRepository countryCodeRepository, PhoneMapper phoneMapper) {
         this.contactRepository = contactRepository;
         this.phoneRepository = phoneRepository;
+        this.countryCodeRepository = countryCodeRepository;
         this.phoneMapper = phoneMapper;
     }
 
     public void add(PhoneDto phoneDto) {
         Contact contact = contactRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
-        Phone phone = new Phone(phoneDto.countryCode, phoneDto.phoneNumber, contact);
+        CountryCode code = countryCodeRepository.findByCode(phoneDto.countryCode);
+        Phone phone = new Phone(phoneDto.phoneNumber, contact, code);
         phoneRepository.save(phone);
     }
 
     public void editAllFields(PhoneDto phoneDto) {
         Phone phone = phoneRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
-        phone.setCode(phoneDto.countryCode);
         phone.setPhoneNumber(phoneDto.phoneNumber);
         phoneRepository.save(phone);
     }
