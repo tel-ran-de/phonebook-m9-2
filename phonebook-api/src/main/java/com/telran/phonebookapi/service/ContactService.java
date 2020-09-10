@@ -27,11 +27,11 @@ public class ContactService {
         this.emailRepository = emailRepository;
     }
 
-    public void add(ContactDto contactDto) {
-        User user = userRepository.findById(contactDto.userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
-        Contact contact = new Contact(contactDto.firstName, user);
-        contact.setLastName(contactDto.lastName);
-        contact.setDescription(contactDto.description);
+    public void add(String firstName, String lastName, String description, String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
+        Contact contact = new Contact(firstName, user);
+        contact.setLastName(lastName);
+        contact.setDescription(description);
         contactRepository.save(contact);
     }
 
@@ -47,7 +47,6 @@ public class ContactService {
         contact.addPhones(numbers);
         contact.addAddresses(addresses);
         contact.addEmails(emails);
-
         return contact;
     }
 

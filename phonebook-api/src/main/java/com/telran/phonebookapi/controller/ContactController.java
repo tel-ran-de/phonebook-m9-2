@@ -35,7 +35,7 @@ public class ContactController {
 
     @PostMapping("")
     public void addContact(@Valid @RequestBody ContactDto contactDto) {
-        contactService.add(contactDto);
+        contactService.add(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.userId);
     }
 
     @GetMapping("/{id}")
@@ -60,23 +60,21 @@ public class ContactController {
 
     @PostMapping("/all")
     public List<ContactDto> requestAllContactsByUserEmail(@Valid @RequestBody UserDto userDto) {
-
         return contactService.getAllContactsByUserId(userDto).stream()
-                .map(contact -> {
-                    ContactDto contactDto = new ContactDto(contact.getId(), contact.getFirstName(), contact.getLastName(), contact.getDescription(), contact.getUser().getEmail(), phoneMapper.mapListPhoneToDto(contact.getPhones()), addressMapper.mapListAddressToDto(contact.getAddresses()), emailMapper.mapListEmailToDto(contact.getEmails()));
-//                    return ContactDto.builder()
-//                            .id(contact.getId())
-//                            .firstName(contact.getFirstName())
-//                            .lastName(contact.getLastName())
-//                            .description(contact.getDescription())
-//                            .userId(contact.getUser().getEmail())
-//                            .phoneNumbers(phoneMapper.mapListPhoneToDto(contact.getPhones()))
-//                            .addresses(addressMapper.mapListAddressToDto(contact.getAddresses()))
-//                            .emails(emailMapper.mapListEmailToDto(contact.getEmails()));
-                    return contactDto;
-                })
-                .collect(Collectors.toList());
-
+                .map(contactMapper::mapContactToDto).collect(Collectors.toList());
+//                    ContactDto contactDto = new ContactDto(contact.getId(), contact.getFirstName(), contact.getLastName(), contact.getDescription(), contact.getUser().getEmail(), phoneMapper.mapListPhoneToDto(contact.getPhones()), addressMapper.mapListAddressToDto(contact.getAddresses()), emailMapper.mapListEmailToDto(contact.getEmails()));
+////                    return ContactDto.builder()
+////                            .id(contact.getId())
+////                            .firstName(contact.getFirstName())
+////                            .lastName(contact.getLastName())
+////                            .description(contact.getDescription())
+////                            .userId(contact.getUser().getEmail())
+////                            .phoneNumbers(phoneMapper.mapListPhoneToDto(contact.getPhones()))
+////                            .addresses(addressMapper.mapListAddressToDto(contact.getAddresses()))
+////                            .emails(emailMapper.mapListEmailToDto(contact.getEmails()));
+//                    return contactDto;
+//                })
+//                .collect(Collectors.toList());
     }
 
     @PostMapping("/profile")
