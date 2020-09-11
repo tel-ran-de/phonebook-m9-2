@@ -7,9 +7,12 @@ CREATE TABLE public.code
 );
 
 ALTER TABLE public.phone
+     RENAME COLUMN country_code TO country_code_Id;
+
+ALTER TABLE public.phone
      ADD CONSTRAINT fkl1mdvx2cchi5gllrrvhe5hmv5 FOREIGN KEY (country_code_id)
          REFERENCES public.code (id) MATCH SIMPLE;
 
 ALTER TABLE public.phone
-     ALTER COLUMN phone_number bigint;
+     ALTER COLUMN phone_number TYPE bigint;
 

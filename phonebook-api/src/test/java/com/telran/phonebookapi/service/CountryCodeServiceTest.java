@@ -29,10 +29,9 @@ class CountryCodeServiceTest {
 
     @Test
     public void testAdd_newCountryCode_countryCodeAdded() {
-
         CountryCode code = new CountryCode("+49", "Germany");
-
-        countryCodeService.add(code.getCode(), code.getCountry());
+        CountryCodeDto countryCodeDto = new CountryCodeDto(0, "+49", "Germany");
+        countryCodeService.add(countryCodeDto.id, countryCodeDto.code, countryCodeDto.country);
 
         verify(countryCodeRepository, times(1)).save(any());
 

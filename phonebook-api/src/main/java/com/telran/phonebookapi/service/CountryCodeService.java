@@ -23,13 +23,12 @@ public class CountryCodeService {
     }
 
     public void add(int id, String code, String country) {
-        if(countryCodeRepository.findById(id).isPresent()){
+        if (countryCodeRepository.findById(id).isPresent()) {
             throw new CodeAlreadyExistsException(CODE_EXIST);
         } else {
             CountryCode newCode = new CountryCode(code, country);
             countryCodeRepository.save(newCode);
         }
-
     }
 
     public void editAllFields(int id, String code, String country) {

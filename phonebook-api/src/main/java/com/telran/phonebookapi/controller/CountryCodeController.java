@@ -24,18 +24,12 @@ public class CountryCodeController {
 
     @PostMapping("")
     public void addCode(@RequestBody @Valid CountryCodeDto codeDto) {
-        String code = codeDto.code;
-        String country = codeDto.country;
-        int id = codeDto.id;
-        countryCodeService.add(id, code, country);
+        countryCodeService.add(codeDto.id, codeDto.code, codeDto.country);
     }
 
     @PutMapping("")
     public void editCode(@RequestBody @Valid CountryCodeDto codeDto) {
-        String code = codeDto.code;
-        String country = codeDto.country;
-        int id = codeDto.id;
-        countryCodeService.editAllFields(id, code, country);
+        countryCodeService.editAllFields(codeDto.id, codeDto.code, codeDto.country);
     }
 
     @GetMapping("/{id}")
