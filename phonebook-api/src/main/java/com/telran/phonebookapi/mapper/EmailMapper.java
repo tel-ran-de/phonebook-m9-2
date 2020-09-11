@@ -11,9 +11,8 @@ public class EmailMapper {
         return new EmailDto(email.getId(), email.getEmail(), email.getContact().getId());
     }
 
-    //TODO
-    public Email mapDtoToEmail(EmailDto emailDto) {
-        return new Email(emailDto.email, emailDto.contactId);
-    }
+//    public Email mapDtoToEmail(EmailDto emailDto) {
+//        return new Email(emailDto.email, emailDto.contactId);
+//    }
 
 }
