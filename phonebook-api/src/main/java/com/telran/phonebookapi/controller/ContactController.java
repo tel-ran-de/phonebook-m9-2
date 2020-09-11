@@ -2,7 +2,6 @@ package com.telran.phonebookapi.controller;
 
 import com.telran.phonebookapi.dto.ContactDto;
 import com.telran.phonebookapi.dto.UserDto;
-import com.telran.phonebookapi.dto.UserEmailDto;
 import com.telran.phonebookapi.mapper.AddressMapper;
 import com.telran.phonebookapi.mapper.ContactMapper;
 import com.telran.phonebookapi.mapper.EmailMapper;
@@ -50,7 +49,7 @@ public class ContactController {
 
     @PutMapping("")
     public void editContact(@Valid @RequestBody ContactDto contactDto) {
-        contactService.editAllFields(contactDto);
+        contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
     }
 
     @DeleteMapping("/{id}")
@@ -60,7 +59,7 @@ public class ContactController {
 
     @PostMapping("/all")
     public List<ContactDto> requestAllContactsByUserEmail(@Valid @RequestBody UserDto userDto) {
-        return contactService.getAllContactsByUserId(userDto).stream()
+        return contactService.getAllContactsByUserId(userDto.email).stream()
                 .map(contactMapper::mapContactToDto).collect(Collectors.toList());
 //                    ContactDto contactDto = new ContactDto(contact.getId(), contact.getFirstName(), contact.getLastName(), contact.getDescription(), contact.getUser().getEmail(), phoneMapper.mapListPhoneToDto(contact.getPhones()), addressMapper.mapListAddressToDto(contact.getAddresses()), emailMapper.mapListEmailToDto(contact.getEmails()));
 ////                    return ContactDto.builder()
@@ -79,17 +78,17 @@ public class ContactController {
 
     @PostMapping("/profile")
     public void addProfile(@Valid @RequestBody ContactDto contactDto) {
-        contactService.addProfile(contactDto);
+        contactService.addProfile(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.userId);
     }
 
     @PutMapping("/profile")
     public void editProfile(@Valid @RequestBody ContactDto contactDto) {
-        contactService.editProfile(contactDto);
+        contactService.editProfile(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
     }
 
     @PostMapping("/get-profile")
-    public ContactDto getProfile(@Valid @RequestBody UserEmailDto userEmailDto) {
-        return contactMapper.mapContactToDto(contactService.getProfile(userEmailDto));
+    public ContactDto getProfile(@Valid @RequestBody ContactDto contactDto) {
+        return contactMapper.mapContactToDto(contactService.getProfile(contactDto.userId));
     }
 
 }

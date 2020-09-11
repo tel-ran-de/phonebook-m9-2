@@ -1,7 +1,6 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.ContactDto;
-import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IContactRepository;
@@ -41,26 +40,19 @@ class ContactServiceTest {
         User user = new User("test@gmail.com", "12345678");
         when(userRepository.findById(user.getEmail())).thenReturn(Optional.of(user));
 
-        ContactDto contactDto = new ContactDto();
-        contactDto.firstName = "ContactName";
-        contactDto.userId = user.getEmail();
-        contactService.add(contactDto);
+        contactService.add("firstName", "lastName", "friend", "test@gmail.com");
 
         verify(contactRepository, times(1)).save(any());
         verify(contactRepository, times(1)).save(argThat(contact ->
-                contact.getFirstName().equals(contactDto.firstName)
-                        && contact.getUser().getEmail().equals(contactDto.userId)
+                contact.getFirstName().equals("firstName")
+                        && contact.getUser().getEmail().equals("test@gmail.com")
         ));
     }
 
     @Test
     public void testAdd_userDoesNotExist_EntityNotFoundException() {
 
-        ContactDto contactDto = new ContactDto();
-        contactDto.firstName = "ContactName";
-        contactDto.userId = "wrong@gmail.com";
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> contactService.add(contactDto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> contactService.add("A", "B", "C", "D"));
 
         verify(userRepository, times(1)).findById(anyString());
         assertEquals("Error! This user doesn't exist in our DB", exception.getMessage());
@@ -80,7 +72,7 @@ class ContactServiceTest {
 
         when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(oldContact));
 
-        contactService.editAllFields(contactDto);
+        contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
 
         verify(contactRepository, times(1)).save(any());
         verify(contactRepository, times(1)).save(argThat(contact ->
@@ -98,7 +90,7 @@ class ContactServiceTest {
         contactDto.description = "Description";
         contactDto.userId = "wrong@gmail.com";
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> contactService.editAllFields(contactDto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id));
 
         verify(contactRepository, times(1)).findById(any());
         assertEquals("Error! This contact doesn't exist in our DB", exception.getMessage());
@@ -160,13 +152,8 @@ class ContactServiceTest {
                 .userId("test@gmail.com")
                 .build();
 
-        UserDto userDto = UserDto.builder()
-                .email("test@gmail.com")
-                .password("pass")
-                .build();
-
         when(contactRepository.findAllByUserEmail(user.getEmail())).thenReturn(Arrays.asList(contact01, contact02));
-        List<Contact> contactsFounded = contactService.getAllContactsByUserId(userDto);
+        List<Contact> contactsFounded = contactService.getAllContactsByUserId("test@gmail.com");
 
         assertEquals(contactsFounded.size(), 2);
         assertEquals(contactsFounded.get(0).getFirstName(), contactDto01.firstName);
@@ -175,4 +162,19 @@ class ContactServiceTest {
         verify(contactRepository, times(1)).findAllByUserEmail(user.getEmail());
 
     }
+
+    @Test
+    public void testAddProfile_userExists_ProfileAdded() {
+
+        User user = new User("test@gmail.com", "12345678");
+        when(userRepository.findById(user.getEmail())).thenReturn(Optional.of(user));
+        contactService.addProfile("firstName", "lastName", "friend", "test@gmail.com");
+
+        verify(contactRepository, times(1)).save(any());
+        verify(contactRepository, times(1)).save(argThat(contact ->
+                contact.getFirstName().equals("firstName")
+                        && contact.getUser().getEmail().equals("test@gmail.com")
+        ));
+    }
+
 }

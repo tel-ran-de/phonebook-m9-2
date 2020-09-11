@@ -1,6 +1,5 @@
 package com.telran.phonebookapi.service;
 
-import com.telran.phonebookapi.dto.*;
 import com.telran.phonebookapi.model.*;
 import com.telran.phonebookapi.persistance.*;
 import org.springframework.stereotype.Service;
@@ -50,11 +49,11 @@ public class ContactService {
         return contact;
     }
 
-    public void editAllFields(ContactDto contactDto) {
-        Contact contact = contactRepository.findById(contactDto.id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
-        contact.setFirstName(contactDto.firstName);
-        contact.setLastName(contactDto.lastName);
-        contact.setDescription(contactDto.description);
+    public void editAllFields(String firstName, String lastName, String description, int id) {
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
+        contact.setFirstName(firstName);
+        contact.setLastName(lastName);
+        contact.setDescription(description);
         contactRepository.save(contact);
     }
 
@@ -63,30 +62,31 @@ public class ContactService {
         contactRepository.deleteById(id);
     }
 
-    public List<Contact> getAllContactsByUserId(UserDto userDto) {
-        return contactRepository.findAllByUserEmail(userDto.email);
+    public List<Contact> getAllContactsByUserId(String userId) {
+        return contactRepository.findAllByUserEmail(userId);
     }
 
-    public void addProfile(ContactDto contactDto) {
-        User user = userRepository.findById(contactDto.userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
+    public void addProfile(String firstName, String lastName, String description, String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
         Contact profile = user.getMyProfile();
-        profile.setFirstName(contactDto.firstName);
-        profile.setLastName(contactDto.lastName);
-        profile.setDescription(contactDto.description);
+        profile.setFirstName(firstName);
+        profile.setLastName(lastName);
+        profile.setDescription(description);
         profile.setUser(user);
         user.addProfile(profile);
         contactRepository.save(profile);
     }
 
-    public void editProfile(ContactDto contactDto) {
-        Contact newProfile = contactRepository.findById(contactDto.id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
-        newProfile.setFirstName(contactDto.firstName);
-        newProfile.setLastName(contactDto.lastName);
+    public void editProfile(String firstName, String lastName, String description, int id) {
+        Contact newProfile = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
+        newProfile.setFirstName(firstName);
+        newProfile.setLastName(lastName);
+        newProfile.setDescription(description);
         contactRepository.save(newProfile);
     }
 
-    public Contact getProfile(UserEmailDto userEmailDto) {
-        User user = userRepository.findById(userEmailDto.email).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
+    public Contact getProfile(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
         return user.getMyProfile();
     }
 
