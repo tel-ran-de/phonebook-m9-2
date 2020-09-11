@@ -1,5 +1,6 @@
 package com.telran.phonebookapi.service;
 
+import com.telran.phonebookapi.exception.CodeAlreadyExistsException;
 import com.telran.phonebookapi.model.CountryCode;
 import com.telran.phonebookapi.persistance.ICountryCodeRepository;
 
@@ -21,9 +22,14 @@ public class CountryCodeService {
         this.countryCodeRepository = countryCodeRepository;
     }
 
-    public void add(String code, String country) {
-        CountryCode newCode = new CountryCode(code, country);
-        countryCodeRepository.save(newCode);
+    public void add(int id, String code, String country) {
+        if(countryCodeRepository.findById(id).isPresent()){
+            throw new CodeAlreadyExistsException(CODE_EXIST);
+        } else {
+            CountryCode newCode = new CountryCode(code, country);
+            countryCodeRepository.save(newCode);
+        }
+
     }
 
     public void editAllFields(int id, String code, String country) {

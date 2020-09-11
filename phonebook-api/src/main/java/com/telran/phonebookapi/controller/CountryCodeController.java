@@ -26,7 +26,8 @@ public class CountryCodeController {
     public void addCode(@RequestBody @Valid CountryCodeDto codeDto) {
         String code = codeDto.code;
         String country = codeDto.country;
-        countryCodeService.add(code, country);
+        int id = codeDto.id;
+        countryCodeService.add(id, code, country);
     }
 
     @PutMapping("")
