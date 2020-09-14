@@ -8,10 +8,6 @@ import org.springframework.stereotype.Component;
 public class CountryCodeMapper {
 
     public CountryCodeDto mapCountryCodeToDto(CountryCode countryCode) {
-        return new CountryCodeDto(countryCode.getId(), countryCode.getCode(), countryCode.getCountry());
-    }
-
-    public CountryCode mapDtoToCountryCode(CountryCodeDto countryCodeDto) {
-        return new CountryCode(countryCodeDto.id, countryCodeDto.code, countryCodeDto.country);
+        return new CountryCodeDto(countryCode.getCode(), countryCode.getCountry());
     }
 }

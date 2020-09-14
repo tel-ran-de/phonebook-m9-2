@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CountryCodeDto {
 
-    public int id;
-
-    public String code;
+    public int code;
 
     public String country;
 }

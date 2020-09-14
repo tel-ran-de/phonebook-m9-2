@@ -7,8 +7,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -19,22 +17,20 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Setter
+    private int countyCode;
+    @Setter
     private long phoneNumber;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Contact contact;
-    @Setter
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private CountryCode countryCode;
 
     public Phone(Contact contact) {
         this.contact = contact;
     }
 
-    public Phone(long phoneNumber, Contact contact, CountryCode countryCode) {
+    public Phone(int countyCode, long phoneNumber, Contact contact) {
+        this.countyCode = countyCode;
         this.phoneNumber = phoneNumber;
         this.contact = contact;
-        this.countryCode =countryCode;
     }
 }

@@ -46,12 +46,13 @@ class PhoneServiceTest {
     public void testAdd_contactExists_contactWithPhoneNumber() {
         User user = new User("test@gmail.com", "11111111");
         Contact contact = new Contact("TestName", user);
-        CountryCode code = new CountryCode("+49", "Germany");
-        Phone number = new Phone(12345678, contact, code);
+        CountryCode code = new CountryCode(49, "Germany");
+        Phone number = new Phone(49, 12345678, contact);
         contact.addPhone(number);
-        PhoneDto phoneDto = new PhoneDto(0, code.getCode(), 12345678, 0);
+        PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
         when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
+        when(countryCodeRepository.findById(number.getCountyCode())).thenReturn(Optional.of(code));
 
         phoneService.add(phoneDto);
 
@@ -63,7 +64,7 @@ class PhoneServiceTest {
 
     @Test
     public void testAdd_contactDoesNotExist_EntityNotFoundException() {
-        PhoneDto phoneDto = new PhoneDto(0, "+49", 12345678, 0);
+        PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
         Exception exception = assertThrows(EntityNotFoundException.class, () -> phoneService.add(phoneDto));
 
@@ -76,10 +77,9 @@ class PhoneServiceTest {
 
         User user = new User("test@gmail.com", "11111111");
         Contact contact = new Contact("TestName", user);
-        CountryCode code = new CountryCode("+49", "Germany");
-        Phone oldNumber = new Phone(87654321, contact, code);
+        Phone oldNumber = new Phone(49, 87654321, contact);
         contact.addPhone(oldNumber);
-        PhoneDto phoneDto = new PhoneDto(0, code.getCode(), 12345678, 0);
+        PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
         when(phoneRepository.findById(phoneDto.id)).thenReturn(Optional.of(oldNumber));
 
@@ -94,7 +94,7 @@ class PhoneServiceTest {
     @Test
     public void testEditAny_phoneDoesNotExist_EntityNotFoundException() {
 
-        PhoneDto phoneDto = new PhoneDto(0, "+49", 12345678, 0);
+        PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
         Exception exception = assertThrows(EntityNotFoundException.class, () -> phoneService.editAllFields(phoneDto));
 
@@ -110,9 +110,8 @@ class PhoneServiceTest {
 
         User user = new User("test@gmail.com", "11111111");
         Contact contact = new Contact("TestName", user);
-        CountryCode code = new CountryCode("+49", "Germany");
-        Phone phone = new Phone(12345678, contact, code);
-        PhoneDto phoneDto = new PhoneDto(0, code.getCode(), 12345678, 0);
+        Phone phone = new Phone(49, 12345678, contact);
+        PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
         when(phoneRepository.findById(phoneDto.id)).thenReturn(Optional.of(phone));
 
@@ -128,9 +127,8 @@ class PhoneServiceTest {
 
         User user = new User("test@gmail.com", "11111111");
         Contact contact = new Contact("TestName", user);
-        CountryCode code = new CountryCode("+49", "Germany");
-        Phone phone = new Phone(12345678, contact, code);
-        PhoneDto phoneDto = new PhoneDto(0, code.getCode(), 12345678, 0);
+        Phone phone = new Phone(49, 12345678, contact);
+        PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
         when(phoneRepository.findById(phoneDto.id)).thenReturn(Optional.of(phone));
         PhoneDto phoneFounded = phoneService.getById(phoneDto.id);

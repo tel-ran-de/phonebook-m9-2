@@ -3,7 +3,6 @@ package com.telran.phonebookapi.service;
 import com.telran.phonebookapi.dto.PhoneDto;
 import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
-import com.telran.phonebookapi.model.CountryCode;
 import com.telran.phonebookapi.model.Phone;
 import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.ICountryCodeRepository;
@@ -33,9 +32,12 @@ public class PhoneService {
 
     public void add(PhoneDto phoneDto) {
         Contact contact = contactRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
-        CountryCode code = countryCodeRepository.findByCode(phoneDto.countryCode);
-        Phone phone = new Phone(phoneDto.phoneNumber, contact, code);
-        phoneRepository.save(phone);
+        if (countryCodeRepository.findById(phoneDto.countryCode).isPresent()) {
+            Phone phone = new Phone(phoneDto.countryCode, phoneDto.phoneNumber, contact);
+            phoneRepository.save(phone);
+        } else {
+            throw new EntityNotFoundException(CountryCodeService.CODE_DOES_NOT_EXIST);
+        }
     }
 
     public void editAllFields(PhoneDto phoneDto) {

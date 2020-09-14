@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +23,7 @@ class ICountryCodeRepositoryTest {
     @Test
     public void testFindAll_oneRecord_found() {
 
-        CountryCode code = new CountryCode("+49", "Germany");
+        CountryCode code = new CountryCode(49, "Germany");
 
         entityManager.persist(code);
         entityManager.flush();
@@ -36,14 +37,14 @@ class ICountryCodeRepositoryTest {
     @Test
     public void testFindByCode_oneRecord_found() {
 
-        CountryCode code = new CountryCode("+49", "Germany");
+        CountryCode code = new CountryCode(49, "Germany");
 
         entityManager.persist(code);
         entityManager.flush();
         entityManager.clear();
 
-        CountryCode foundCode = countryCodeRepository.findByCode("+49");
-        assertEquals(code.getCode(), foundCode.getCode());
+        Optional<CountryCode> foundCode = countryCodeRepository.findById(49);
+        assertEquals(code.getCode(), foundCode.get().getCode());
 
     }
 

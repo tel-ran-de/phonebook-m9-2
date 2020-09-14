@@ -11,7 +11,7 @@ public class PhoneDto {
 
     public int id;
     @NotBlank
-    public String countryCode;
+    public int countryCode;
     @NotBlank
     public long phoneNumber;
 
