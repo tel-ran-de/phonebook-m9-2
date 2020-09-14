@@ -93,7 +93,7 @@ class ContactServiceTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id));
 
         verify(contactRepository, times(1)).findById(any());
-        assertEquals("Error! This contact doesn't exist in our DB", exception.getMessage());
+        assertEquals("Error! This contact doesn't exist", exception.getMessage());
     }
 
     @Captor
@@ -138,7 +138,8 @@ class ContactServiceTest {
 
     }
 
-    @Test void testGetAllContactsByUserId_userWitContacts_ListContacts() {
+    @Test
+    void testGetAllContactsByUserId_userWitContacts_ListContacts() {
         User user = new User("test@gmail.com", "12345678");
         Contact contact01 = new Contact("TestName01", user);
         Contact contact02 = new Contact("TestName02", user);
@@ -164,16 +165,17 @@ class ContactServiceTest {
     }
 
     @Test
-    public void testAddProfile_userExists_ProfileAdded() {
+    public void testEditProfile_userExists_ProfileChanged() {
 
         User user = new User("test@gmail.com", "12345678");
-        when(userRepository.findById(user.getEmail())).thenReturn(Optional.of(user));
-        contactService.addProfile("firstName", "lastName", "friend", "test@gmail.com");
+        Contact contact = new Contact("FirstName", user);
+        when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
+        contactService.editProfile("Name", "Surname", "friend", 0);
 
         verify(contactRepository, times(1)).save(any());
-        verify(contactRepository, times(1)).save(argThat(contact ->
-                contact.getFirstName().equals("firstName")
-                        && contact.getUser().getEmail().equals("test@gmail.com")
+        verify(contactRepository, times(1)).save(argThat(contactNew ->
+                contactNew.getFirstName().equals("Name")
+                        && contactNew.getLastName().equals("Surname")
         ));
     }
 

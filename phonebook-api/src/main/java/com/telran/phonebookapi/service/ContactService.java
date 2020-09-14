@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class ContactService {
 
-    static final String CONTACT_DOES_NOT_EXIST = "Error! This contact doesn't exist in our DB";
+    static final String CONTACT_DOES_NOT_EXIST = "Error! This contact doesn't exist";
 
     IUserRepository userRepository;
     IContactRepository contactRepository;
@@ -66,16 +66,16 @@ public class ContactService {
         return contactRepository.findAllByUserEmail(userId);
     }
 
-    public void addProfile(String firstName, String lastName, String description, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
-        Contact profile = user.getMyProfile();
-        profile.setFirstName(firstName);
-        profile.setLastName(lastName);
-        profile.setDescription(description);
-        profile.setUser(user);
-        user.addProfile(profile);
-        contactRepository.save(profile);
-    }
+//    public void addProfile(String firstName, String lastName, String description, String userId) {
+//        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
+//        Contact profile = user.getMyProfile();
+//        profile.setFirstName(firstName);
+//        profile.setLastName(lastName);
+//        profile.setDescription(description);
+//        profile.setUser(user);
+//        user.addProfile(profile);
+//        contactRepository.save(profile);
+//    }
 
     public void editProfile(String firstName, String lastName, String description, int id) {
         Contact newProfile = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
@@ -83,11 +83,6 @@ public class ContactService {
         newProfile.setLastName(lastName);
         newProfile.setDescription(description);
         contactRepository.save(newProfile);
-    }
-
-    public Contact getProfile(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
-        return user.getMyProfile();
     }
 
 }
