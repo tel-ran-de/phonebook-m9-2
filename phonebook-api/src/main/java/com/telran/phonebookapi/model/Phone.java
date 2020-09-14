@@ -28,8 +28,8 @@ public class Phone {
         this.contact = contact;
     }
 
-    public Phone(int countyCode, long phoneNumber, Contact contact) {
-        this.countryCode = countyCode;
+    public Phone(int countryCode, long phoneNumber, Contact contact) {
+        this.countryCode = countryCode;
         this.phoneNumber = phoneNumber;
         this.contact = contact;
     }
