@@ -17,7 +17,7 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Setter
-    private int countyCode;
+    private int countryCode;
     @Setter
     private long phoneNumber;
     @ManyToOne
@@ -29,7 +29,7 @@ public class Phone {
     }
 
     public Phone(int countyCode, long phoneNumber, Contact contact) {
-        this.countyCode = countyCode;
+        this.countryCode = countyCode;
         this.phoneNumber = phoneNumber;
         this.contact = contact;
     }

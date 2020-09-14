@@ -47,7 +47,7 @@ class CountryCodeServiceTest {
         countryCodeService.removeById(countryCodeDto.code);
 
         List<CountryCode> capturedCodes = countryCodeArgumentCaptor.getAllValues();
-        verify(countryCodeRepository, times(1)).deleteById(1);
+        verify(countryCodeRepository, times(1)).deleteById(any());
         assertEquals(0, capturedCodes.size());
     }
 
@@ -55,7 +55,7 @@ class CountryCodeServiceTest {
     public void testGetById_oneRecord_Code() {
 
         CountryCode code = new CountryCode(49, "Germany");
-        when(countryCodeRepository.findById(1)).thenReturn(Optional.of(code));
+        when(countryCodeRepository.findById(code.getCode())).thenReturn(Optional.of(code));
         CountryCodeDto countryCodeDto = new CountryCodeDto(49, "Germany");
         CountryCode codeFound = countryCodeService.getById(countryCodeDto.code);
 

@@ -52,7 +52,7 @@ class PhoneServiceTest {
         PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
         when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
-        when(countryCodeRepository.findById(number.getCountyCode())).thenReturn(Optional.of(code));
+        when(countryCodeRepository.findById(number.getCountryCode())).thenReturn(Optional.of(code));
 
         phoneService.add(phoneDto);
 
