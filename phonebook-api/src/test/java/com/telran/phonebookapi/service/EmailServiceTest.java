@@ -40,9 +40,6 @@ public class EmailServiceTest {
     @InjectMocks
     List<Email> emails = new ArrayList<>();
 
-    @Spy
-    EmailMapper emailMapper;
-
     @Captor
     ArgumentCaptor<Email> emailCaptor;
 
