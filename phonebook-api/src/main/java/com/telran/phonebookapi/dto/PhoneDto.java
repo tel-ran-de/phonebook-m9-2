@@ -11,9 +11,9 @@ public class PhoneDto {
 
     public int id;
     @NotBlank
-    public String countryCode;
+    public int countryCode;
     @NotBlank
-    public String phoneNumber;
+    public long phoneNumber;
 
     public int contactId;
 }
