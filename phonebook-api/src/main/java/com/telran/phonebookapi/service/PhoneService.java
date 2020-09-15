@@ -1,7 +1,5 @@
 package com.telran.phonebookapi.service;
 
-import com.telran.phonebookapi.dto.PhoneDto;
-import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.Phone;
 import com.telran.phonebookapi.persistance.IContactRepository;
@@ -11,45 +9,41 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PhoneService {
 
-    static final String PHONE_DOES_NOT_EXIST = "Error! This phone number doesn't exist in our DB";
+    static final String PHONE_DOES_NOT_EXIST = "Error! This phone number doesn't exist";
 
     IContactRepository contactRepository;
     IPhoneRepository phoneRepository;
     ICountryCodeRepository countryCodeRepository;
-    PhoneMapper phoneMapper;
 
-    public PhoneService(IContactRepository contactRepository, IPhoneRepository phoneRepository, ICountryCodeRepository countryCodeRepository, PhoneMapper phoneMapper) {
+    public PhoneService(IContactRepository contactRepository, IPhoneRepository phoneRepository, ICountryCodeRepository countryCodeRepository) {
         this.contactRepository = contactRepository;
         this.phoneRepository = phoneRepository;
         this.countryCodeRepository = countryCodeRepository;
-        this.phoneMapper = phoneMapper;
     }
 
-    public void add(PhoneDto phoneDto) {
-        Contact contact = contactRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
-        if (countryCodeRepository.findById(phoneDto.countryCode).isPresent()) {
-            Phone phone = new Phone(phoneDto.countryCode, phoneDto.phoneNumber, contact);
+    public void add(int contactId, int countryCode, long number) {
+        Contact contact = contactRepository.findById(contactId).orElseThrow(() -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
+        if (countryCodeRepository.findById(countryCode).isPresent()) {
+            Phone phone = new Phone(countryCode, number, contact);
             phoneRepository.save(phone);
         } else {
             throw new EntityNotFoundException(CountryCodeService.CODE_DOES_NOT_EXIST);
         }
     }
 
-    public void editAllFields(PhoneDto phoneDto) {
-        Phone phone = phoneRepository.findById(phoneDto.contactId).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
-        phone.setPhoneNumber(phoneDto.phoneNumber);
+    public void editAllFields(int id, int countryCode, long number) {
+        Phone phone = phoneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
+        phone.setCountryCode(countryCode);
+        phone.setPhoneNumber(number);
         phoneRepository.save(phone);
     }
 
-    public PhoneDto getById(int id) {
-        Phone phone = phoneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
-        PhoneDto phoneDto = phoneMapper.mapPhoneToDto(phone);
-        return phoneDto;
+    public Phone getById(int id) {
+        return phoneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(PHONE_DOES_NOT_EXIST));
     }
 
     public void removeById(int id) {
@@ -57,9 +51,7 @@ public class PhoneService {
         phoneRepository.deleteById(id);
     }
 
-    public List<PhoneDto> getAllPhoneNumbersByContactId(int contactId) {
-        return phoneRepository.findAllByContactId(contactId).stream()
-                .map(phoneMapper::mapPhoneToDto)
-                .collect(Collectors.toList());
+    public List<Phone> getAllPhoneNumbersByContactId(int contactId) {
+        return phoneRepository.findAllByContactId(contactId);
     }
 }

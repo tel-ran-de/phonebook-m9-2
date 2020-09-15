@@ -165,12 +165,13 @@ class ContactServiceTest {
     }
 
     @Test
-    public void testEditProfile_userExists_ProfileChanged() {
+    public void testAddProfile_userExists_ProfileAdded() {
 
         User user = new User("test@gmail.com", "12345678");
-        Contact contact = new Contact("FirstName", user);
-        when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
-        contactService.editProfile("Name", "Surname", "friend", 0);
+        Contact profile = new Contact();
+        user.setMyProfile(profile);
+        when(userRepository.findById(user.getEmail())).thenReturn(Optional.of(user));
+        contactService.addProfile("Name", "Surname", "friend", "test@gmail.com");
 
         verify(contactRepository, times(1)).save(any());
         verify(contactRepository, times(1)).save(argThat(contactNew ->

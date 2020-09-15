@@ -38,17 +38,6 @@ public class ContactService {
         return contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
     }
 
-    public Contact getByIdFullDetails(int id) {
-        Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
-        List<Phone> numbers = phoneRepository.findAllByContactId(contact.getId());
-        List<Address> addresses = addressRepository.findAllByContactId(contact.getId());
-        List<Email> emails = emailRepository.findAllByContactId(contact.getId());
-        contact.addPhones(numbers);
-        contact.addAddresses(addresses);
-        contact.addEmails(emails);
-        return contact;
-    }
-
     public void editAllFields(String firstName, String lastName, String description, int id) {
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
         contact.setFirstName(firstName);
@@ -62,27 +51,19 @@ public class ContactService {
         contactRepository.deleteById(id);
     }
 
-    public List<Contact> getAllContactsByUserId(String userId) {
-        return contactRepository.findAllByUserEmail(userId);
+    public List<Contact> getAllContactsByUserId(String email) {
+        return contactRepository.findAllByUserEmail(email);
     }
 
-//    public void addProfile(String firstName, String lastName, String description, String userId) {
-//        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
-//        Contact profile = user.getMyProfile();
-//        profile.setFirstName(firstName);
-//        profile.setLastName(lastName);
-//        profile.setDescription(description);
-//        profile.setUser(user);
-//        user.addProfile(profile);
-//        contactRepository.save(profile);
-//    }
-
-    public void editProfile(String firstName, String lastName, String description, int id) {
-        Contact newProfile = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
-        newProfile.setFirstName(firstName);
-        newProfile.setLastName(lastName);
-        newProfile.setDescription(description);
-        contactRepository.save(newProfile);
+    public void addProfile(String firstName, String lastName, String description, String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
+        Contact profile = user.getMyProfile();
+        profile.setFirstName(firstName);
+        profile.setLastName(lastName);
+        profile.setDescription(description);
+        profile.setUser(user);
+        user.addProfile(profile);
+        contactRepository.save(profile);
     }
 
 }

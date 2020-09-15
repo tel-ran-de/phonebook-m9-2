@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/contact")
 public class ContactController {
 
@@ -38,12 +37,7 @@ public class ContactController {
 
     @GetMapping("/{id}")
     public ContactDto getById(@PathVariable int id) {
-        return contactMapper.mapContactToDto(contactService.getById(id));
-    }
-
-    @GetMapping("/{id}/extended")
-    public ContactDto getByIdFullDetails(@PathVariable int id) {
-       return contactMapper.mapContactToDtoFull(contactService.getByIdFullDetails(id));
+        return contactMapper.mapContactToDtoFull(contactService.getById(id));
     }
 
     @PutMapping("")
@@ -56,21 +50,18 @@ public class ContactController {
         contactService.removeById(id);
     }
 
-    @GetMapping("")
-    public List<ContactDto> requestAllContactsByUserEmail(@Valid @RequestBody ContactDto contactDto) {
-        return contactService.getAllContactsByUserId(contactDto.userId).stream()
-                .map(contact -> {
-                            ContactDto contactDtoFull = new ContactDto(
-                                    contact.getId(),
-                                    contact.getFirstName(),
-                                    contact.getLastName(),
-                                    contact.getDescription(),
-                                    contact.getUser().getEmail(),
-                                    phoneMapper.mapListPhoneToDto(contact.getPhoneNumbers()),
-                                    addressMapper.mapListAddressToDto(contact.getAddresses()),
-                                    emailMapper.mapListEmailToDto(contact.getEmails()));
-                            return contactDtoFull;
-                        })
+    @GetMapping("/{email}/all")
+    public List<ContactDto> requestAllContactsByUserEmail(@PathVariable String email) {
+        return contactService.getAllContactsByUserId(email).stream()
+                .map(contact -> new ContactDto(
+                        contact.getId(),
+                        contact.getFirstName(),
+                        contact.getLastName(),
+                        contact.getDescription(),
+                        contact.getUser().getEmail(),
+                        phoneMapper.mapListPhoneToDto(contact.getPhoneNumbers()),
+                        addressMapper.mapListAddressToDto(contact.getAddresses()),
+                        emailMapper.mapListEmailToDto(contact.getEmails())))
 //                    return ContactDto.builder()
 //                            .id(contact.getId())
 //                            .firstName(contact.getFirstName())
@@ -83,9 +74,9 @@ public class ContactController {
                 .collect(Collectors.toList());
     }
 
-    @PutMapping("/profile")
-    public void editProfile(@Valid @RequestBody ContactDto contactDto) {
-        contactService.editProfile(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
+    @PostMapping("/profile")
+    public void addProfile(@Valid @RequestBody ContactDto contactDto) {
+        contactService.addProfile(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.userId);
     }
 
 }

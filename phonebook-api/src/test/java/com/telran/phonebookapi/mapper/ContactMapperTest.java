@@ -26,7 +26,7 @@ class ContactMapperTest {
     void ContactDtoFull() {
         User user = new User("test@gmail.com", "11223344");
         Contact contact = new Contact("Name", user);
-        Phone phone = new Phone("49", "12345678", contact);
+        Phone phone = new Phone(49, 12345678, contact);
         contact.addPhone(phone);
         Address address = new Address("10000", "strasse", "Berlin", "Germany", contact);
         contact.addAddress(address);
