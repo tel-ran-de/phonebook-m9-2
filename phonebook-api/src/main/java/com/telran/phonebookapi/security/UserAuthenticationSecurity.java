@@ -38,7 +38,7 @@ public class UserAuthenticationSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new UserLoginAuthenticationFilter(LOGIN_PATH, authenticationManager(), om, jwtService),
                         UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtAuthenticationFilter(userDetailService, jwtService, "Access-Token"),
+                .addFilterBefore(new JwtAuthenticationFilter(userDetailService, jwtService, "AccessToken"),
                         AbstractPreAuthenticatedProcessingFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(new Http401UnauthenticatedEntryPoint())
