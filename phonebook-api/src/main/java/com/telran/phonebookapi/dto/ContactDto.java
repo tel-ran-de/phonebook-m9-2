@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,11 +28,20 @@ public class ContactDto {
     @Builder.Default
     public List<EmailDto> emails = new ArrayList<>();
 
-    public ContactDto(int id, String firstName, String lastName, String description, String userId) {
+    public ContactDto(int id, String firstName, String lastName, String description) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.description = description;
-        this.userId = userId;
+    }
+
+    public ContactDto(int id, String firstName, String lastName, String description, List<PhoneDto> numbers, List<AddressDto> add, List<EmailDto> mails) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.description = description;
+        this.phoneNumbers = numbers;
+        this.addresses = add;
+        this.emails = mails;
     }
 }

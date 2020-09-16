@@ -15,10 +15,9 @@ class ContactMapperTest {
         User user = new User("test@gmail.com", "11223344");
         Contact contact = new Contact("Name", user);
 
-        ContactDto contactDto = new ContactDto(1, "Name", "LastName", "Description", "test@gmail.com");
+        ContactDto contactDto = new ContactDto(1, "Name", "LastName", "Description");
 
         ContactDto contactDtoMapped = contactMapper.mapContactToDto(contact);
-        assertEquals(contactDto.userId, contactDtoMapped.userId);
         assertEquals(contactDto.firstName, contactDtoMapped.firstName);
     }
 

@@ -14,16 +14,10 @@ public class ContactService {
 
     IUserRepository userRepository;
     IContactRepository contactRepository;
-    IAddressRepository addressRepository;
-    IPhoneRepository phoneRepository;
-    IEmailRepository emailRepository;
 
-    public ContactService(IUserRepository userRepository, IContactRepository contactRepository, IAddressRepository addressRepository, IPhoneRepository phoneRepository, IEmailRepository emailRepository) {
+    public ContactService(IUserRepository userRepository, IContactRepository contactRepository) {
         this.userRepository = userRepository;
         this.contactRepository = contactRepository;
-        this.addressRepository = addressRepository;
-        this.phoneRepository = phoneRepository;
-        this.emailRepository = emailRepository;
     }
 
     public void add(String firstName, String lastName, String description, String userId) {
@@ -55,15 +49,11 @@ public class ContactService {
         return contactRepository.findAllByUserEmail(email);
     }
 
-    public void addProfile(String firstName, String lastName, String description, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
-        Contact profile = user.getMyProfile();
+    public void editProfile(String firstName, String lastName, String description, int contactId) {
+        Contact profile = contactRepository.findById(contactId).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
         profile.setDescription(description);
-        profile.setUser(user);
-        user.addProfile(profile);
         contactRepository.save(profile);
     }
-
 }

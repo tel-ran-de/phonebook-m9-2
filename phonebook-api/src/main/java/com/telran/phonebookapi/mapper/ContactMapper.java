@@ -16,7 +16,6 @@ public class ContactMapper {
                 contact.getFirstName(),
                 contact.getLastName(),
                 contact.getDescription(),
-                contact.getUser().getEmail(),
                 phoneMapper.mapListPhoneToDto(contact.getPhoneNumbers()),
                 addressMapper.mapListAddressToDto(contact.getAddresses()),
                 emailMapper.mapListEmailToDto(contact.getEmails()));
@@ -26,7 +25,6 @@ public class ContactMapper {
         return new ContactDto(contact.getId(),
                 contact.getFirstName(),
                 contact.getLastName(),
-                contact.getDescription(),
-                contact.getUser().getEmail());
+                contact.getDescription());
     }
 }

@@ -107,7 +107,7 @@ class ContactServiceTest {
         contact.setLastName("Surname");
         contact.setDescription("person");
 
-        ContactDto contactDto = new ContactDto(1, "Name", "Surname", "person", "test@gmail.com");
+        ContactDto contactDto = new ContactDto(1, "Name", "Surname", "person");
 
         when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(contact));
         contactService.removeById(contactDto.id);
@@ -124,7 +124,7 @@ class ContactServiceTest {
         contact.setLastName("Surname");
         contact.setDescription("person");
 
-        ContactDto contactDto = new ContactDto(1, "Name", "Surname", "person", "test@gmail.com");
+        ContactDto contactDto = new ContactDto(1, "Name", "Surname", "person");
 
         when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(contact));
         Contact contactFounded = contactService.getById(contactDto.id);
@@ -165,13 +165,13 @@ class ContactServiceTest {
     }
 
     @Test
-    public void testAddProfile_userExists_ProfileAdded() {
+    public void testEditProfile_userExists_ProfileChanged() {
 
         User user = new User("test@gmail.com", "12345678");
         Contact profile = new Contact();
         user.setMyProfile(profile);
-        when(userRepository.findById(user.getEmail())).thenReturn(Optional.of(user));
-        contactService.addProfile("Name", "Surname", "friend", "test@gmail.com");
+        when(contactRepository.findById(profile.getId())).thenReturn(Optional.of(profile));
+        contactService.editProfile("Name", "Surname", "friend", 0);
 
         verify(contactRepository, times(1)).save(any());
         verify(contactRepository, times(1)).save(argThat(contactNew ->

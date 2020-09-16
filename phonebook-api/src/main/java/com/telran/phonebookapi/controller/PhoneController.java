@@ -41,14 +41,9 @@ public class PhoneController {
         phoneService.removeById(id);
     }
 
-    @GetMapping("/{contactId}")
+    @GetMapping("all/{contactId}")
     public List<PhoneDto> getAllPhoneNumbers(@PathVariable int contactId) {
         return phoneService.getAllPhoneNumbersByContactId(contactId).stream()
-                .map(number -> new PhoneDto(
-                        number.getId(),
-                        number.getCountryCode(),
-                        number.getPhoneNumber(),
-                        number.getContact().getId()
-                )).collect(Collectors.toList());
+                .map(phoneMapper::mapPhoneToDto).collect(Collectors.toList());
     }
 }
