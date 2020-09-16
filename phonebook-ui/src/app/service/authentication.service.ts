@@ -17,10 +17,9 @@ export class AuthenticationService {
           let token = userData.headers.get('access-token');
           if (token != null) {
             localStorage.setItem('email', email);
-            localStorage.setItem('AccessToken', token);
+            localStorage.setItem('access-token', token);
             return userData;
           }
-
         })
       );
   }
@@ -33,7 +32,11 @@ export class AuthenticationService {
 
   logOut() {
     localStorage.removeItem('email');
-    localStorage.removeItem('AccessToken');
+    localStorage.removeItem('access-token');
   }
 
+
+ getToken(){
+   return localStorage.getItem('access-token')
+ }
 }

@@ -15,7 +15,7 @@ canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
     if (this.authService.isUserLoggedIn())
       return true;
 
-    this.router.navigate(['login']);
+    this.router.navigate(['user/login']);
     return false;
 }
 }

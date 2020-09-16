@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
-
   }
 
   ngOnInit() {
@@ -38,7 +37,6 @@ export class LoginComponent implements OnInit {
         data => {
           this.router.navigate(['']);
           this.invalidLogin = false;
-
         },
         error => {
           this.invalidLogin = true;
@@ -46,8 +44,6 @@ export class LoginComponent implements OnInit {
         }
       )
     );
-
   }
-
 }
 

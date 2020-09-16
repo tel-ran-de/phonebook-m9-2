@@ -15,8 +15,8 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {UserService} from "./service/user.service";
 import {UserPageComponent} from "./user-page/user-page.component";
 import {LoginComponent} from "./login/login.component";
-import {BasicAuthHttpInterceptorService} from "./service/basic-auth-interceptor.service";
 import {LogoutComponent} from "./logout/logout.component";
+import {TokenHttpInterceptor} from "./service/TokenHttpInterceptor";
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import {LogoutComponent} from "./logout/logout.component";
     NgbModule,
     HttpClientModule,
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: BasicAuthHttpInterceptorService, multi: true}, UserService],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenHttpInterceptor, multi: true}, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

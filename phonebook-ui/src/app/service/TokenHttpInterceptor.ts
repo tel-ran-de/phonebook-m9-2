@@ -5,18 +5,19 @@ import {AuthenticationService} from './authentication.service';
 @Injectable({
   providedIn: 'root'
 })
-export class BasicAuthHttpInterceptorService implements HttpInterceptor {
+export class TokenHttpInterceptor implements HttpInterceptor {
 
-  constructor() {
+  constructor(private tokenService: AuthenticationService) {
   }
+
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
 
-    if (localStorage.getItem('email') && localStorage.getItem('AccessToken')) {
+    if (this.tokenService.isUserLoggedIn()) {
 
       req = req.clone({
         setHeaders: {
-          AccessToken: localStorage.getItem('AccessToken')
+          "Access-Token": this.tokenService.getToken()
         }
       })
     }

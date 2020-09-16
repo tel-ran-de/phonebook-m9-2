@@ -17,8 +17,8 @@ const routes: Routes = [
   {path: 'user/activation/:token', component: ActivationComponent},
   {path: 'user/forgot-password', component: ForgotPasswordComponent},
   {path: 'user/password-recovery/:token', component: PasswordRecoveryComponent},
-  {path: 'logout', component: LogoutComponent, canActivate: [AuthGaurdService]},
-  {path: 'login', component: LoginComponent}
+  {path: 'user/logout', component: LogoutComponent, canActivate: [AuthGaurdService]},
+  {path: 'user/login', component: LoginComponent}
 ];
 
 @NgModule({
