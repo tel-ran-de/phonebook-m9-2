@@ -1,6 +1,8 @@
 package com.telran.phonebookapi.service;
 
+import com.telran.phonebookapi.dto.ContactDto;
 import com.telran.phonebookapi.dto.UserDto;
+import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.RecoveryToken;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IActivationTokenRepository;
@@ -20,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -88,91 +91,36 @@ class UserServiceTest {
 
     @Test
     public void testAdd_user_passesToRepo() {
-
-        UserDto userDto = UserDto.builder()
-                .email("ivanov@gmail.com")
-                .password("pass")
-                .build();
-
-        userService.addUser(userDto);
+        User newUser = new User("ivanov@gmail.com", "12345678");
+        userService.addUser("ivanov@gmail.com", "12345678");
 
         verify(userRepository, times(1)).save(any());
         verify(userRepository, times(1)).save(argThat(user ->
-                user.getEmail().equals(userDto.email)
-                        && user.getPassword().equals(userDto.password)
+                user.getEmail().equals(newUser.getEmail())
+                        && user.getPassword().equals(newUser.getPassword())
         ));
         verify(activationTokenRepository, times(1)).save(any());
         verify(activationTokenRepository, times(1)).save(argThat(token ->
-                token.getUser().getEmail().equals(userDto.email)
+                token.getUser().getEmail().equals(newUser.getEmail())
         ));
-        verify(emailSender, times(1)).sendMail(eq(userDto.email),
+        verify(emailSender, times(1)).sendMail(eq(newUser.getEmail()),
                 eq(UserService.ACTIVATION_SUBJECT),
                 anyString());
     }
 
-//    @Test
-//    public void testEditAllFields_userExist_AllFieldsChanged() {
-//
-//        User oldUser = new User("test@gmail.com", "12345678");
-//        Contact oldProfile = new Contact();
-//        oldProfile.setFirstName("Name");
-//        oldProfile.setLastName("LastName");
-//        oldUser.setMyProfile(oldProfile);
-//
-//        UserDto userDto = UserDto.builder()
-//                .email("test@gmail.com")
-//                .password("12345678")
-//                .build();
-//
-//
-//        ContactDto profileDto = new ContactDto();
-//        profileDto.firstName = "NewName";
-//        profileDto.lastName = "NewLastName";
-//        userDto.myProfile = profileDto;
-//
-//        when(userRepository.findById(userDto.email)).thenReturn(Optional.of(oldUser));
-//
-//        userService.editAllFields(userDto);
-//
-//        verify(userRepository, times(1)).save(any());
-//
-//        verify(userRepository, times(1)).save(argThat(user ->
-//                user.getEmail().equals(userDto.email)
-//                        && user.getMyProfile().getFirstName().equals(userDto.myProfile.firstName) && user.getMyProfile().getLastName().equals(userDto.myProfile.lastName
-//                )));
-//    }
+    @Test
+    public void testGetByEmail_userExist_User() {
+        String email = "johndoe@mail.com";
+        User ourUser = new User(email, "1234");
 
-//    @Test
-//    public void testEditAny_userDoesNotExist_EntityNotFoundException() {
-//
-//        UserDto userDto = new UserDto("test@gmail.com", "12345678");
-//
-//        Exception exception = assertThrows(EntityNotFoundException.class, () -> userService.editAllFields(userDto));
-//
-//        verify(userRepository, times(1)).findById(any());
-//        assertEquals("Error! This user doesn't exist in our DB", exception.getMessage());
-//    }
+        when(userRepository.findById(email)).thenReturn(Optional.of(ourUser));
 
-    @Captor
-    ArgumentCaptor<User> userCaptor;
+        User userFounded = userService.getUserByEmail(ourUser.getEmail());
 
-//    @Test
-//    public void testRemoveById_userExists_UserDeleted() {
-//
-//        User user = new User("test@gmail.com", "12345678");
-//
-//        UserDto userDto = UserDto.builder()
-//                .email(user.getEmail())
-//                .password(user.getPassword())
-//                .build();
-//
-//        when(userRepository.findById(userDto.email)).thenReturn(Optional.of(user));
-//        userService.removeById(userDto.email);
-//
-//        List<User> capturedUsers = userCaptor.getAllValues();
-//        verify(userRepository, times(1)).deleteById(userDto.email);
-//        assertEquals(0, capturedUsers.size());
-//    }
+        assertEquals(ourUser.getEmail(), userFounded.getEmail());
 
+        verify(userRepository, times(1)).findById(argThat(
+                id -> id.equals(ourUser.getEmail())));
+    }
 }
 

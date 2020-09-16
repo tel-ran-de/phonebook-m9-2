@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class ContactService {
 
-    static final String CONTACT_DOES_NOT_EXIST = "Error! This contact doesn't exist in our DB";
+    static final String CONTACT_DOES_NOT_EXIST = "Error! This contact doesn't exist";
 
     IUserRepository userRepository;
     IContactRepository contactRepository;

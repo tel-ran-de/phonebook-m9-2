@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping("")
     public void addUser(@Valid @RequestBody UserDto userDto) {
-        userService.addUser(userDto);
+        userService.addUser(userDto.email, userDto.password);
     }
 
     @GetMapping("/activation/{token}")

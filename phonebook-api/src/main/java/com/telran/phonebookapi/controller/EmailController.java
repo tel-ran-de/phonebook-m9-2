@@ -45,7 +45,7 @@ public class EmailController {
         emailService.removeById(id);
     }
 
-    @GetMapping("/{contactId}")
+    @GetMapping("/all/{contactId}")
     public List<EmailDto> getAllEmails(@PathVariable int contactId) {
         List<Email> emailList = new ArrayList<>(emailService.getAllEmailsByContactId(contactId));
         List<EmailDto> listDto = new ArrayList<>();

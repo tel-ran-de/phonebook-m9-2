@@ -52,7 +52,7 @@ public class AddressController {
         addressService.removeById(id);
     }
 
-    @GetMapping("/{contactId}")
+    @GetMapping("/all/{contactId}")
     public List<AddressDto> getAllAddresses(@PathVariable int contactId) {
         List<Address> addresses = new ArrayList<>(addressService.getAllAddressesByContactId(contactId));
         List <AddressDto> listDto = new ArrayList<>();
