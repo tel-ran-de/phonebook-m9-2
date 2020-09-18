@@ -25,10 +25,10 @@
       Password is required.
     </div>
     <div *ngIf="angForm.controls['password'].errors.minlength">
-      Password must be at least 8 characters.
+      Password must be at least 8 characters long.
     </div>
     <div *ngIf="angForm.controls['password'].errors.maxlength">
-      Password must be at least 20 characters.
+      Password must be no longer than 20 characters.
     </div>
   </div>
 
@@ -39,10 +39,10 @@
     *ngIf="angForm.controls['confirm_password'].invalid && (angForm.controls['confirm_password'].dirty || angForm.controls['confirm_password'].touched)"
     class="alert alert-danger">
     <div *ngIf="angForm.controls['confirm_password'].errors.confirmedValidator">
-      Password do not match.
+      Passwords do not match.
     </div>
   </div>
   <button type="submit" [disabled]="angForm.pristine || angForm.invalid" class="btn btn-info my-1 btn-block">Sign up</button>
-  <a class="btn btn-success btn-block" routerLink="/user/login">Login</a>
+  <a class="btn btn-success btn-block" routerLink="user/login">Login</a>
 </form>
 <app-footer></app-footer>
