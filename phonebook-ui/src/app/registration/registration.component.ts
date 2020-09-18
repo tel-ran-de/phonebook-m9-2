@@ -29,8 +29,7 @@ export class RegistrationComponent implements OnInit {
   createForm() {
     this.angForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._-]+@[a-z0-9.-]+\\.[a-z]{2,10}$")]],
-      password: ['', [Validators.required, Validators.minLength(8)],
-        [Validators.required, Validators.maxLength(20)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       confirm_password: ['', [Validators.required]]
     }, {
       validators: ConfirmedValidator('password', 'confirm_password')
