@@ -21,7 +21,7 @@ export class PasswordRecoveryComponent implements OnInit {
 
   createForm() {
     this.PasswordRecoveryForm = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       confirm_password: ['', [Validators.required]]
     }, {
       validators: ConfirmedValidator('password', 'confirm_password')
