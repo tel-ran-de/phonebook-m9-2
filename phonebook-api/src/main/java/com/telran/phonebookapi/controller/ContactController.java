@@ -2,9 +2,15 @@ package com.telran.phonebookapi.controller;
 
 import com.telran.phonebookapi.dto.ContactDto;
 import com.telran.phonebookapi.mapper.ContactMapper;
+import com.telran.phonebookapi.model.Contact;
+import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.service.ContactService;
+import com.telran.phonebookapi.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,42 +19,68 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/contact")
 public class ContactController {
 
+    static final String INVALID_ACCESS = "Error! You have no permission";
+
+    UserService userService;
     ContactService contactService;
     ContactMapper contactMapper;
 
-    public ContactController(ContactService contactService, ContactMapper contactMapper) {
+    public ContactController(UserService userService, ContactService contactService, ContactMapper contactMapper) {
+        this.userService = userService;
         this.contactService = contactService;
         this.contactMapper = contactMapper;
     }
 
     @PostMapping("")
-    public void addContact(@Valid @RequestBody ContactDto contactDto) {
-        contactService.add(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.userId);
+    public void addContact(Authentication auth, @Valid @RequestBody ContactDto contactDto) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        contactService.add(contactDto.firstName, contactDto.lastName, contactDto.description, userDetails.getUsername());
     }
 
     @GetMapping("/{id}")
-    public ContactDto getById(@PathVariable int id) {
+    public ContactDto getById(Authentication auth, @PathVariable int id) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        if (user.getMyProfile().getId() != id) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
         return contactMapper.mapContactToDtoFull(contactService.getById(id));
     }
 
     @PutMapping("")
-    public void editContact(@Valid @RequestBody ContactDto contactDto) {
+    public void editContact(Authentication auth, @Valid @RequestBody ContactDto contactDto) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Contact contact = contactService.getById(contactDto.id);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
         contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
     }
 
     @DeleteMapping("/{id}")
-    public void removeById(@PathVariable int id) {
+    public void removeById(Authentication auth, @PathVariable int id) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Contact contact = contactService.getById(id);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
         contactService.removeById(id);
     }
 
-    @GetMapping("all/{email}")
-    public List<ContactDto> requestAllContactsByUserEmail(@PathVariable String email) {
-        return contactService.getAllContactsByUserId(email).stream()
+    @GetMapping("")
+    public List<ContactDto> requestAllContactsByUserEmail(Authentication auth) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        return contactService.getAllContactsByUserId(userDetails.getUsername()).stream()
                 .map(contactMapper::mapContactToDto).collect(Collectors.toList());
     }
 
     @PutMapping("/profile")
-    public void editProfile(@Valid @RequestBody ContactDto contactDto) {
+    public void editProfile(Authentication auth, @Valid @RequestBody ContactDto contactDto) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        if (user.getMyProfile().getId() != contactDto.id) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
         contactService.editProfile(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
     }
 

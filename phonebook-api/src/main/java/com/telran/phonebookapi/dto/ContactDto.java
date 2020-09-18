@@ -20,7 +20,6 @@ public class ContactDto {
 
     public String description;
 
-    public String userId;
     @Builder.Default
     public List<PhoneDto> phoneNumbers = new ArrayList<>();
     @Builder.Default
@@ -33,15 +32,5 @@ public class ContactDto {
         this.firstName = firstName;
         this.lastName = lastName;
         this.description = description;
-    }
-
-    public ContactDto(int id, String firstName, String lastName, String description, List<PhoneDto> numbers, List<AddressDto> add, List<EmailDto> mails) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.description = description;
-        this.phoneNumbers = numbers;
-        this.addresses = add;
-        this.emails = mails;
     }
 }

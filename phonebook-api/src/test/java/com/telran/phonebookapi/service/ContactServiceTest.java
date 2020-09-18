@@ -68,7 +68,6 @@ class ContactServiceTest {
         contactDto.firstName = "NewName";
         contactDto.lastName = "NewLastName";
         contactDto.description = "newDescription";
-        contactDto.userId = user.getEmail();
 
         when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(oldContact));
 
@@ -77,7 +76,6 @@ class ContactServiceTest {
         verify(contactRepository, times(1)).save(any());
         verify(contactRepository, times(1)).save(argThat(contact ->
                 contact.getFirstName().equals(contactDto.firstName) && contact.getLastName().equals(contactDto.lastName) && contact.getDescription().equals(contactDto.description)
-                        && contact.getUser().getEmail().equals(contactDto.userId)
         ));
     }
 
@@ -88,7 +86,6 @@ class ContactServiceTest {
         contactDto.firstName = "ContactName";
         contactDto.lastName = "LastName";
         contactDto.description = "Description";
-        contactDto.userId = "wrong@gmail.com";
 
         Exception exception = assertThrows(EntityNotFoundException.class, () -> contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id));
 
@@ -146,11 +143,9 @@ class ContactServiceTest {
 
         ContactDto contactDto01 = ContactDto.builder()
                 .firstName("TestName01")
-                .userId("test@gmail.com")
                 .build();
         ContactDto contactDto02 = ContactDto.builder()
                 .firstName("TestName02")
-                .userId("test@gmail.com")
                 .build();
 
         when(contactRepository.findAllByUserEmail(user.getEmail())).thenReturn(Arrays.asList(contact01, contact02));
