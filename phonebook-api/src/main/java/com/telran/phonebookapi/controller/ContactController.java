@@ -40,8 +40,8 @@ public class ContactController {
     @GetMapping("/{id}")
     public ContactDto getById(Authentication auth, @PathVariable int id) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = userService.getUserByEmail(userDetails.getUsername());
-        if (user.getMyProfile().getId() != id) {
+        Contact contact = contactService.getById(id);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
             throw new EntityNotFoundException(INVALID_ACCESS);
         }
         return contactMapper.mapContactToDtoFull(contactService.getById(id));
@@ -54,7 +54,7 @@ public class ContactController {
         if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
             throw new EntityNotFoundException(INVALID_ACCESS);
         }
-        contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
+        contactService.editContact(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
     }
 
     @DeleteMapping("/{id}")
@@ -78,10 +78,14 @@ public class ContactController {
     public void editProfile(Authentication auth, @Valid @RequestBody ContactDto contactDto) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         User user = userService.getUserByEmail(userDetails.getUsername());
-        if (user.getMyProfile().getId() != contactDto.id) {
-            throw new EntityNotFoundException(INVALID_ACCESS);
-        }
-        contactService.editProfile(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
+        contactService.editContact(contactDto.firstName, contactDto.lastName, contactDto.description, user.getMyProfile().getId());
+    }
+
+    @GetMapping("/profile")
+    public ContactDto getProfileById(Authentication auth) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        return contactMapper.mapContactToDtoFull(contactService.getById(user.getMyProfile().getId()));
     }
 
 }
