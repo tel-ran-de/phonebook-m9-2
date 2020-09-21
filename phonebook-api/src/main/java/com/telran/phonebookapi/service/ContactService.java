@@ -32,7 +32,7 @@ public class ContactService {
         return contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
     }
 
-    public void editAllFields(String firstName, String lastName, String description, int id) {
+    public void editContact(String firstName, String lastName, String description, int id) {
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
         contact.setFirstName(firstName);
         contact.setLastName(lastName);
@@ -49,11 +49,4 @@ public class ContactService {
         return contactRepository.findAllByUserEmail(email);
     }
 
-    public void editProfile(String firstName, String lastName, String description, int contactId) {
-        Contact profile = contactRepository.findById(contactId).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
-        profile.setFirstName(firstName);
-        profile.setLastName(lastName);
-        profile.setDescription(description);
-        contactRepository.save(profile);
-    }
 }

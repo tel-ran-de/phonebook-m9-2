@@ -71,7 +71,7 @@ class ContactServiceTest {
 
         when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(oldContact));
 
-        contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
+        contactService.editContact(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
 
         verify(contactRepository, times(1)).save(any());
         verify(contactRepository, times(1)).save(argThat(contact ->
@@ -87,7 +87,7 @@ class ContactServiceTest {
         contactDto.lastName = "LastName";
         contactDto.description = "Description";
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> contactService.editAllFields(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> contactService.editContact(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id));
 
         verify(contactRepository, times(1)).findById(any());
         assertEquals("Error! This contact doesn't exist", exception.getMessage());
@@ -157,22 +157,6 @@ class ContactServiceTest {
 
         verify(contactRepository, times(1)).findAllByUserEmail(user.getEmail());
 
-    }
-
-    @Test
-    public void testEditProfile_userExists_ProfileChanged() {
-
-        User user = new User("test@gmail.com", "12345678");
-        Contact profile = new Contact();
-        user.setMyProfile(profile);
-        when(contactRepository.findById(profile.getId())).thenReturn(Optional.of(profile));
-        contactService.editProfile("Name", "Surname", "friend", 0);
-
-        verify(contactRepository, times(1)).save(any());
-        verify(contactRepository, times(1)).save(argThat(contactNew ->
-                contactNew.getFirstName().equals("Name")
-                        && contactNew.getLastName().equals("Surname")
-        ));
     }
 
 }
