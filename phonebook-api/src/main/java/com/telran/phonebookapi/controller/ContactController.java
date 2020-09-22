@@ -34,7 +34,7 @@ public class ContactController {
     @PostMapping("")
     public void addContact(Authentication auth, @Valid @RequestBody ContactDto contactDto) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        contactService.add(contactDto.firstName, contactDto.lastName, contactDto.description, userDetails.getUsername());
+        contactService.add(userDetails.getUsername(), contactDto.firstName, contactDto.lastName, contactDto.description);
     }
 
     @GetMapping("/{id}")
@@ -44,7 +44,7 @@ public class ContactController {
         if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
             throw new EntityNotFoundException(INVALID_ACCESS);
         }
-        return contactMapper.mapContactToDtoFull(contactService.getById(id));
+        return contactMapper.mapContactToDtoFull(contact);
     }
 
     @PutMapping("")
@@ -54,7 +54,7 @@ public class ContactController {
         if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
             throw new EntityNotFoundException(INVALID_ACCESS);
         }
-        contactService.editContact(contactDto.firstName, contactDto.lastName, contactDto.description, contactDto.id);
+        contactService.editContact(contactDto.id, contactDto.firstName, contactDto.lastName, contactDto.description);
     }
 
     @DeleteMapping("/{id}")
@@ -70,7 +70,9 @@ public class ContactController {
     @GetMapping("")
     public List<ContactDto> requestAllContactsByUserEmail(Authentication auth) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = userService.getUserByEmail(userDetails.getUsername());
         return contactService.getAllContactsByUserId(userDetails.getUsername()).stream()
+                .filter(contact -> contact.getId() != user.getMyProfile().getId())
                 .map(contactMapper::mapContactToDto).collect(Collectors.toList());
     }
 
@@ -78,7 +80,7 @@ public class ContactController {
     public void editProfile(Authentication auth, @Valid @RequestBody ContactDto contactDto) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         User user = userService.getUserByEmail(userDetails.getUsername());
-        contactService.editContact(contactDto.firstName, contactDto.lastName, contactDto.description, user.getMyProfile().getId());
+        contactService.editContact(user.getMyProfile().getId(), contactDto.firstName, contactDto.lastName, contactDto.description);
     }
 
     @GetMapping("/profile")
