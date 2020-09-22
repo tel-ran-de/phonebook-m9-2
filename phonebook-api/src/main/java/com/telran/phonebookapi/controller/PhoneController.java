@@ -1,45 +1,86 @@
 package com.telran.phonebookapi.controller;
 
 import com.telran.phonebookapi.dto.PhoneDto;
+import com.telran.phonebookapi.mapper.PhoneMapper;
+import com.telran.phonebookapi.model.Contact;
+import com.telran.phonebookapi.model.Phone;
+import com.telran.phonebookapi.service.ContactService;
 import com.telran.phonebookapi.service.PhoneService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/phone")
 public class PhoneController {
 
-    PhoneService phoneService;
+    static final String INVALID_ACCESS = "Error! You have no permission";
 
-    public PhoneController(PhoneService phoneService) {
+    PhoneService phoneService;
+    ContactService contactService;
+    PhoneMapper phoneMapper;
+
+    public PhoneController(PhoneService phoneService, ContactService contactService, PhoneMapper phoneMapper) {
         this.phoneService = phoneService;
+        this.contactService = contactService;
+        this.phoneMapper = phoneMapper;
     }
 
     @PostMapping("")
-    public void addPhone(@RequestBody @Valid PhoneDto phoneDto) {
-        phoneService.add(phoneDto);
+    public void addPhone(Authentication auth, @RequestBody @Valid PhoneDto phoneDto) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Contact contact = contactService.getById(phoneDto.contactId);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
+        phoneService.add(phoneDto.contactId, phoneDto.countryCode, phoneDto.phoneNumber);
     }
 
     @PutMapping("")
-    public void editPhone(@RequestBody @Valid PhoneDto phoneDto) {
-        phoneService.editAllFields(phoneDto);
+    public void editPhone(Authentication auth, @RequestBody @Valid PhoneDto phoneDto) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Contact contact = contactService.getById(phoneDto.contactId);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
+        phoneService.editAllFields(phoneDto.contactId, phoneDto.countryCode, phoneDto.phoneNumber);
     }
 
     @GetMapping("/{id}")
-    public PhoneDto getById(@PathVariable int id) {
-        return phoneService.getById(id);
+    public PhoneDto getById(Authentication auth, @PathVariable int id) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Phone phone = phoneService.getById(id);
+        Contact contact = contactService.getById(phone.getContact().getId());
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
+        return phoneMapper.mapPhoneToDto(phone);
     }
 
     @DeleteMapping("/{id}")
-    public void removeById(@PathVariable int id) {
+    public void removeById(Authentication auth, @PathVariable int id) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Phone phone = phoneService.getById(id);
+        Contact contact = contactService.getById(phone.getContact().getId());
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
         phoneService.removeById(id);
     }
 
-    @GetMapping("/{contactId}/all")
-    public List<PhoneDto> getAllPhoneNumbers(@PathVariable int contactId) {
-        return phoneService.getAllPhoneNumbersByContactId(contactId);
+    @GetMapping("/{contactId}")
+    public List<PhoneDto> getAllPhoneNumbers(Authentication auth, @PathVariable int contactId) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Contact contact = contactService.getById(contactId);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
+        return phoneService.getAllPhoneNumbersByContactId(contactId).stream()
+                .map(phoneMapper::mapPhoneToDto).collect(Collectors.toList());
     }
 }

@@ -65,7 +65,7 @@ class AddressServiceTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> addressService.add(addressDto));
 
         verify(contactRepository, times(1)).findById(any());
-        assertEquals("Error! This contact doesn't exist in our DB", exception.getMessage());
+        assertEquals("Error! This contact doesn't exist", exception.getMessage());
     }
 
     @Test

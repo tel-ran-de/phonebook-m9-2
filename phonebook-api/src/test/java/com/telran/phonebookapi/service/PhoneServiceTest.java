@@ -1,7 +1,6 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.PhoneDto;
-import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.CountryCode;
 import com.telran.phonebookapi.model.Phone;
@@ -39,9 +38,6 @@ class PhoneServiceTest {
     @InjectMocks
     PhoneService phoneService;
 
-    @Spy
-    PhoneMapper phoneMapper;
-
     @Test
     public void testAdd_contactExists_contactWithPhoneNumber() {
         User user = new User("test@gmail.com", "11111111");
@@ -54,10 +50,11 @@ class PhoneServiceTest {
         when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
         when(countryCodeRepository.findById(number.getCountryCode())).thenReturn(Optional.of(code));
 
-        phoneService.add(phoneDto);
+        phoneService.add(phoneDto.contactId, phoneDto.countryCode, phoneDto.phoneNumber);
 
         verify(phoneRepository, times(1)).save(any());
-        verify(phoneRepository, times(1)).save(argThat(phone -> phone.getPhoneNumber() == phoneDto.phoneNumber &&
+        verify(phoneRepository, times(1)).save(argThat(phone ->
+                phone.getPhoneNumber() == phoneDto.phoneNumber &&
                 phone.getContact().getId() == phoneDto.contactId)
         );
     }
@@ -66,10 +63,13 @@ class PhoneServiceTest {
     public void testAdd_contactDoesNotExist_EntityNotFoundException() {
         PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> phoneService.add(phoneDto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> phoneService.add(
+                phoneDto.contactId,
+                phoneDto.countryCode,
+                phoneDto.phoneNumber));
 
         verify(contactRepository, times(1)).findById(any());
-        assertEquals("Error! This contact doesn't exist in our DB", exception.getMessage());
+        assertEquals("Error! This contact doesn't exist", exception.getMessage());
     }
 
     @Test
@@ -83,7 +83,7 @@ class PhoneServiceTest {
 
         when(phoneRepository.findById(phoneDto.id)).thenReturn(Optional.of(oldNumber));
 
-        phoneService.editAllFields(phoneDto);
+        phoneService.editAllFields(phoneDto.contactId, phoneDto.countryCode, phoneDto.phoneNumber);
 
         verify(phoneRepository, times(1)).save(any());
         verify(phoneRepository, times(1)).save(argThat(phone ->
@@ -96,10 +96,13 @@ class PhoneServiceTest {
 
         PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> phoneService.editAllFields(phoneDto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> phoneService.editAllFields(
+                phoneDto.contactId,
+                phoneDto.countryCode,
+                phoneDto.phoneNumber));
 
         verify(phoneRepository, times(1)).findById(any());
-        assertEquals("Error! This phone number doesn't exist in our DB", exception.getMessage());
+        assertEquals("Error! This phone number doesn't exist", exception.getMessage());
     }
 
     @Captor
@@ -131,13 +134,12 @@ class PhoneServiceTest {
         PhoneDto phoneDto = new PhoneDto(0, 49, 12345678, 0);
 
         when(phoneRepository.findById(phoneDto.id)).thenReturn(Optional.of(phone));
-        PhoneDto phoneFounded = phoneService.getById(phoneDto.id);
+        Phone phoneFounded = phoneService.getById(phoneDto.id);
 
-        assertEquals(phoneDto.countryCode, phoneFounded.countryCode);
-        assertEquals(phoneDto.phoneNumber, phoneFounded.phoneNumber);
+        assertEquals(phoneDto.countryCode, phoneFounded.getCountryCode());
+        assertEquals(phoneDto.phoneNumber, phoneFounded.getPhoneNumber());
 
-        verify(phoneMapper, times(1)).mapPhoneToDto(phone);
         verify(phoneRepository, times(1)).findById(argThat(
-                id -> id.intValue() == phoneDto.id));
+                id -> id == phoneDto.id));
     }
 }
