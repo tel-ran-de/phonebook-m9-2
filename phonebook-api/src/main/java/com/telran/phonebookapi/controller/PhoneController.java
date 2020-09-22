@@ -3,6 +3,7 @@ package com.telran.phonebookapi.controller;
 import com.telran.phonebookapi.dto.PhoneDto;
 import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
+import com.telran.phonebookapi.model.Phone;
 import com.telran.phonebookapi.service.ContactService;
 import com.telran.phonebookapi.service.PhoneService;
 import org.springframework.security.core.Authentication;
@@ -53,17 +54,19 @@ public class PhoneController {
     @GetMapping("/{id}")
     public PhoneDto getById(Authentication auth, @PathVariable int id) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Contact contact = contactService.getById(id);
+        Phone phone = phoneService.getById(id);
+        Contact contact = contactService.getById(phone.getContact().getId());
         if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
             throw new EntityNotFoundException(INVALID_ACCESS);
         }
-        return phoneMapper.mapPhoneToDto(phoneService.getById(id));
+        return phoneMapper.mapPhoneToDto(phone);
     }
 
     @DeleteMapping("/{id}")
     public void removeById(Authentication auth, @PathVariable int id) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Contact contact = contactService.getById(id);
+        Phone phone = phoneService.getById(id);
+        Contact contact = contactService.getById(phone.getContact().getId());
         if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
             throw new EntityNotFoundException(INVALID_ACCESS);
         }
