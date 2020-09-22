@@ -68,10 +68,8 @@ public class UserService {
             user.setMyProfile(profile);
             contactRepository.save(profile);
             userRepository.save(user);
-
-            userDto.contactDtos.stream()
-                    .map(contactIn -> new Contact(contactIn.firstName, user))
-                    .forEach(contactRepository::save);
+            profile.setUser(user);
+            contactRepository.save(profile);
 
             activationTokenRepository.save(new ActivationToken(token, user));
             emailSender.sendMail(user.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE

@@ -1,7 +1,6 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.PhoneDto;
-import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.CountryCode;
 import com.telran.phonebookapi.model.Phone;
@@ -38,9 +37,6 @@ class PhoneServiceTest {
 
     @InjectMocks
     PhoneService phoneService;
-
-    @Spy
-    PhoneMapper phoneMapper;
 
     @Test
     public void testAdd_contactExists_contactWithPhoneNumber() {
@@ -144,6 +140,6 @@ class PhoneServiceTest {
         assertEquals(phoneDto.phoneNumber, phoneFounded.getPhoneNumber());
 
         verify(phoneRepository, times(1)).findById(argThat(
-                id -> id.intValue() == phoneDto.id));
+                id -> id == phoneDto.id));
     }
 }
