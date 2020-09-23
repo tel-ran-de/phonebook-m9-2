@@ -73,7 +73,7 @@ public class PhoneController {
         phoneService.removeById(id);
     }
 
-    @GetMapping("/{contactId}")
+    @GetMapping("all/{contactId}")
     public List<PhoneDto> getAllPhoneNumbers(Authentication auth, @PathVariable int contactId) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Contact contact = contactService.getById(contactId);

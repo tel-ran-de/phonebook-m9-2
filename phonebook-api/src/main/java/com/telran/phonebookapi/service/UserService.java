@@ -110,4 +110,11 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
     }
+
+    public void changePasswordAuthorizedUser(String email, String password) {
+        User user = userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
+        final String encryptedPassword = bCryptPasswordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+    }
 }
