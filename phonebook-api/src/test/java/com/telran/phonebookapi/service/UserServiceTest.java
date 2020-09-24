@@ -174,5 +174,19 @@ class UserServiceTest {
 //        assertEquals(0, capturedUsers.size());
 //    }
 
+    @Test
+    public void testChangePasswordAuthorizedUser_UserAuthorized_newPasswordIsSaved() {
+        User user = new User("test@mail.com", "12345678");
+        String newPassword = "87654321";
+        when(userRepository.findById(user.getEmail())).thenReturn(Optional.of(user));
+        when(bCryptPasswordEncoder.encode(newPassword)).thenReturn("encoded87654321");
+        userService.changePasswordAuthorizedUser(user.getEmail(), newPassword);
+
+        verify(userRepository, times(1)).save(any());
+
+        verify(userRepository, times(1)).save(argThat(updatedUser ->
+                user.getPassword().equals("encoded87654321")));
+    }
+
 }
 

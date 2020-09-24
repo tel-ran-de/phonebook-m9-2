@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ContactService {
@@ -46,7 +47,14 @@ public class ContactService {
     }
 
     public List<Contact> getAllContactsByUserId(String email) {
-        return contactRepository.findAllByUserEmail(email);
+        User user = userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
+        return user.getContacts().stream()
+                .filter(contact -> contact.getId() != user.getMyProfile().getId())
+                .collect(Collectors.toList());
     }
 
+    public List<Phone> getPhones(int id) {
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
+        return contact.getPhones();
+    }
 }

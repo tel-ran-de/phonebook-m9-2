@@ -2,6 +2,7 @@ package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.ContactDto;
 import com.telran.phonebookapi.model.Contact;
+import com.telran.phonebookapi.model.Phone;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
@@ -189,25 +190,40 @@ class ContactServiceTest {
 
     @Test
     void testGetAllContactsByUserId_userWithContacts_ListContacts() {
-        User user = new User("test@gmail.com", "12345678");
-        Contact contact01 = new Contact("TestName01", user);
-        Contact contact02 = new Contact("TestName02", user);
-
-        ContactDto contactDto01 = ContactDto.builder()
-                .firstName("TestName01")
-                .build();
-        ContactDto contactDto02 = ContactDto.builder()
-                .firstName("TestName02")
-                .build();
-
-        when(contactRepository.findAllByUserEmail(user.getEmail())).thenReturn(Arrays.asList(contact01, contact02));
+        User user = spy(new User("test@gmail.com", "12345678"));
+        Contact contact01 = spy (new Contact("TestName01", user));
+        Contact contact02 = spy (new Contact("TestName02", user));
+        when(contact01.getId()).thenReturn(1);
+        when(contact02.getId()).thenReturn(2);
+        when(userRepository.findById("test@gmail.com")).thenReturn(Optional.of(user));
+        when(user.getContacts()).thenReturn(Arrays.asList(contact01, contact02));
+        when(user.getMyProfile()).thenReturn(new Contact());
         List<Contact> contactsFounded = contactService.getAllContactsByUserId("test@gmail.com");
 
-        assertEquals(contactsFounded.size(), 2);
-        assertEquals(contactsFounded.get(0).getFirstName(), contactDto01.firstName);
-        assertEquals(contactsFounded.get(1).getFirstName(), contactDto02.firstName);
+        assertEquals(2, contactsFounded.size());
+        assertEquals(contactsFounded.get(0).getFirstName(), "TestName01");
+        assertEquals(contactsFounded.get(1).getFirstName(), "TestName02");
+    }
 
-        verify(contactRepository, times(1)).findAllByUserEmail(user.getEmail());
+    @Test
+    void testGetPhone_contactWithPhones_ListPhones() {
+        User user = new User("test@gmail.com", "12345678");
+        Contact contact = spy(new Contact("TestName01", user));
+        Phone phone = new Phone(49, 12345678, contact);
+        Phone phone02 = new Phone(39, 87654321, contact);
+        ContactDto contactDto = ContactDto.builder()
+                .firstName("TestName01")
+                .build();
+
+        when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(contact));
+        when(contact.getPhones()).thenReturn(Arrays.asList(phone, phone02));
+        List<Phone> phonesFounded = contactService.getPhones(contactDto.id);
+
+        assertEquals(phonesFounded.size(), 2);
+        assertEquals(phonesFounded.get(0).getCountryCode(), 49);
+        assertEquals(phonesFounded.get(1).getPhoneNumber(), 87654321);
+
+        verify(contactRepository, times(1)).findById(any());
     }
 
 }
