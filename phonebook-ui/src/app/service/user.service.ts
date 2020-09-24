@@ -10,6 +10,7 @@ export class UserService {
   private readonly userPath = '/api/user/';
   private readonly activationPath = '/api/user/activation/';
 
+
   constructor(private http: HttpClient) {
   }
 

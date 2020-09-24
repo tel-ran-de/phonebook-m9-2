@@ -6,8 +6,9 @@ import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.persistance.IContactRepository;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Component
 public class AddressMapper {
@@ -20,5 +21,9 @@ public class AddressMapper {
                 address.getCity(),
                 address.getStreet(),
                 address.getContact().getId());
+    }
+
+    public List<AddressDto> mapListAddressToDto(List<Address> addresses) {
+        return addresses.stream().map(this::mapAddressToDto).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 package com.telran.phonebookapi.controller;
 
 import com.telran.phonebookapi.dto.NewPasswordDto;
+import com.telran.phonebookapi.dto.NewPasswordDtoAuth;
 import com.telran.phonebookapi.dto.RecoveryPasswordDto;
 import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.service.UserService;
@@ -51,6 +52,13 @@ public class UserController {
                 .roles(userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .email(userDetails.getUsername())
                 .build();
+    }
+
+    @PutMapping("/password/auth")
+    @PreAuthorize("isAuthenticated()")
+    public void changePasswordAuthorized(Authentication auth, @Valid @RequestBody NewPasswordDtoAuth newPasswordDtoAuth) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        userService.changePasswordAuthorizedUser(userDetails.getUsername(), newPasswordDtoAuth.password);
     }
 
 }

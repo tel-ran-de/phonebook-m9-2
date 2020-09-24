@@ -71,8 +71,16 @@ class AddressServiceTest {
         Exception exception = assertThrows(EntityNotFoundException.class, ()
                 ->addressService.add("12345", "Germany", "Berlin", "Street", 1));
 
-        assertEquals(error_ContactDoesNotExist, exception.getMessage());
-    }
+
+        AddressDto addressDto = new AddressDto();
+        addressDto.contactId = 0;
+        addressDto.city = "Berlin";
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> addressService.add(addressDto));
+
+        verify(contactRepository, times(1)).findById(any());
+        assertEquals("Error! This contact doesn't exist", exception.getMessage());
+
 
     @Test
     public void testEdit_addressExist_AllFieldsChanged() {

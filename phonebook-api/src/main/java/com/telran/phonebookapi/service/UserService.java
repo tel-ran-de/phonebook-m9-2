@@ -66,8 +66,11 @@ public class UserService {
             newUser.addRole(UserRole.USER);
             Contact profile = new Contact();
             contactRepository.save(profile);
-            newUser.setMyProfile(profile);
-            userRepository.save(newUser);
+
+            userRepository.save(user);
+            profile.setUser(user);
+            contactRepository.save(profile);
+
 
             activationTokenRepository.save(new ActivationToken(token, newUser));
             emailSender.sendMail(newUser.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
@@ -107,5 +110,12 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
+    }
+
+    public void changePasswordAuthorizedUser(String email, String password) {
+        User user = userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
+        final String encryptedPassword = bCryptPasswordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
     }
 }
