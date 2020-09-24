@@ -9,8 +9,6 @@ import com.telran.phonebookapi.persistance.IEmailRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EmailService {
@@ -50,9 +48,4 @@ public class EmailService {
         emailRepository.deleteById(id);
     }
 
-    public List<EmailDto> getAllEmailsByContactId(int contactId) {
-        return emailRepository.findAllByContactId(contactId).stream()
-                .map(emailMapper::mapEmailToDto)
-                .collect(Collectors.toList());
-    }
 }

@@ -38,8 +38,4 @@ public class EmailController {
         emailService.removeById(id);
     }
 
-    @GetMapping("/{contactId}/all")
-    public List<EmailDto> getAllEmails(@PathVariable int contactId) {
-        return emailService.getAllEmailsByContactId(contactId);
-    }
 }

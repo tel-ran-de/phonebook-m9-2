@@ -9,8 +9,6 @@ import com.telran.phonebookapi.persistance.IContactRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AddressService {
@@ -53,9 +51,4 @@ public class AddressService {
         addressRepository.deleteById(id);
     }
 
-    public List<AddressDto> getAllAddressesByContactId(int contactId) {
-        return addressRepository.findAllByContactId(contactId).stream()
-                .map(addressMapper::mapAddressToDto)
-                .collect(Collectors.toList());
-    }
 }

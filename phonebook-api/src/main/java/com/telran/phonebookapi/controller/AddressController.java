@@ -38,8 +38,4 @@ public class AddressController {
         addressService.removeById(id);
     }
 
-    @GetMapping("/{contactId}/all")
-    public List<AddressDto> getAllAddresses(@PathVariable int contactId) {
-        return addressService.getAllAddressesByContactId(contactId);
-    }
 }

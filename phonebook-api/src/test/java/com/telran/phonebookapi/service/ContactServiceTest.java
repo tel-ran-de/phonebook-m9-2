@@ -1,9 +1,7 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.ContactDto;
-import com.telran.phonebookapi.model.Contact;
-import com.telran.phonebookapi.model.Phone;
-import com.telran.phonebookapi.model.User;
+import com.telran.phonebookapi.model.*;
 import com.telran.phonebookapi.persistance.IContactRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.junit.jupiter.api.Test;
@@ -191,8 +189,8 @@ class ContactServiceTest {
     @Test
     void testGetAllContactsByUserId_userWithContacts_ListContacts() {
         User user = spy(new User("test@gmail.com", "12345678"));
-        Contact contact01 = spy (new Contact("TestName01", user));
-        Contact contact02 = spy (new Contact("TestName02", user));
+        Contact contact01 = spy(new Contact("TestName01", user));
+        Contact contact02 = spy(new Contact("TestName02", user));
         when(contact01.getId()).thenReturn(1);
         when(contact02.getId()).thenReturn(2);
         when(userRepository.findById("test@gmail.com")).thenReturn(Optional.of(user));
@@ -206,7 +204,7 @@ class ContactServiceTest {
     }
 
     @Test
-    void testGetPhone_contactWithPhones_ListPhones() {
+    void testGetPhones_contactWithPhones_ListPhones() {
         User user = new User("test@gmail.com", "12345678");
         Contact contact = spy(new Contact("TestName01", user));
         Phone phone = new Phone(49, 12345678, contact);
@@ -226,4 +224,50 @@ class ContactServiceTest {
         verify(contactRepository, times(1)).findById(any());
     }
 
+    @Test
+    void testGetAddresses_contactWithAddresses_ListAddresses() {
+        User user = new User("test@gmail.com", "12345678");
+        Contact contact = spy(new Contact("TestName01", user));
+        Address address01 = new Address("10000", "Germany", "Berlin", "Strasse 100", contact);
+        Address address02 = new Address("20000", "Germany", "Berlin", "Strasse 1", contact);
+
+        ContactDto contactDto = ContactDto.builder()
+                .firstName("TestName01")
+                .build();
+
+        when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(contact));
+        when(contact.getAddresses()).thenReturn(Arrays.asList(address01, address02));
+        List<Address> addressesFounded = contactService.getAddresses(contactDto.id);
+
+        assertEquals(addressesFounded.size(), 2);
+        assertEquals(addressesFounded.get(0).getZip(), "10000");
+        assertEquals(addressesFounded.get(0).getCountry(), "Germany");
+        assertEquals(addressesFounded.get(1).getCity(), "Berlin");
+        assertEquals(addressesFounded.get(1).getStreet(), "Strasse 1");
+
+        verify(contactRepository, times(1)).findById(any());
+    }
+
+    @Test
+    void testGetEmails_contactWithEmails_ListEmails() {
+        User user = new User("test@gmail.com", "12345678");
+        Contact contact = spy(new Contact("TestName01", user));
+        Email email01 = new Email("first@gmail.com", contact);
+        Email email02 = new Email("second@gmail.com", contact);
+
+        ContactDto contactDto = ContactDto.builder()
+                .firstName("TestName01")
+                .build();
+
+        when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(contact));
+        when(contact.getEmails()).thenReturn(Arrays.asList(email01, email02));
+        List<Email> emailsFounded = contactService.getEmails(contactDto.id);
+
+        assertEquals(emailsFounded.size(), 2);
+        assertEquals(emailsFounded.get(0).getEmail(), "first@gmail.com");
+        assertEquals(emailsFounded.get(1).getEmail(), "second@gmail.com");
+
+        verify(contactRepository, times(1)).findById(any());
+
+    }
 }
