@@ -4,16 +4,16 @@
 
   <div class="form-group">
     <input class="form-control mb-2" id="e-mail" formControlName="email" type="email"
-           id="e-mail" class="form-control mb-2" placeholder="E-mail" [(ngModel)]="email">
+           id="email" class="form-control mb-2" placeholder="E-mail" [(ngModel)]="email">
   </div>
 
   <div
     *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)"
     class="alert alert-danger">
-    <div id="empty-e-mail" *ngIf="loginForm.controls['email'].errors.required">
+    <div id="empty-email" *ngIf="loginForm.controls['email'].errors.required">
       Email is required.
     </div>
-    <div id="wrong-e-mail" *ngIf="loginForm.controls['email'].errors.email">
+    <div id="wrong-email" *ngIf="loginForm.controls['email'].errors.email">
       Email must be a valid email address.
     </div>
   </div>
