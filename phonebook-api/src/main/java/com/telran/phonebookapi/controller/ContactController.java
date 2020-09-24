@@ -1,7 +1,9 @@
 package com.telran.phonebookapi.controller;
 
 import com.telran.phonebookapi.dto.ContactDto;
+import com.telran.phonebookapi.dto.PhoneDto;
 import com.telran.phonebookapi.mapper.ContactMapper;
+import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.service.ContactService;
@@ -24,11 +26,13 @@ public class ContactController {
     UserService userService;
     ContactService contactService;
     ContactMapper contactMapper;
+    PhoneMapper phoneMapper;
 
-    public ContactController(UserService userService, ContactService contactService, ContactMapper contactMapper) {
+    public ContactController(UserService userService, ContactService contactService, ContactMapper contactMapper, PhoneMapper phoneMapper) {
         this.userService = userService;
         this.contactService = contactService;
         this.contactMapper = contactMapper;
+        this.phoneMapper = phoneMapper;
     }
 
     @PostMapping("")
@@ -70,9 +74,7 @@ public class ContactController {
     @GetMapping("")
     public List<ContactDto> requestAllContactsByUserEmail(Authentication auth) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = userService.getUserByEmail(userDetails.getUsername());
         return contactService.getAllContactsByUserId(userDetails.getUsername()).stream()
-                .filter(contact -> contact.getId() != user.getMyProfile().getId())
                 .map(contactMapper::mapContactToDto).collect(Collectors.toList());
     }
 
@@ -88,6 +90,18 @@ public class ContactController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         User user = userService.getUserByEmail(userDetails.getUsername());
         return contactMapper.mapContactToDtoFull(contactService.getById(user.getMyProfile().getId()));
+    }
+
+    @GetMapping("{id}/phones")
+    public List<PhoneDto> requestAllPhonesByContactId(Authentication auth, @PathVariable int id) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Contact contact = contactService.getById(id);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
+        return contactService.getPhones(id).stream()
+                .map(phoneMapper::mapPhoneToDto)
+                .collect(Collectors.toList());
     }
 
 }

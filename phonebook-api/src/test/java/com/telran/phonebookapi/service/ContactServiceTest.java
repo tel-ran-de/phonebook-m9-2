@@ -2,8 +2,10 @@ package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.ContactDto;
 import com.telran.phonebookapi.model.Contact;
+import com.telran.phonebookapi.model.Phone;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IContactRepository;
+import com.telran.phonebookapi.persistance.IPhoneRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +32,9 @@ class ContactServiceTest {
 
     @Mock
     IContactRepository contactRepository;
+
+    @Mock
+    IPhoneRepository phoneRepository;
 
     @InjectMocks
     ContactService contactService;
@@ -208,6 +213,27 @@ class ContactServiceTest {
         assertEquals(contactsFounded.get(1).getFirstName(), contactDto02.firstName);
 
         verify(contactRepository, times(1)).findAllByUserEmail(user.getEmail());
+    }
+
+    @Test
+    void testGetPhone_contactWithPhones_ListPhones() {
+        User user = new User("test@gmail.com", "12345678");
+        Contact contact = new Contact("TestName01", user);
+        Phone phone = new Phone(49, 12345678, contact);
+        Phone phone02 = new Phone(39, 87654321, contact);
+        ContactDto contactDto = ContactDto.builder()
+                .firstName("TestName01")
+                .build();
+
+        when(contactRepository.findById(contactDto.id)).thenReturn(Optional.of(contact));
+        when(phoneRepository.findAllByContactId(contactDto.id)).thenReturn((Arrays.asList(phone, phone02)));
+        List<Phone> phonesFounded = contactService.getPhones(contactDto.id);
+
+        assertEquals(phonesFounded.size(), 2);
+        assertEquals(phonesFounded.get(0).getCountryCode(), 49);
+        assertEquals(phonesFounded.get(1).getPhoneNumber(), 87654321);
+
+        verify(contactRepository, times(1)).findById(any());
     }
 
 }

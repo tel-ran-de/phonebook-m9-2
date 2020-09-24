@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/phone")
@@ -73,14 +71,4 @@ public class PhoneController {
         phoneService.removeById(id);
     }
 
-    @GetMapping("all/{contactId}")
-    public List<PhoneDto> getAllPhoneNumbers(Authentication auth, @PathVariable int contactId) {
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Contact contact = contactService.getById(contactId);
-        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
-            throw new EntityNotFoundException(INVALID_ACCESS);
-        }
-        return phoneService.getAllPhoneNumbersByContactId(contactId).stream()
-                .map(phoneMapper::mapPhoneToDto).collect(Collectors.toList());
-    }
 }
