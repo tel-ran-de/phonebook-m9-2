@@ -15,12 +15,10 @@ public class ContactService {
 
     IUserRepository userRepository;
     IContactRepository contactRepository;
-    IPhoneRepository phoneRepository;
 
-    public ContactService(IUserRepository userRepository, IContactRepository contactRepository, IPhoneRepository iPhoneRepository) {
+    public ContactService(IUserRepository userRepository, IContactRepository contactRepository) {
         this.userRepository = userRepository;
         this.contactRepository = contactRepository;
-        this.phoneRepository = iPhoneRepository;
     }
 
     public void add(String userId, String firstName, String lastName, String description) {
@@ -50,13 +48,13 @@ public class ContactService {
 
     public List<Contact> getAllContactsByUserId(String email) {
         User user = userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
-        return contactRepository.findAllByUserEmail(email).stream()
+        return user.getContacts().stream()
                 .filter(contact -> contact.getId() != user.getMyProfile().getId())
                 .collect(Collectors.toList());
     }
 
     public List<Phone> getPhones(int id) {
-        contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
-        return phoneRepository.findAllByContactId(id);
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
+        return contact.getPhones();
     }
 }
