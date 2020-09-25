@@ -1,6 +1,5 @@
 package com.telran.phonebookapi.service;
 
-import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.exception.TokenNotFoundException;
 import com.telran.phonebookapi.exception.UserAlreadyExistsException;
 import com.telran.phonebookapi.mapper.UserMapper;
@@ -65,12 +64,11 @@ public class UserService {
             User newUser = new User(email, encodedPassword);
             newUser.addRole(UserRole.USER);
             Contact profile = new Contact();
+            newUser.setMyProfile(profile);
             contactRepository.save(profile);
-
-            userRepository.save(user);
-            profile.setUser(user);
+            userRepository.save(newUser);
+            profile.setUser(newUser);
             contactRepository.save(profile);
-
 
             activationTokenRepository.save(new ActivationToken(token, newUser));
             emailSender.sendMail(newUser.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE

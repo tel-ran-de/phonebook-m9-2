@@ -8,8 +8,6 @@ import com.telran.phonebookapi.persistance.IEmailRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class EmailService {
@@ -28,14 +26,14 @@ public class EmailService {
         this.emailMapper = emailMapper;
     }
 
-    public void add(String email, int contactId) {
+    public void add(int contactId, String email) {
         Contact contact = contactRepository.findById(contactId).orElseThrow(()
                 -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
         Email newEmail = new Email(email, contact);
         emailRepository.save(newEmail);
     }
 
-    public void edit(String newEmail, int emailId) {
+    public void edit(int emailId, String newEmail) {
         Email email = emailRepository.findById(emailId).orElseThrow(()
                 -> new EntityNotFoundException(EMAIL_DOES_NOT_EXIST));
         email.setEmail(newEmail);

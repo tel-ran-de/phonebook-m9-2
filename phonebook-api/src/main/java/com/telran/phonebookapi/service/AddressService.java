@@ -1,7 +1,5 @@
 package com.telran.phonebookapi.service;
 
-import com.telran.phonebookapi.dto.AddressDto;
-import com.telran.phonebookapi.exception.UserAlreadyExistsException;
 import com.telran.phonebookapi.mapper.AddressMapper;
 import com.telran.phonebookapi.model.Address;
 import com.telran.phonebookapi.model.Contact;
@@ -10,9 +8,6 @@ import com.telran.phonebookapi.persistance.IContactRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AddressService {
@@ -31,12 +26,10 @@ public class AddressService {
         this.addressMapper = addressMapper;
     }
 
-    public void add(String zip,
+    public void add(int contactId, String zip,
                     String country,
                     String city,
-                    String street,
-                    int contactId) {
-
+                    String street) {
         Contact contact = contactRepository.findById(contactId).orElseThrow(()
                 -> new EntityNotFoundException(ContactService.CONTACT_DOES_NOT_EXIST));
 
@@ -44,12 +37,11 @@ public class AddressService {
         addressRepository.save(address);
     }
 
-    public void editAllFields(String newZip,
+    public void editAllFields(int id, String newZip,
                               String newCountry,
                               String newCity,
-                              String newStreet,
-                              int addressId) {
-        Address address = addressRepository.findById(addressId).orElseThrow(()
+                              String newStreet) {
+        Address address = addressRepository.findById(id).orElseThrow(()
                 -> new EntityNotFoundException(ADDRESS_DOES_NOT_EXIST));
         address.setCountry(newCountry);
         address.setCity(newCity);

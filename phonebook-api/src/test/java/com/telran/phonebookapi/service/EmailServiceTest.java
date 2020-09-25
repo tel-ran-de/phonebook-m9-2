@@ -1,6 +1,5 @@
 package com.telran.phonebookapi.service;
 
-import com.telran.phonebookapi.mapper.EmailMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.Email;
 import com.telran.phonebookapi.model.User;
@@ -54,7 +53,7 @@ public class EmailServiceTest {
         when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
 
         Email email = new Email("mail@mail.com", contact);
-        emailService.add(email.getEmail(), contact.getId());
+        emailService.add(contact.getId(), email.getEmail());
 
         verify(emailRepository, times(1)).save(any());
         verify(emailRepository).save(emailCaptor.capture());
@@ -67,7 +66,7 @@ public class EmailServiceTest {
     @Test
     public void testAdd_contactDoesNotExist_EntityNotFoundException() {
         Exception exception = assertThrows(EntityNotFoundException.class, ()
-                ->emailService.add("mail@mail.com", 1));
+                -> emailService.add(1, "mail@mail.com"));
 
         assertEquals(error_ContactDoesNotExist, exception.getMessage());
     }
@@ -80,11 +79,11 @@ public class EmailServiceTest {
         when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
 
         Email email = new Email("mail@mail.com", contact);
-        emailService.add(email.getEmail(), contact.getId());
+        emailService.add(contact.getId(), email.getEmail());
 
         when(emailRepository.findById(email.getId())).thenReturn(Optional.of(email));
 
-        emailService.edit("newmail@mail.com",email.getId());
+        emailService.edit(email.getId(), "newmail@mail.com");
 
         verify(emailRepository, times(2)).save(any());
 
@@ -100,7 +99,7 @@ public class EmailServiceTest {
     @Test
     public void testEditEmail_emailDoesNotExist_EntityNotFoundException() {
         Exception exception = assertThrows(EntityNotFoundException.class, ()
-                -> emailService.edit("newmail@mail.com", 1));
+                -> emailService.edit(1, "newmail@mail.com"));
 
         assertEquals(error_EmailDoesNotExist, exception.getMessage());
     }
@@ -155,9 +154,9 @@ public class EmailServiceTest {
         Email email = new Email("mail@mail.com", contact);
         Email email2 = new Email("mail2@mail.com", contact);
         Email email3 = new Email("mail3@mail.com", contact);
-        emailService.add(email.getEmail(), contact.getId());
-        emailService.add(email2.getEmail(), contact.getId());
-        emailService.add(email3.getEmail(), contact.getId());
+        emailService.add(contact.getId(), email.getEmail());
+        emailService.add(contact.getId(), email2.getEmail());
+        emailService.add(contact.getId(), email3.getEmail());
 
         when(emailRepository.findById(email2.getId())).thenReturn(Optional.of(email2));
 
@@ -174,37 +173,4 @@ public class EmailServiceTest {
         assertEquals(error_EmailDoesNotExist, exception.getMessage());
     }
 
-    @Test
-    public void testGetAll_threeEmails_allEmailsFounded() {
-
-        User user = new User("test@gmail.com", "test");
-        Contact contact = new Contact("TestName", user);
-
-        when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
-
-        Email email = new Email("mail@mail.com", contact);
-        Email email2 = new Email("mail2@mail.com", contact);
-        Email email3 = new Email("mail3@mail.com", contact);
-        emailService.add(email.getEmail(), contact.getId());
-        emailService.add(email2.getEmail(), contact.getId());
-        emailService.add(email3.getEmail(), contact.getId());
-        emails.add(email);
-        emails.add(email2);
-        emails.add(email3);
-
-        when(emailRepository.findAllByContactId(contact.getId())).thenReturn(emails);
-
-        List<Email>emailListFounded = emailService.getAllEmailsByContactId(contact.getId());
-
-        assertEquals(3, emailListFounded.size());
-        assertEquals(email.getEmail(), emailListFounded.get(0).getEmail());
-        assertEquals(email2.getEmail(), emailListFounded.get(1).getEmail());
-        assertEquals(email3.getEmail(), emailListFounded.get(2).getEmail());
-        assertEquals(email.getId(), emailListFounded.get(0).getId());
-        assertEquals(email2.getId(), emailListFounded.get(1).getId());
-        assertEquals(email3.getId(), emailListFounded.get(2).getId());
-        assertEquals(email.getContact(), emailListFounded.get(0).getContact());
-        assertEquals(email2.getContact(), emailListFounded.get(1).getContact());
-        assertEquals(email3.getContact(), emailListFounded.get(2).getContact());
-    }
 }
