@@ -21,9 +21,9 @@ class IContactRepositoryTest {
     IContactRepository contactRepository;
 
     @Test
-    public void testFindByFirstName_oneRecord_found() {
+    public void testFindByUserEmail_oneRecord_found() {
 
-        User ivan = new User("ivan@gmail.com", "12345");
+        User ivan = new User("ivan@gmail.com", "12345678");
         Contact mama = new Contact("Mama", ivan);
 
         entityManager.persist(ivan);
@@ -31,7 +31,7 @@ class IContactRepositoryTest {
 
         entityManager.flush();
         entityManager.clear();
-        List<Contact> foundContacts = contactRepository.findByFirstName("Mama");
+        List<Contact> foundContacts = contactRepository.findAllByUserEmail("ivan@gmail.com");
         assertEquals(1, foundContacts.size());
         assertEquals("Mama", foundContacts.get(0).getFirstName());
     }

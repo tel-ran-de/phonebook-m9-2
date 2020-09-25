@@ -55,6 +55,18 @@ public class Contact {
     public void addEmail(Email email) {
         emails.add(email);
     }
+    
+    public void addPhones(List<Phone> numbers) {
+        phones.addAll(numbers);
+    }
+
+    public void addAddresses(List<Address> addresses) {
+        this.addresses.addAll(addresses);
+    }
+
+    public void addEmails(List<Email> emails) {
+        this.emails.addAll(emails);
+    }
 
     public List<Phone> getPhoneNumbers() {
         return Collections.unmodifiableList(phones);
@@ -67,6 +79,5 @@ public class Contact {
     public List<Email> getEmails() {
         return Collections.unmodifiableList(emails);
     }
-
 }
 

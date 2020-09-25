@@ -9,7 +9,5 @@ public interface IContactRepository extends CrudRepository<Contact, Integer> {
 
     List<Contact> findAll();
 
-    List<Contact> findByFirstName(String name);
-
-    List<Contact> findAllByUserEmail(String id);
+    List<Contact> findAllByUserEmail(String email);
 }
