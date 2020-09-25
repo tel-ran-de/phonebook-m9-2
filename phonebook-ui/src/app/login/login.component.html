@@ -3,44 +3,44 @@
   <p class="h4 mb-4 text-center">Sign in</p>
 
   <div class="form-group">
-    <input class="form-control mb-2" id="defaultLoginFormEmail" formControlName="email" type="email"
-           id="defaultRegisterFormEmail" class="form-control mb-2" placeholder="E-mail" [(ngModel)]="email">
+    <input class="form-control mb-2" formControlName="email" type="email"
+           id="email" class="form-control mb-2" placeholder="E-mail" [(ngModel)]="email">
   </div>
 
   <div
     *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)"
     class="alert alert-danger">
-    <div *ngIf="loginForm.controls['email'].errors.required">
+    <div id="empty-email" *ngIf="loginForm.controls['email'].errors.required">
       Email is required.
     </div>
-    <div *ngIf="loginForm.controls['email'].errors.email">
+    <div id="wrong-email" *ngIf="loginForm.controls['email'].errors.email">
       Email must be a valid email address.
     </div>
   </div>
 
   <div class="form-group">
-    <input class="form-control mb-2" formControlName="password" type="password" class="form-control mb-2"
+    <input class="form-control mb-2" id="registration-password" formControlName="password" type="password" class="form-control mb-2"
            placeholder="Password" [(ngModel)]="password">
   </div>
 
   <div
     *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)"
     class="alert alert-danger">
-    <div *ngIf="loginForm.controls['password'].errors.required">
+    <div id="empty-password" *ngIf="loginForm.controls['password'].errors.required">
       Password is required.
     </div>
-    <div *ngIf="loginForm.controls['password'].errors.minlength">
+    <div id="minimal-password" *ngIf="loginForm.controls['password'].errors.minlength">
       Password must be at least 8 characters.
     </div>
-    <div *ngIf="loginForm.controls['password'].errors.maxlength">
+    <div id="maximal-password" *ngIf="loginForm.controls['password'].errors.maxLength">
       Password must be no longer than 20 characters.
     </div>
 
   </div>
   <div class="text-danger">{{error}}</div>
-  <button class="btn btn-info btn-block" type="submit" [disabled]="loginForm.pristine || loginForm.invalid">Login
+  <button id="btn-login" class="btn btn-info btn-block" type="submit" [disabled]="loginForm.pristine || loginForm.invalid">Login
   </button>
-  <a class="btn btn-success btn-block" routerLink="/user/registration">Sign up</a>
+  <a id="btn-signup"  class="btn btn-success btn-block" routerLink="/user/registration">Sign up</a>
   <div class="d-flex justify-content-center">
     <a routerLink="/user/forgot-password">Forgot your password?</a>
   </div>
