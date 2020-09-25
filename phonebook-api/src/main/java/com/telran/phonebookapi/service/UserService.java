@@ -55,13 +55,14 @@ public class UserService {
     }
 
     public void addUser(String email, String password) {
+        String userEmail = email.toLowerCase();
 
-        if (userRepository.findById(email).isPresent()) {
+        if (userRepository.findById(userEmail).isPresent()) {
             throw new UserAlreadyExistsException(USER_ALREADY_EXISTS);
         } else {
             String token = UUID.randomUUID().toString();
             String encodedPassword = bCryptPasswordEncoder.encode(password);
-            User newUser = new User(email, encodedPassword);
+            User newUser = new User(userEmail, encodedPassword);
             newUser.addRole(UserRole.USER);
             Contact profile = new Contact();
             newUser.setMyProfile(profile);
