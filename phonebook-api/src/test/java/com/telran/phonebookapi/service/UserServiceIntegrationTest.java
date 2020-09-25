@@ -70,13 +70,11 @@ class UserServiceIntegrationTest {
     @Test()
     public void testActivateUser_userAlreadyExist() {
         User user = new User("ivanov@gmail.com", "12345");
-        UserDto userDto = UserDto.builder()
-                .email(user.getEmail())
-                .build();
 
         userRepository.save(user);
 
-        Exception exception = assertThrows(UserAlreadyExistsException.class, () -> userService.addUser(userDto));
+        Exception exception = assertThrows(UserAlreadyExistsException.class, ()
+                -> userService.addUser("ivanov@gmail.com", "12345"));
         assertTrue(exception.getMessage().contains(UserService.USER_ALREADY_EXISTS));
     }
 }

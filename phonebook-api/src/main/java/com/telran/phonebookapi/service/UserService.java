@@ -23,7 +23,7 @@ public class UserService {
     static final String ACTIVATION_SUBJECT = "User activation";
     static final String ACTIVATION_MESSAGE = "Please, follow the link to activate your account: ";
     static final String NOT_ACTIVE_LINK = "Your link is not active anymore";
-    static final String USER_DOES_NOT_EXIST = "Error! This user doesn't exist in our DB";
+    static final String USER_DOES_NOT_EXIST = "Error! This user doesn't exist";
     static final String RECOVER_YOUR_PASSWORD_MESSAGE = "Please click the link to recover your password ";
     static final String UI_RECOVERY_LINK = "/user/password-recovery/";
     static final String UI_ACTIVATION_LINK = "/user/activation/";
@@ -55,24 +55,25 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public void addUser(UserDto userDto) {
-        if (userRepository.findById(userDto.email).isPresent()) {
+    public void addUser(String email, String password) {
+
+        if (userRepository.findById(email).isPresent()) {
             throw new UserAlreadyExistsException(USER_ALREADY_EXISTS);
         } else {
             String token = UUID.randomUUID().toString();
-            String encodedPassword = bCryptPasswordEncoder.encode(userDto.password);
-            User user = new User(userDto.email, encodedPassword);
-            user.setActive(false);
-            user.addRole(UserRole.USER);
+            String encodedPassword = bCryptPasswordEncoder.encode(password);
+            User newUser = new User(email, encodedPassword);
+            newUser.addRole(UserRole.USER);
             Contact profile = new Contact();
-            user.setMyProfile(profile);
             contactRepository.save(profile);
+
             userRepository.save(user);
             profile.setUser(user);
             contactRepository.save(profile);
 
-            activationTokenRepository.save(new ActivationToken(token, user));
-            emailSender.sendMail(user.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
+
+            activationTokenRepository.save(new ActivationToken(token, newUser));
+            emailSender.sendMail(newUser.getEmail(), ACTIVATION_SUBJECT, ACTIVATION_MESSAGE
                     + uiHost + UI_ACTIVATION_LINK + token);
         }
     }
