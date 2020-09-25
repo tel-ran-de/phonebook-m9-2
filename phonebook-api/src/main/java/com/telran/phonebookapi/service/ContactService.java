@@ -57,4 +57,14 @@ public class ContactService {
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
         return contact.getPhones();
     }
+
+    public List<Address> getAddresses(int id) {
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
+        return contact.getAddresses();
+    }
+
+    public List<Email> getEmails(int id) {
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CONTACT_DOES_NOT_EXIST));
+        return contact.getEmails();
+    }
 }

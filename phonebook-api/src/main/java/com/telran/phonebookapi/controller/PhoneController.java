@@ -46,7 +46,7 @@ public class PhoneController {
         if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
             throw new EntityNotFoundException(INVALID_ACCESS);
         }
-        phoneService.editAllFields(phoneDto.contactId, phoneDto.countryCode, phoneDto.phoneNumber);
+        phoneService.editAllFields(phoneDto.id, phoneDto.countryCode, phoneDto.phoneNumber);
     }
 
     @GetMapping("/{id}")

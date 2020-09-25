@@ -1,8 +1,12 @@
 package com.telran.phonebookapi.controller;
 
+import com.telran.phonebookapi.dto.AddressDto;
 import com.telran.phonebookapi.dto.ContactDto;
+import com.telran.phonebookapi.dto.EmailDto;
 import com.telran.phonebookapi.dto.PhoneDto;
+import com.telran.phonebookapi.mapper.AddressMapper;
 import com.telran.phonebookapi.mapper.ContactMapper;
+import com.telran.phonebookapi.mapper.EmailMapper;
 import com.telran.phonebookapi.mapper.PhoneMapper;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.User;
@@ -27,12 +31,21 @@ public class ContactController {
     ContactService contactService;
     ContactMapper contactMapper;
     PhoneMapper phoneMapper;
+    AddressMapper addressMapper;
+    EmailMapper emailMapper;
 
-    public ContactController(UserService userService, ContactService contactService, ContactMapper contactMapper, PhoneMapper phoneMapper) {
+    public ContactController(UserService userService,
+                             ContactService contactService,
+                             ContactMapper contactMapper,
+                             PhoneMapper phoneMapper,
+                             AddressMapper addressMapper,
+                             EmailMapper emailMapper) {
         this.userService = userService;
         this.contactService = contactService;
         this.contactMapper = contactMapper;
         this.phoneMapper = phoneMapper;
+        this.addressMapper = addressMapper;
+        this.emailMapper = emailMapper;
     }
 
     @PostMapping("")
@@ -99,8 +112,32 @@ public class ContactController {
         if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
             throw new EntityNotFoundException(INVALID_ACCESS);
         }
-        return contactService.getPhones(id).stream()
+        return contact.getPhones().stream()
                 .map(phoneMapper::mapPhoneToDto)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("{id}/addresses")
+    public List<AddressDto> requestAllAddressesByContactId(Authentication auth, @PathVariable int id) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Contact contact = contactService.getById(id);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
+        return contact.getAddresses().stream()
+                .map(addressMapper::mapAddressToDto)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("{id}/emails")
+    public List<EmailDto> requestAllEmailsByContactId(Authentication auth, @PathVariable int id) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Contact contact = contactService.getById(id);
+        if (!contact.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new EntityNotFoundException(INVALID_ACCESS);
+        }
+        return contact.getEmails().stream()
+                .map(emailMapper::mapEmailToDto)
                 .collect(Collectors.toList());
     }
 

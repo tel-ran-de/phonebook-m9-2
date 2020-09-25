@@ -14,8 +14,10 @@ public class EmailMapper {
         return new EmailDto(email.getId(), email.getEmail(), email.getContact().getId());
     }
 
+
     public List<EmailDto> mapListEmailToDto(List<Email> emails) {
         return emails.stream().map(this::mapEmailToDto).collect(Collectors.toList());
     }
+
 
 }

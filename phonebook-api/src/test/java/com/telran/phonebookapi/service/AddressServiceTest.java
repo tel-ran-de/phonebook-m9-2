@@ -1,18 +1,20 @@
 package com.telran.phonebookapi.service;
 
 import com.telran.phonebookapi.dto.AddressDto;
-import com.telran.phonebookapi.mapper.AddressMapper;
 import com.telran.phonebookapi.model.Address;
 import com.telran.phonebookapi.model.Contact;
 import com.telran.phonebookapi.model.User;
 import com.telran.phonebookapi.persistance.IAddressRepository;
 import com.telran.phonebookapi.persistance.IContactRepository;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
+@TestMethodOrder(MethodOrderer.Alphanumeric.class)
 @ExtendWith(MockitoExtension.class)
 class AddressServiceTest {
 
@@ -34,8 +37,14 @@ class AddressServiceTest {
     @InjectMocks
     AddressService addressService;
 
-    @Spy
-    AddressMapper addressMapper;
+    @InjectMocks
+    List<Address> addresses = new ArrayList<>();
+
+    @Captor
+    ArgumentCaptor<Address> addressCaptor;
+
+    String error_AddressDoesNotExist = "Error! This address doesn't exist";
+    String error_ContactDoesNotExist = "Error! This contact doesn't exist";
 
     @Test
     public void testAdd_contactExists_contactWithAddress() {
@@ -44,107 +53,148 @@ class AddressServiceTest {
 
         when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
 
-        AddressDto addressDto = new AddressDto();
-        addressDto.contactId = 0;
-        addressDto.city = "Berlin";
-        addressService.add(addressDto);
+        Address address = new Address("12345", "Germany", "Berlin", "Street", contact);
+        addressService.add(contact.getId(), "12345", "Germany", "Berlin", "Street");
 
         verify(addressRepository, times(1)).save(any());
-        verify(addressRepository, times(1)).save(argThat(address -> address.getCity().equals(addressDto.city) &&
-                address.getContact().getId() == addressDto.contactId)
-        );
+        verify(addressRepository).save(addressCaptor.capture());
+
+        List<Address> capturedEmails = addressCaptor.getAllValues();
+        assertEquals(1, capturedEmails.size());
+        assertEquals(address.getCity(), capturedEmails.get(0).getCity());
     }
 
     @Test
     public void testAdd_contactDoesNotExist_EntityNotFoundException() {
+        Exception exception = assertThrows(EntityNotFoundException.class, ()
+                -> addressService.add(1, "12345", "Germany", "Berlin", "Street"));
 
         AddressDto addressDto = new AddressDto();
         addressDto.contactId = 0;
         addressDto.city = "Berlin";
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> addressService.add(addressDto));
 
         verify(contactRepository, times(1)).findById(any());
         assertEquals("Error! This contact doesn't exist", exception.getMessage());
     }
 
     @Test
-    public void testEditAllFields_addressExist_AllFieldsChanged() {
+    public void testEdit_addressExist_AllFieldsChanged() {
 
         User user = new User("test@gmail.com", "test");
+        Contact contact = new Contact("TestName", user);
 
-        Contact oldContact = new Contact("TestName", user);
-        Address oldAddress = new Address(oldContact);
+        when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
 
-        AddressDto addressDto = new AddressDto();
-        addressDto.id = 0;
-        addressDto.city = "Berlin";
+        Address address = new Address("12345", "Germany", "Berlin", "Street", contact);
+        addressService.add(address.getContact().getId(), address.getZip(), address.getCountry(), address.getCity(), address.getStreet());
 
-        when(addressRepository.findById(addressDto.id)).thenReturn(Optional.of(oldAddress));
+        when(addressRepository.findById(address.getId())).thenReturn(Optional.of(address));
 
-        addressService.editAllFields(addressDto);
+        addressService.editAllFields(address.getId(), "new12345", "newGermany", "newBerlin", "newStreet");
 
-        verify(addressRepository, times(1)).save(any());
-        verify(addressRepository, times(1)).save(argThat(address ->
-                address.getCity().equals(addressDto.city)
-                        && address.getContact().getId() == addressDto.contactId)
-        );
+        verify(addressRepository, times(2)).save(any());
+
+        Address addressFounded = addressService.getById(address.getId());
+        assertEquals(address.getCity(), addressFounded.getCity());
+        assertEquals(address.getCountry(), addressFounded.getCountry());
+        assertEquals(address.getStreet(), addressFounded.getStreet());
+        assertEquals(address.getZip(), addressFounded.getZip());
+        assertEquals(contact.getId(), addressFounded.getContact().getId());
+        assertEquals(address.getId(), addressFounded.getId());
+
+        verify(addressRepository, times(2)).findById(argThat(id ->
+                id == address.getId()));
     }
 
     @Test
-    public void testEditAny_addressDoesNotExist_EntityNotFoundException() {
+    public void testEdit_addressDoesNotExist_EntityNotFoundException() {
+        Exception exception = assertThrows(EntityNotFoundException.class, ()
+                -> addressService.editAllFields(
+                1,
+                "new12345",
+                "newGermany",
+                "newBerlin",
+                "newStreet"));
 
-        AddressDto addressDto = new AddressDto();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> addressService.editAllFields(addressDto));
-
-        verify(addressRepository, times(1)).findById(any());
-        assertEquals("Error! This address doesn't exist in our DB", exception.getMessage());
+        assertEquals(error_AddressDoesNotExist, exception.getMessage());
     }
-
-    @Captor
-    ArgumentCaptor<Address> addressArgumentCaptor;
 
     @Test
     public void testRemoveById_addressExists_AddressDeleted() {
-
         User user = new User("test@gmail.com", "test");
-
         Contact contact = new Contact("TestName", user);
-        Address address = new Address();
-        contact.addAddress(address);
+        Address address = new Address("12345", "Germany", "Berlin", "Street", contact);
 
-        AddressDto addressDto = new AddressDto();
-        addressDto.id = 0;
+        when(addressRepository.findById(address.getId())).thenReturn(Optional.of(address));
 
-        when(addressRepository.findById(addressDto.id)).thenReturn(Optional.of(address));
+        addressService.removeById(address.getId());
 
-        addressService.removeById(addressDto.id);
-
-        List<Address> capturedAddresses = addressArgumentCaptor.getAllValues();
-        verify(addressRepository, times(1)).deleteById(addressDto.id);
+        List<Address> capturedAddresses = addressCaptor.getAllValues();
+        verify(addressRepository, times(1)).deleteById(address.getId());
         assertEquals(0, capturedAddresses.size());
     }
 
     @Test
-    public void testGetById_contactWithAddress_Address() {
+    public void testRemoveById_emailDoesNotExist_EntityNotFoundException() {
+        Exception exception = assertThrows(EntityNotFoundException.class, ()
+                -> addressService.removeById(1));
+
+        assertEquals(error_AddressDoesNotExist, exception.getMessage());
+    }
+
+    @Test
+    public void testGetById_oneAddress_AddressFounded() {
 
         User user = new User("test@gmail.com", "test");
         Contact contact = new Contact("TestName", user);
         Address address = new Address("10000", "Germany", "Berlin", "Strasse", contact);
 
-        AddressDto addressDto = new AddressDto(0, "10000", "Germany", "Berlin", "Strasse", 0);
+        when(addressRepository.findById(address.getId())).thenReturn(Optional.of(address));
+        Address addressFounded = addressService.getById(address.getId());
 
-        when(addressRepository.findById(addressDto.id)).thenReturn(Optional.of(address));
-        AddressDto addressFounded = addressService.getById(addressDto.id);
+        assertEquals(address.getZip(), addressFounded.getZip());
+        assertEquals(address.getCountry(), addressFounded.getCountry());
+        assertEquals(address.getCity(), addressFounded.getCity());
+        assertEquals(address.getStreet(), addressFounded.getStreet());
 
-        assertEquals(addressDto.zip, addressFounded.zip);
-        assertEquals(addressDto.country, addressFounded.country);
-        assertEquals(addressDto.city, addressFounded.city);
-        assertEquals(addressDto.street, addressFounded.street);
-
-        verify(addressMapper, times(1)).mapAddressToDto(address);
         verify(addressRepository, times(1)).findById(argThat(
-                id -> id.intValue() == addressDto.id));
+                id -> id == address.getId()));
     }
+
+    @Test
+    public void testGetById_threeAddresses_allFounded() {
+
+        User user = new User("test@gmail.com", "test");
+        Contact contact = new Contact("TestName", user);
+
+        when(contactRepository.findById(contact.getId())).thenReturn(Optional.of(contact));
+
+        Address address = new Address("10000", "Germany", "Berlin", "Strasse", contact);
+        Address address2 = new Address("10002", "Germany2", "Berlin2", "Strasse2", contact);
+        Address address3 = new Address("10003", "Germany3", "Berlin3", "Strasse3", contact);
+        addressService.add(address.getContact().getId(), address.getZip(), address.getCountry(),
+                address.getCity(), address.getStreet());
+        addressService.add(address.getContact().getId(), address2.getZip(), address2.getCountry(),
+                address2.getCity(), address2.getStreet());
+        addressService.add(address.getContact().getId(), address3.getZip(), address3.getCountry(),
+                address3.getCity(), address3.getStreet());
+
+        when(addressRepository.findById(address2.getId())).thenReturn(Optional.of(address2));
+
+        Address addressFounded = addressService.getById(address2.getId());
+
+        assertEquals(address2.getZip(), addressFounded.getZip());
+        assertEquals(address2.getCountry(), addressFounded.getCountry());
+        assertEquals(address2.getCity(), addressFounded.getCity());
+        assertEquals(address2.getStreet(), addressFounded.getStreet());
+    }
+
+    @Test
+    public void testGetById_addressDoesNotExist_EntityNotFoundException() {
+        Exception exception = assertThrows(EntityNotFoundException.class, ()
+                -> addressService.getById(2));
+
+        assertEquals(error_AddressDoesNotExist, exception.getMessage());
+    }
+
 }
