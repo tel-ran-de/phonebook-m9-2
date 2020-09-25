@@ -60,7 +60,7 @@ class ContactServiceTest {
         ));
 
         verify(userRepository, times(1)).findById(anyString());
-        assertEquals("Error! This user doesn't exist in our DB", exception.getMessage());
+        assertEquals("Error! This user doesn't exist", exception.getMessage());
     }
 
     @Test

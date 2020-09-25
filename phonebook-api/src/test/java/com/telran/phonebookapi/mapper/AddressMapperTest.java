@@ -13,7 +13,7 @@ class AddressMapperTest {
     AddressMapper addressMapper = new AddressMapper();
 
     @Test
-    void AddressDto() {
+    void mapAddressToDto() {
         User user = new User("test@gmail.com", "112233");
         Contact contact = new Contact("Name", user);
         Address address = new Address("10000", "Germany", "Berlin", "Strasse 100", contact);
