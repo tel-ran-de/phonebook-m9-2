@@ -47,6 +47,9 @@ jobs:
         with:
           java-version: 11
 
+      - name: Copy application.properties
+        run: mv phonebook-api/src/main/resources/application.properties_ phonebook-api/src/main/resources/application.properties
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -75,9 +78,6 @@ jobs:
           ECR_REPOSITORY: phonebook-2
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          # Build a docker container and
-          # push it to ECR so that it can
-          # be deployed to ECS.
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"

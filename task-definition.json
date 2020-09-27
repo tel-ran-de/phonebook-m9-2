@@ -73,6 +73,10 @@
         {
           "name": "SPRING_MAIL_USERNAME",
           "value": "phonebook.telran@gmail.com"
+        },
+        {
+          "name": "COM_TELRAN_PHONEBOOK_UI_HOST",
+          "value": "dev.phonebook-2.telran-edu.de"
         }
       ],
       "resourceRequirements": null,
