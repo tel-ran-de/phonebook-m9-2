@@ -34,10 +34,11 @@ name: Deploy to Amazon ECS
 
 jobs:
 
-  build:
-    name: Build
+  build_deploy:
+    name: Build and deploy
     runs-on: ubuntu-latest
     steps:
+# Building steps
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -55,12 +56,7 @@ jobs:
       - name: Build API
         run: ./gradlew bootJarDev
 
-
-  deploy:
-    name: Deploy
-    needs: build
-
-    steps:
+# Deploying steps
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
