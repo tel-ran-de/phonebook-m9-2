@@ -16,13 +16,13 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Setter
-    private String street;
-    @Setter
     private String zip;
+    @Setter
+    private String country;
     @Setter
     private String city;
     @Setter
-    private String country;
+    private String street;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Contact contact;
