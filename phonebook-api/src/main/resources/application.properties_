@@ -27,3 +27,4 @@ com.telran.auth.jwt.secret=MpzjCrQGNgG9sVxv
 //minutes
 com.telran.auth.jwt.access-token.expiration=1440
 
+spring.profiles.active=dev

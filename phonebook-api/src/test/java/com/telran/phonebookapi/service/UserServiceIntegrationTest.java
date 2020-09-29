@@ -1,6 +1,5 @@
 package com.telran.phonebookapi.service;
 
-import com.telran.phonebookapi.dto.UserDto;
 import com.telran.phonebookapi.exception.TokenNotFoundException;
 import com.telran.phonebookapi.exception.UserAlreadyExistsException;
 import com.telran.phonebookapi.model.ActivationToken;
