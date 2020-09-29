@@ -1,13 +1,16 @@
 import {Injectable} from '@angular/core';
-import {HttpInterceptor, HttpRequest, HttpHandler} from '@angular/common/http';
+import {HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse} from '@angular/common/http';
 import {AuthenticationService} from './authentication.service';
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenHttpInterceptor implements HttpInterceptor {
 
-  constructor(private tokenService: AuthenticationService) {
+  constructor(private tokenService: AuthenticationService, private router: Router) {
   }
 
 
@@ -22,7 +25,16 @@ export class TokenHttpInterceptor implements HttpInterceptor {
       })
     }
 
-    return next.handle(req);
+    return next.handle(req)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>{
+          console.log('[Interceptor Error]: ', error)
 
+          if (error.status === 401){
+            this.tokenService.logOut()
+          }
+          return throwError(error)
+        })
+      )
   }
 }
