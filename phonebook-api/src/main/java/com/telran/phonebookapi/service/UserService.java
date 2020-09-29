@@ -55,13 +55,14 @@ public class UserService {
     }
 
     public void addUser(String email, String password) {
+        String userEmail = email.toLowerCase();
 
-        if (userRepository.findById(email).isPresent()) {
+        if (userRepository.findById(userEmail).isPresent()) {
             throw new UserAlreadyExistsException(USER_ALREADY_EXISTS);
         } else {
             String token = UUID.randomUUID().toString();
             String encodedPassword = bCryptPasswordEncoder.encode(password);
-            User newUser = new User(email, encodedPassword);
+            User newUser = new User(userEmail, encodedPassword);
             newUser.addRole(UserRole.USER);
             Contact profile = new Contact();
             newUser.setMyProfile(profile);
@@ -86,14 +87,15 @@ public class UserService {
     }
 
     public void sendRecoveryToken(String email) {
-        User ourUser = userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
+        String userEmail = email.toLowerCase();
+        User ourUser = userRepository.findById(userEmail).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
         String token = UUID.randomUUID().toString();
         RecoveryToken recoveryToken = new RecoveryToken(token, ourUser);
         recoveryTokenRepository.save(recoveryToken);
 
         String message = RECOVER_YOUR_PASSWORD_MESSAGE + uiHost + UI_RECOVERY_LINK + token;
 
-        emailSender.sendMail(email, "Password recovery", message);
+        emailSender.sendMail(userEmail, "Password recovery", message);
     }
 
     public void createNewPassword(String recoveryToken, String password) {
@@ -107,11 +109,13 @@ public class UserService {
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
+        String userEmail = email.toLowerCase();
+        return userRepository.findById(userEmail).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
     }
 
     public void changePasswordAuthorizedUser(String email, String password) {
-        User user = userRepository.findById(email).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
+        String userEmail = email.toLowerCase();
+        User user = userRepository.findById(userEmail).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
         final String encryptedPassword = bCryptPasswordEncoder.encode(password);
         user.setPassword(encryptedPassword);
         userRepository.save(user);
