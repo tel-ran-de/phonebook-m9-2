@@ -3,7 +3,7 @@ spring.datasource.username=
 spring.datasource.password=
 
 spring.jpa.hibernate.ddl-auto=
-spring.jpa.show-sql=true
+spring.jpa.show-sql=false
 
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
@@ -18,12 +18,12 @@ com.telran.phonebook.ui.host=http://localhost:4200
 spring.flyway.baseline-on-migrate=true
 spring.flyway.validate-on-migrate=true
 spring.flyway.clean-on-validation-error=true
-spring.flyway.url=jdbc:postgresql://localhost:5432/Phonebook
+spring.flyway.url=jdbc:postgresql://localhost:5432/phonebook
 spring.flyway.locations=classpath:db/migration
 spring.flyway.user=
 spring.flyway.password=
 
-com.telran.auth.jwt.secret=
+com.telran.auth.jwt.secret=MpzjCrQGNgG9sVxv
 //minutes
 com.telran.auth.jwt.access-token.expiration=1440
 

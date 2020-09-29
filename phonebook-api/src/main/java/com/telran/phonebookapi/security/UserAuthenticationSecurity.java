@@ -31,7 +31,8 @@ public class UserAuthenticationSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.antMatcher("/api/**")
+                .authorizeRequests()
                 .antMatchers("/api/user/**")
                 .permitAll()
                 .anyRequest().authenticated()

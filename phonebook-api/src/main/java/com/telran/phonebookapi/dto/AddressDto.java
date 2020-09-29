@@ -9,13 +9,13 @@ public class AddressDto {
 
     public int id;
 
-    public String street;
-
     public String zip;
+
+    public String country;
 
     public String city;
 
-    public String country;
+    public String street;
 
     public int contactId;
 

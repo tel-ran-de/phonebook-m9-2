@@ -36,7 +36,7 @@ export class AuthenticationService {
   }
 
 
- getToken(){
-   return localStorage.getItem('access-token')
- }
+  getToken() {
+    return localStorage.getItem('access-token')
+  }
 }
