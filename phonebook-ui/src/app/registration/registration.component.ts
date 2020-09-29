@@ -21,7 +21,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private router: Router,
-              private userService: UserService) {
+              public userService: UserService) {
 
     this.createForm();
   }
@@ -40,7 +40,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
-    // @ts-ignore
     this.loading = true;
     this.userService.newUserRegistration(this.angForm.value)
       .subscribe(
@@ -48,23 +47,9 @@ export class RegistrationComponent implements OnInit {
           this.router.navigate(['user/activate-email']);
         },
         error => {
-          // @ts-ignore
-          this.error = handleError(error);
           this.loading = false;
         }
       )
-
-    function handleError(error: HttpErrorResponse) {
-      if (error.error instanceof ErrorEvent) {
-        // network error
-        console.error(`No internet connection`);
-      } else {
-        // the response may contain hints of what went wrong
-        console.error(`Error code: ${error.status}`);
-      }
-      // user facing error message
-      return throwError(`Something bad happened; please try again later.`);
-    }
   }
 
 }
