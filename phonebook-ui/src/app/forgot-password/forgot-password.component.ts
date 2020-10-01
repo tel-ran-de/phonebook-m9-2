@@ -12,8 +12,9 @@ export class ForgotPasswordComponent implements OnInit {
 
   forgotPasswordForm: FormGroup;
   loading: boolean;
+  error: string;
 
-  constructor(private fb: FormBuilder, private router: Router, private userService: UserService) {
+  constructor(private fb: FormBuilder, private router: Router, public userService: UserService) {
     this.createForm();
   }
 
@@ -35,7 +36,6 @@ export class ForgotPasswordComponent implements OnInit {
           this.loading = true;
         },
         error => {
-          console.log("error connection");
         }
       )
   }

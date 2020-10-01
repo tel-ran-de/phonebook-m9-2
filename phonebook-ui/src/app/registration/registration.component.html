@@ -1,5 +1,6 @@
 <app-header></app-header>
 <form [formGroup]="angForm" novalidate class="border border-light p-5" (ngSubmit)="onSubmit()">
+
   <p class="h4 mb-4 text-center">{{title}}</p>
   <div class="form-group">
     <input class="form-control mb-2" id="email" formControlName="email" type="email"
@@ -42,7 +43,11 @@
       Passwords do not match.
     </div>
   </div>
+  <div class="alert alert-danger" *ngIf="userService.error$ | async as error">
+    {{ error }}
+  </div>
+
   <button id="btn-signup"  type="submit" [disabled]="angForm.pristine || angForm.invalid" class="btn btn-info my-1 btn-block">Sign up</button>
-  <a id="btn-login" class="btn btn-success btn-block" routerLink="user/login">Login</a>
+  <a id="btn-login" class="btn btn-success btn-block" routerLink="/user/login">Login</a>
 </form>
 <app-footer></app-footer>
