@@ -1,6 +1,7 @@
 package com.telran.phonebookapi.model;
 
 import com.telran.phonebookapi.persistance.IContactRepository;
+import com.telran.phonebookapi.persistance.ICountryCodeRepository;
 import com.telran.phonebookapi.persistance.IUserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +15,7 @@ public class TesterUser implements CommandLineRunner {
 
     IUserRepository userRepository;
     IContactRepository contactRepository;
+    ICountryCodeRepository countryCodeRepository;
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${com.telran.tester.user.email}")
@@ -21,11 +23,13 @@ public class TesterUser implements CommandLineRunner {
     @Value("${com.telran.tester.user.password}")
     String password;
 
-    public TesterUser(IUserRepository userRepository,
-                      IContactRepository contactRepository,
+    public TesterUser(IUserRepository userRepository, 
+                      IContactRepository contactRepository, 
+                      ICountryCodeRepository countryCodeRepository, 
                       BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.contactRepository = contactRepository;
+        this.countryCodeRepository = countryCodeRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -43,6 +47,18 @@ public class TesterUser implements CommandLineRunner {
             userRepository.save(testUser);
             profile.setUser(testUser);
             contactRepository.save(profile);
+
+            CountryCode codeFR = new CountryCode(33, "France");
+            CountryCode codeES = new CountryCode(34, "Spain");
+            CountryCode codeIT = new CountryCode(39, "Italy");
+            CountryCode codeUK = new CountryCode(44, "England");
+            CountryCode codeDE = new CountryCode(49, "Germany");
+
+            countryCodeRepository.save(codeFR);
+            countryCodeRepository.save(codeES);
+            countryCodeRepository.save(codeIT);
+            countryCodeRepository.save(codeUK);
+            countryCodeRepository.save(codeDE);
         }
     }
 }
