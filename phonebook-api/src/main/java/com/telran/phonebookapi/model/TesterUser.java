@@ -23,7 +23,10 @@ public class TesterUser implements CommandLineRunner {
     @Value("${com.telran.tester.user.password}")
     String password;
 
-    public TesterUser(IUserRepository userRepository, IContactRepository contactRepository, ICountryCodeRepository countryCodeRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public TesterUser(IUserRepository userRepository, 
+                      IContactRepository contactRepository, 
+                      ICountryCodeRepository countryCodeRepository, 
+                      BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.contactRepository = contactRepository;
         this.countryCodeRepository = countryCodeRepository;
