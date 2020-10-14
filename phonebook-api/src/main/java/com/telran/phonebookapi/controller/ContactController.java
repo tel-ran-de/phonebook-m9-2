@@ -49,9 +49,10 @@ public class ContactController {
     }
 
     @PostMapping("")
-    public void addContact(Authentication auth, @Valid @RequestBody ContactDto contactDto) {
+    public ContactDto addContact(Authentication auth, @Valid @RequestBody ContactDto contactDto) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        contactService.add(userDetails.getUsername(), contactDto.firstName, contactDto.lastName, contactDto.description);
+        Contact contact =  contactService.add(userDetails.getUsername(), contactDto.firstName, contactDto.lastName, contactDto.description);
+        return contactMapper.mapContactToDtoFull(contact);
     }
 
     @GetMapping("/{id}")
