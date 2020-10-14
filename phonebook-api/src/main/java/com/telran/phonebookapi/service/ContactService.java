@@ -21,12 +21,13 @@ public class ContactService {
         this.contactRepository = contactRepository;
     }
 
-    public void add(String userId, String firstName, String lastName, String description) {
+    public Contact add(String userId, String firstName, String lastName, String description) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(UserService.USER_DOES_NOT_EXIST));
         Contact contact = new Contact(firstName, user);
         contact.setLastName(lastName);
         contact.setDescription(description);
         contactRepository.save(contact);
+        return contact;
     }
 
     public Contact getById(int id) {
