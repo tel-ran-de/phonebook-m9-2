@@ -28,25 +28,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String tokenString = request.getHeader(tokenHeader);
         if (tokenString == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        JWToken token = jwtService.parseToken(tokenString);
+        try {
+            JWToken token = jwtService.parseToken(tokenString);
+            String username = token.getUsername();;
+            UserDetails userDetails = userDetailService.loadUserByUsername(username);
 
-        String username = token.getUsername();
-        UserDetails userDetails = userDetailService.loadUserByUsername(username);
+            Authentication auth = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    userDetails.getPassword(),
+                    userDetails.getAuthorities()
+            );
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                userDetails.getPassword(),
-                userDetails.getAuthorities()
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        filterChain.doFilter(request, response);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthenticated");
+        }
     }
 }
