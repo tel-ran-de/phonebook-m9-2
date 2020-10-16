@@ -17,6 +17,11 @@ import {UserPageComponent} from "./user-page/user-page.component";
 import {LoginComponent} from "./login/login.component";
 import {LogoutComponent} from "./logout/logout.component";
 import {TokenHttpInterceptor} from "./service/TokenHttpInterceptor";
+import { ContactsComponent } from './contacts/contacts.component';
+import {ContactsFilterPipe} from "./pipes/contacts-filter.pipe";
+import { AddContactComponent } from './contacts/add-contact/add-contact.component';
+import { AddPhoneComponent } from './contacts/add-phone/add-phone.component';
+import { ContactDetailsComponent } from './contacts/contact-details/contact-details.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +35,12 @@ import {TokenHttpInterceptor} from "./service/TokenHttpInterceptor";
     ActivationComponent,
     UserPageComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    ContactsComponent,
+    ContactsFilterPipe,
+    AddContactComponent,
+    AddPhoneComponent,
+    ContactDetailsComponent
   ],
   imports: [
     BrowserModule,

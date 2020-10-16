@@ -1,0 +1,85 @@
+<app-header></app-header>
+
+<div class="page-content p-5" id="content">
+
+  <div class="row ">
+    <div class="col-lg-4 mx-auto">
+
+  <section>
+
+    <div class="card mb-4 ">
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <img class="img-fluid rounded-left h-100" src="/assets/img/waves.jpg" alt="project image">
+        </div>
+
+        <div class="col-md-6 p-5 align-self-center">
+
+          <ul class="list-unstyled font-small mb-0">
+            <li>
+              <p class="text-uppercase mb-2"><strong>{{contact.firstName}}</strong></p>
+              <p class="text-muted mb-4">First Name</p>
+            </li>
+
+            <li>
+              <p class="text-uppercase mb-2"><strong>{{contact.lastName}}</strong></p>
+              <p class="text-muted mb-4">Last Name</p>
+            </li>
+            <li>
+              <p class="text-uppercase mb-2"><strong>{{contact.description}}</strong></p>
+              <p class="text-muted mb-4">Description</p>
+            </li>
+
+            <div class="mb-5">
+              <a class="pointer"><i class="fa fa-edit fa-2x pr-3" aria-hidden="true"></i></a>
+              <a class="pointer"><i class="fa fa-trash-o fa-2x pr-3" aria-hidden="true"></i></a>
+            </div>
+
+            <p class="text-uppercase mb-2"><strong>Phone</strong></p>
+            <li *ngFor="let phonenumber of phoneNumbers">
+              <p class="text-muted mb-4"><i class="fa fa-phone fa-2x pr-3" aria-hidden="true"></i>{{phonenumber.countryCode}} {{phonenumber.phoneNumber}}  <i class="fa fa-trash-o fa_custom"></i></p>
+            </li>
+            <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addphone', contact.id]">Add Phone</button>
+
+            <p class="text-uppercase mt-2 mb-2"><strong>Email</strong></p>
+            <li *ngFor="let email of contact.emails">
+              <p class="text-muted mb-4"> <i class="fa fa-envelope fa-2x pr-3" aria-hidden="true"></i>{{email.email}}</p>
+            </li>
+            <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addemail', contact.id]">Add Email</button>
+
+
+
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
