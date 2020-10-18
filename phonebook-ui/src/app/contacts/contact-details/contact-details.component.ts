@@ -32,18 +32,24 @@ export class ContactDetailsComponent implements OnInit {
     this.id = this.activatedRoute.snapshot.params.id;
     this.contactsService.getContactById(this.id).subscribe(response => {
       console.log(response);
-      this.contact = response;
+    /*  this.contact = response;
       this.addresses = this.contact.addresses;
       this.phoneNumbers = this.contact.phoneNumbers;
-      this.emails = this.contact.emails;
+      this.emails = this.contact.emails;*/
 
     });
   }
-
+ /* removePhone(id: number) {
+    {
+      this.contactsService.removePhone(id).subscribe(() => {
+        this.contact.phoneNumbers = this.contact.phoneNumbers.filter(post => post.id != id)
+      })
+    }
+  }*/
 
   removePhone(id: number) {
-    this.contactsService.removePhone(id).subscribe(() =>{
-      this.contact.phoneNumbers = this.contact.filter(post => post.id != id)
+    this.contactsService.removePhone(id).subscribe(() => {
+      this.contact.phoneNumbers = this.contact.phoneNumbers.filter(post => post.id != id)
     })
   }
 }
