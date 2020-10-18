@@ -39,7 +39,8 @@
 
             <p class="text-uppercase mb-2"><strong>Phone</strong></p>
             <li *ngFor="let phonenumber of phoneNumbers">
-              <p class="text-muted mb-4"><i class="fa fa-phone fa-2x pr-3" aria-hidden="true"></i>{{phonenumber.countryCode}} {{phonenumber.phoneNumber}}  <i class="fa fa-trash-o fa_custom"></i></p>
+              <p class="text-muted mb-4"><i class="fa fa-phone fa-2x pr-3" aria-hidden="true"></i>{{phonenumber.countryCode}} {{phonenumber.phoneNumber}}
+                <a (click)="removePhone(contact.id)"><i class="fa fa-trash-o fa_custom"></i></a> </p>
             </li>
             <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addphone', contact.id]">Add Phone</button>
 
