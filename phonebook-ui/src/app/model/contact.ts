@@ -7,7 +7,7 @@ export class Contact {
   phoneNumber: any;
   addresses: string;
   country: string;
-  phoneNumbers: string;
+  phoneNumbers: any;
   zip: string;
 
   city: string;
