@@ -23,6 +23,7 @@ import { AddContactComponent } from './contacts/add-contact/add-contact.componen
 import { AddPhoneComponent } from './contacts/add-phone/add-phone.component';
 import { ContactDetailsComponent } from './contacts/contact-details/contact-details.component';
 import { AddAddressComponent } from './contacts/add-address/add-address.component';
+import { UpdatePhoneComponent } from './contacts/update-phone/update-phone.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { AddAddressComponent } from './contacts/add-address/add-address.componen
     AddContactComponent,
     AddPhoneComponent,
     ContactDetailsComponent,
-    AddAddressComponent
+    AddAddressComponent,
+    UpdatePhoneComponent
   ],
   imports: [
     BrowserModule,

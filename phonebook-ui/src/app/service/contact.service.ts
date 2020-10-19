@@ -50,6 +50,23 @@ export class ContactsService {
     return this.http
       .get<Contact>(this.country_code)
   }
+
+  getPhone(id): Observable<Contact>{
+    return this.http
+      .get<Contact>(this.contactPhonePath + '/' + id)
+  }
+
+  updatePhone(contact,phoneId: number, country_code){
+    return this.http
+      .put<Contact>(this.contactPhonePath,{
+        id: phoneId,
+        countryCode: country_code,
+        phoneNumber: contact.phoneNumber,
+        contactId: contact.id,
+      })
+  }
+
+
   addPhone(contact,contactId: number, country_code): Observable<Contact> {
     return this.http
       .post<Contact>(this.contactPhonePath, {

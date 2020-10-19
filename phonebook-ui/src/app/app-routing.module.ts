@@ -13,6 +13,7 @@ import {AddContactComponent} from "./contacts/add-contact/add-contact.component"
 import {AddPhoneComponent} from "./contacts/add-phone/add-phone.component";
 import {ContactDetailsComponent} from "./contacts/contact-details/contact-details.component";
 import {AddAddressComponent} from "./contacts/add-address/add-address.component";
+import {UpdatePhoneComponent} from "./contacts/update-phone/update-phone.component";
 
 const routes: Routes = [
   {path: '', component: UserPageComponent, canActivate: [AuthGaurdService]},
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path: 'user/addNewContact', component: AddContactComponent, canActivate: [AuthGaurdService]},
   {path: 'user/addphone/:contactId', component: AddPhoneComponent, canActivate: [AuthGaurdService]},
   {path: 'user/addaddress/:contactId', component: AddAddressComponent, canActivate: [AuthGaurdService]},
+  {path: 'user/updatephone/:phoneId', component: UpdatePhoneComponent, canActivate: [AuthGaurdService]},
 ];
 
 @NgModule({

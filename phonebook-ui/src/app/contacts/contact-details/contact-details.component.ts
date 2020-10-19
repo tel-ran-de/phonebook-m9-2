@@ -39,4 +39,16 @@ export class ContactDetailsComponent implements OnInit {
       this.contact.phoneNumbers = this.contact.phoneNumbers.filter(post => post.id != id)
     })
   }
+
+  updatePhone(id: number) {
+    this.router.navigate(['/user/updatephone/'+ id]);
+  }
+
+/*  submitForm() {
+    this.contactsService.addContact(this.contact).subscribe((response) => {
+      console.log(response)
+      this.router.navigate(['/user/addphone/'+ response.id]);
+    });
+
+  }*/
 }
