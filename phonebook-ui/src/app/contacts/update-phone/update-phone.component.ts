@@ -11,7 +11,6 @@ import {CommonService} from "../../service/common.service";
 })
 export class UpdatePhoneComponent implements OnInit {
   contact: Contact
-  contactId: number;
   phoneId: number;
   phoneNumber: number;
   country_code: any;
