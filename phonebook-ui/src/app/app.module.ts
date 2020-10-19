@@ -22,6 +22,7 @@ import {ContactsFilterPipe} from "./pipes/contacts-filter.pipe";
 import { AddContactComponent } from './contacts/add-contact/add-contact.component';
 import { AddPhoneComponent } from './contacts/add-phone/add-phone.component';
 import { ContactDetailsComponent } from './contacts/contact-details/contact-details.component';
+import { AddAddressComponent } from './contacts/add-address/add-address.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ContactDetailsComponent } from './contacts/contact-details/contact-deta
     ContactsFilterPipe,
     AddContactComponent,
     AddPhoneComponent,
-    ContactDetailsComponent
+    ContactDetailsComponent,
+    AddAddressComponent
   ],
   imports: [
     BrowserModule,

@@ -12,7 +12,7 @@ import {ContactsService} from "../../service/contact.service";
 })
 export class AddPhoneComponent implements OnInit {
   contact: Contact
-  private contactId: number;
+  contactId: number;
   country_code: any;
   default_Country_Code = '49';
   selected_Country_Code = '49';

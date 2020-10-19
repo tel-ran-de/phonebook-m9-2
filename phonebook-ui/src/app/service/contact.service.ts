@@ -11,6 +11,7 @@ export class ContactsService {
   private readonly contactPath = '/api/contact/';
   private readonly country_code = '/api/country_code';
   private readonly contactPhonePath = '/api/phone/';
+  private readonly contactAddressPath = '/api/address/';
   public contacts: Contact[] = []
 
 
@@ -35,6 +36,16 @@ export class ContactsService {
       .post<Contact>(this.contactPath,contact)
   }
 
+  addAddress(item,contactId: number): Observable<Contact> {
+    return this.http
+      .post<Contact>(this.contactAddressPath, {
+        contactId: contactId,
+        zip: item.zip,
+        country: item.country,
+        city: item.city,
+        street: item.street
+      })
+  }
   getCountry_code(): Observable<Contact> {
     return this.http
       .get<Contact>(this.country_code)

@@ -40,7 +40,7 @@
             <p class="text-uppercase mb-2"><strong>Phone</strong></p>
             <li *ngFor="let phonenumber of contact.phoneNumbers">
               <p class="text-muted mb-4"><i class="fa fa-phone fa-2x pr-3" aria-hidden="true"></i>{{phonenumber.countryCode}} {{phonenumber.phoneNumber}}
-                <a (click)="removePhone(phonenumber.id)"><i class="fa fa-trash-o fa_custom"></i></a> </p>
+                <a class="pointer" (click)="removePhone(phonenumber.id)"><i class="fa fa-trash-o fa_custom"></i></a> </p>
             </li>
             <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addphone', contact.id]">Add Phone</button>
 
@@ -49,6 +49,12 @@
               <p class="text-muted mb-4"> <i class="fa fa-envelope fa-2x pr-3" aria-hidden="true"></i>{{email.email}}</p>
             </li>
             <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addemail', contact.id]">Add Email</button>
+
+            <p class="text-uppercase mt-2 mb-2"><strong>Address</strong></p>
+            <li *ngFor="let address of contact.addresses">
+              <p class="text-muted mb-4"><i class="fa fa-map-marker fa-2x pr-3" aria-hidden="true"></i>{{address.zip}} {{address.country}} {{address.city}} {{address.street}}</p>
+            </li>
+            <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addaddress', contact.id]">Add Address</button>
 
 
 

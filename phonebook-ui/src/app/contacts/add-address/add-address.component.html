@@ -1,0 +1,26 @@
+<app-header></app-header>
+<div class="page-content p-5" id="content">
+
+  <div class="row ">
+    <div class="col-lg-4 mx-auto">
+      <div class="form-group">
+
+        <input type="text" class="form-control" id="zip" [(ngModel)]="contact.zip" placeholder="zip">
+      </div>
+      <div class="form-group">
+
+        <input type="text" class="form-control" id="country" [(ngModel)]="contact.country" placeholder="country">
+      </div>
+      <div class="form-group">
+
+        <input type="text" class="form-control" id="city" [(ngModel)]="contact.city" placeholder="city">
+      </div>
+      <div class="form-group">
+
+        <input type="text" class="form-control" id="street" [(ngModel)]="contact.street" placeholder="street">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="submitForm()">Add Address</button>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
