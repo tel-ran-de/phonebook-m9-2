@@ -1,82 +1,48 @@
 <app-header></app-header>
 
-<div class="page-content p-5" id="content">
+<div class="container py-5">
 
-  <div class="row ">
-    <div class="col-lg-4 mx-auto">
+  <div class="row py-5">
+    <div class="col-lg-7 mx-auto">
 
-  <section>
+      <div class="card shadow mb-4">
+        <div class="card-body p-5">
+          <div class="table-responsive">
+            <table class="table m-0">
 
-    <div class="card mb-4 ">
+              <tbody>
+              <tr>
+                <th scope="row"><i class=" fa fa-phone"></i></th>
 
-      <div class="row">
+                <td>+490305558899</td>
+                <td>
+                  <!-- Call to action buttons -->
+                  <ul *ngFor="let phonenumber of contact.phoneNumbers" class="list-inline m-0">
 
-        <div class="col-md-6">
-          <img class="img-fluid rounded-left h-100" src="/assets/img/waves.jpg" alt="project image">
+                    <li class="list-inline-item">
+                      <a class="pointer" (click)="updatePhone(phonenumber.id)"><i class="fa fa-edit fa_custom"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a class="pointer" (click)="removePhone(phonenumber.id)"><i class="fa fa-trash fa_custom"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a class="pointer" (click)="updatePhone(phonenumber.id)"><i class="fa fa-plus fa_custom"></i></a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+
+          </div>
         </div>
-
-        <div class="col-md-6 p-5 align-self-center">
-
-          <ul class="list-unstyled font-small mb-0">
-            <li>
-              <p class="text-uppercase mb-2"><strong>{{contact.firstName}}</strong></p>
-              <p class="text-muted mb-4">First Name</p>
-            </li>
-
-            <li>
-              <p class="text-uppercase mb-2"><strong>{{contact.lastName}}</strong></p>
-              <p class="text-muted mb-4">Last Name</p>
-            </li>
-            <li>
-              <p class="text-uppercase mb-2"><strong>{{contact.description}}</strong></p>
-              <p class="text-muted mb-4">Description</p>
-            </li>
-
-            <div class="mb-5">
-              <a class="pointer"><i class="fa fa-edit fa-2x pr-3" aria-hidden="true"></i></a>
-              <a class="pointer"><i class="fa fa-trash-o fa-2x pr-3" aria-hidden="true"></i></a>
-            </div>
-
-          <!--  <p class="text-uppercase mb-2"><strong>Phone</strong></p>
-            <li *ngFor="let phonenumber of contact.phoneNumbers">
-              <p class="text-muted mb-4"><i class="fa fa-phone fa-2x pr-3" aria-hidden="true"></i>+{{phonenumber.countryCode}} {{phonenumber.phoneNumber}}
-                <a class="pointer" (click)="updatePhone(phonenumber.id)"><i class="fa fa-edit fa_custom"></i></a>
-                <a class="pointer" (click)="removePhone(phonenumber.id)"><i class="fa fa-trash-o fa_custom"></i></a> </p>
-            </li>
-            <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addphone', contact.id]">Add Phone</button>-->
-
-            <p class="text-uppercase mt-2 mb-2"><strong>Email</strong></p>
-            <li *ngFor="let email of contact.emails">
-              <p class="text-muted mb-4"> <i class="fa fa-envelope fa-2x pr-3" aria-hidden="true"></i>{{email.email}}
-              <a class="pointer" (click)="updateEmail(email.id)"><i class="fa fa-edit fa_custom"></i></a>
-                <a class="pointer" (click)="removeEmail(email.id)"><i class="fa fa-trash-o fa_custom"></i></a></p>
-
-            </li>
-            <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addemail', contact.id]">Add Email</button>
-
-            <p class="text-uppercase mt-2 mb-2"><strong>Address</strong></p>
-            <li *ngFor="let address of contact.addresses">
-              <p class="text-muted mb-4"><i class="fa fa-map-marker fa-2x pr-3" aria-hidden="true"></i>{{address.zip}} {{address.country}} {{address.city}} {{address.street}}</p>
-            </li>
-            <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addaddress', contact.id]">Add Address</button>
-
-
-
-          </ul>
-        </div>
-
       </div>
-
     </div>
 
-  </section>
-
-    </div>
   </div>
+
 </div>
-
-
-
 
 
 
