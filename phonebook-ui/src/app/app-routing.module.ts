@@ -15,6 +15,7 @@ import {ContactDetailsComponent} from "./contacts/contact-details/contact-detail
 import {AddAddressComponent} from "./contacts/add-address/add-address.component";
 import {UpdatePhoneComponent} from "./contacts/update-phone/update-phone.component";
 import {AddEmailComponent} from "./contacts/add-email/add-email.component";
+import {UpdateEmailComponent} from "./contacts/update-email/update-email.component";
 
 const routes: Routes = [
   {path: '', component: UserPageComponent, canActivate: [AuthGaurdService]},
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: 'user/addaddress/:contactId', component: AddAddressComponent, canActivate: [AuthGaurdService]},
   {path: 'user/addemail/:contactId', component: AddEmailComponent, canActivate: [AuthGaurdService]},
   {path: 'user/updatephone/:phoneId', component: UpdatePhoneComponent, canActivate: [AuthGaurdService]},
+  {path: 'user/updatemail/:emailId', component: UpdateEmailComponent, canActivate: [AuthGaurdService]},
 ];
 
 @NgModule({

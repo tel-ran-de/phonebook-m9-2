@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Contact} from "../../model/contact";
 import {ContactsService} from "../../service/contact.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -24,7 +24,7 @@ export class UpdatePhoneComponent implements OnInit {
   ngOnInit() {
     this.phoneId = this.activatedRoute.snapshot.params.phoneId;
 
-    this.contactsService.getPhone(this.phoneId).subscribe(response =>{
+    this.contactsService.getPhone(this.phoneId).subscribe(response => {
       this.contact.id = response.contactId;
       this.contact.phoneNumber = response.phoneNumber;
 
@@ -38,7 +38,7 @@ export class UpdatePhoneComponent implements OnInit {
 
   submitForm() {
 
-    this.contactsService.updatePhone(this.contact,this.phoneId,this.selected_Country_Code).subscribe((response) => {
+    this.contactsService.updatePhone(this.contact, this.phoneId, this.selected_Country_Code).subscribe((response) => {
       this.router.navigate(['/user/contact/' + this.contact.id]);
     });
 

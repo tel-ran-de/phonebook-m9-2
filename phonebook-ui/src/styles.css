@@ -7,6 +7,7 @@
   left: 0;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.4s;
+  opacity: 80%;
 }
 
 .page-content {
@@ -29,13 +30,16 @@
   #sidebar {
     margin-left: -17rem;
   }
+
   #sidebar.active {
     margin-left: 0;
   }
+
   #content {
     width: 100%;
     margin: 0;
   }
+
   #content.active {
     margin-left: 17rem;
     width: calc(100% - 17rem);
@@ -46,8 +50,21 @@
 body {
 
   overflow-x: hidden;
+  background-size: cover;
+  height: 100vh;
+  background: url(/assets/img/bg.jpg) no-repeat;
+
 }
 
+@media screen and (min-width: 1930px) {
+  body {
+    overflow-x: hidden;
+    background-size: cover;
+    height: 5vh;
+    background: url(/assets/img/bg3.jpg) no-repeat;
+    background-position-y: 30%;
+  }
+}
 
 .text-uppercase {
   letter-spacing: 0.1em;
@@ -58,8 +75,7 @@ body {
 }
 
 
-.pointer{
+.pointer {
   cursor: pointer;
 }
-
 

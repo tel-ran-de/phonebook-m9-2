@@ -37,17 +37,20 @@
               <a class="pointer"><i class="fa fa-trash-o fa-2x pr-3" aria-hidden="true"></i></a>
             </div>
 
-            <p class="text-uppercase mb-2"><strong>Phone</strong></p>
+          <!--  <p class="text-uppercase mb-2"><strong>Phone</strong></p>
             <li *ngFor="let phonenumber of contact.phoneNumbers">
               <p class="text-muted mb-4"><i class="fa fa-phone fa-2x pr-3" aria-hidden="true"></i>+{{phonenumber.countryCode}} {{phonenumber.phoneNumber}}
                 <a class="pointer" (click)="updatePhone(phonenumber.id)"><i class="fa fa-edit fa_custom"></i></a>
                 <a class="pointer" (click)="removePhone(phonenumber.id)"><i class="fa fa-trash-o fa_custom"></i></a> </p>
             </li>
-            <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addphone', contact.id]">Add Phone</button>
+            <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addphone', contact.id]">Add Phone</button>-->
 
             <p class="text-uppercase mt-2 mb-2"><strong>Email</strong></p>
             <li *ngFor="let email of contact.emails">
-              <p class="text-muted mb-4"> <i class="fa fa-envelope fa-2x pr-3" aria-hidden="true"></i>{{email.email}}</p>
+              <p class="text-muted mb-4"> <i class="fa fa-envelope fa-2x pr-3" aria-hidden="true"></i>{{email.email}}
+              <a class="pointer" (click)="updateEmail(email.id)"><i class="fa fa-edit fa_custom"></i></a>
+                <a class="pointer" (click)="removeEmail(email.id)"><i class="fa fa-trash-o fa_custom"></i></a></p>
+
             </li>
             <button type="submit" class="btn btn-success" [routerLink]="[ '/user/addemail', contact.id]">Add Email</button>
 

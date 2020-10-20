@@ -13,9 +13,6 @@ export class ContactDetailsComponent implements OnInit {
 
   id: number;
   contact: Contact;
-/*  addresses: any;
-  phoneNumbers: any;
-  emails: string;*/
   email: string;
 
   constructor(
@@ -29,7 +26,6 @@ export class ContactDetailsComponent implements OnInit {
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.params.id;
     this.contactsService.getContactById(this.id).subscribe(response => {
-      console.log(response);
       this.contact = response;
     });
   }
@@ -39,9 +35,17 @@ export class ContactDetailsComponent implements OnInit {
       this.contact.phoneNumbers = this.contact.phoneNumbers.filter(post => post.id != id)
     })
   }
+  removeEmail(id: number) {
+    this.contactsService.removeEmail(id).subscribe(() => {
+      this.contact.emails = this.contact.emails.filter(email => email.id != id)
+    })
+  }
 
   updatePhone(id: number) {
     this.router.navigate(['/user/updatephone/'+ id]);
+  }
+  updateEmail(id: number) {
+    this.router.navigate(['/user/updatemail/'+ id]);
   }
 
 /*  submitForm() {

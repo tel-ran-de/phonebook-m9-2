@@ -5,7 +5,7 @@
   <button type="button" class="btn btn-success" routerLink="/user/addNewContact/">Add new Contact</button>
 </div>
 <div class="row pb-5 mb-4">
-  <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 mt-3" *ngFor="let contact of  contacts | contactsFilter:searchString">
+  <div class="col-xs-6  col-md-3  mb-4 mb-lg-0 mt-3" *ngFor="let contact of  contacts | contactsFilter:searchString">
     <!-- Card-->
     <div class="card shadow-sm border-0 rounded">
       <div class="card-body p-0"><a [routerLink]="['/user/contact', contact.id]"><img src="{{genderFemale}}" alt=""
