@@ -36,6 +36,10 @@ export class ContactsService {
     return this.http.delete(this.contactEmailPath + id)
 
   }
+  removeAddress(id: number) {
+    return this.http.delete(this.contactAddressPath + id)
+
+  }
   addContact(contact): Observable<Contact> {
     return this.http
       .post<Contact>(this.contactPath,contact)
@@ -74,6 +78,10 @@ export class ContactsService {
       .get<Contact>(this.contactEmailPath + '/' + id)
   }
 
+  getAddress(id): Observable<Contact>{
+    return this.http
+      .get<Contact>(this.contactAddressPath + '/' + id)
+  }
   updatePhone(contact,phoneId: number, country_code){
     return this.http
       .put<Contact>(this.contactPhonePath,{
@@ -89,6 +97,18 @@ export class ContactsService {
       .put<Contact>(this.contactEmailPath,{
         id: emailId,
         email: contact.email,
+        contactId: contact.contactId
+      })
+  }
+
+  updateAddress(contact,addressId,){
+    return this.http
+      .put<Contact>(this.contactEmailPath,{
+        id: addressId,
+        zip: contact.zip,
+        country: contact.country,
+        city: contact.city,
+        street: contact.street,
         contactId: contact.contactId
       })
   }

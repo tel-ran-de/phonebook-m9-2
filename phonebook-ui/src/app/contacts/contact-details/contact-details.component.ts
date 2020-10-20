@@ -32,7 +32,7 @@ export class ContactDetailsComponent implements OnInit {
 
   removePhone(id: number) {
     this.contactsService.removePhone(id).subscribe(() => {
-      this.contact.phoneNumbers = this.contact.phoneNumbers.filter(post => post.id != id)
+      this.contact.phoneNumbers = this.contact.phoneNumbers.filter(phone => phone.id != id)
     })
   }
   removeEmail(id: number) {
@@ -40,19 +40,17 @@ export class ContactDetailsComponent implements OnInit {
       this.contact.emails = this.contact.emails.filter(email => email.id != id)
     })
   }
+  removeAddress(id: number) {
+    this.contactsService.removeAddress(id).subscribe(() => {
+      this.contact.addresses = this.contact.addresses.filter(address => address.id != id)
+    })
+  }
 
   updatePhone(id: number) {
     this.router.navigate(['/user/updatephone/'+ id]);
   }
-  updateEmail(id: number) {
-    this.router.navigate(['/user/updatemail/'+ id]);
+  updateAddress(id: number) {
+    this.router.navigate(['/user/updateaddress/'+ id]);
   }
 
-/*  submitForm() {
-    this.contactsService.addContact(this.contact).subscribe((response) => {
-      console.log(response)
-      this.router.navigate(['/user/addphone/'+ response.id]);
-    });
-
-  }*/
 }

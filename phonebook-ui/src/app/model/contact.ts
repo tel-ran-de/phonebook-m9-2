@@ -5,7 +5,7 @@ export class Contact {
   description: string;
   countryCode: string;
   phoneNumber: any;
-  addresses: string;
+  addresses: any;
   country: string;
   phoneNumbers: any;
   zip: string;
