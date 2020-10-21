@@ -103,7 +103,7 @@ export class ContactsService {
 
   updateAddress(contact,addressId,){
     return this.http
-      .put<Contact>(this.contactEmailPath,{
+      .put<Contact>(this.contactAddressPath,{
         id: addressId,
         zip: contact.zip,
         country: contact.country,

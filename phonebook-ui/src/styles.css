@@ -53,6 +53,7 @@ body {
   background-size: cover;
   height: 100vh;
   background: url(/assets/img/bg.jpg) no-repeat;
+  background-attachment: fixed;
 
 }
 
@@ -60,9 +61,10 @@ body {
   body {
     overflow-x: hidden;
     background-size: cover;
-    height: 5vh;
+    height: 100vh;
     background: url(/assets/img/bg3.jpg) no-repeat;
     background-position-y: 30%;
+    background-attachment: fixed;
   }
 }
 

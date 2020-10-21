@@ -49,6 +49,9 @@ export class ContactDetailsComponent implements OnInit {
   updatePhone(id: number) {
     this.router.navigate(['/user/updatephone/'+ id]);
   }
+  updateEmail(id: number) {
+    this.router.navigate(['/user/updatemail/'+ id]);
+  }
   updateAddress(id: number) {
     this.router.navigate(['/user/updateaddress/'+ id]);
   }

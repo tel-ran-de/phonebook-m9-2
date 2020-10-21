@@ -22,7 +22,7 @@ export class AddAddressComponent implements OnInit {
 
   submitForm() {
     this.contactsService.addAddress(this.contact, this.contactId).subscribe((response) => {
-      this.router.navigate(['/']);
+      this.router.navigate(['/user/contact/' + this.contactId]);
     });
 
   }

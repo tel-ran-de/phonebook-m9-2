@@ -51,8 +51,8 @@
 
                 <td>{{email.email}}</td>
                 <td>
-                  <!-- Call to action buttons -->
-                  <ul class="list-inline m-0">
+
+                  <ul class="list-inline m-0 ">
 
                     <li class="list-inline-item">
                       <a class="pointer" (click)="updateEmail(email.id)"><i class="fa fa-edit fa_custom"></i></a>
@@ -60,13 +60,13 @@
                     <li class="list-inline-item">
                       <a class="pointer" (click)="removeEmail(email.id)"><i class="fa fa-trash fa_custom"></i></a>
                     </li>
-                    <li class="list-inline-item">
-                      <a class="pointer" [routerLink]="[ '/user/addemail', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
-                    </li>
+<!--                    <li class="list-inline-item">-->
+<!--                      <a class="pointer" [routerLink]="[ '/user/addemail', contact.id]"><i class="fa fa-plus fa_custom"></i></a>-->
+<!--                    </li>-->
                   </ul>
                 </td>
               </tr>
-
+              <a class="pointer position-absolute" [routerLink]="[ '/user/addemail', contact.id]"><i class="fa fa-plus fa-1.5x "></i></a>
               </tbody>
             </table>
 
@@ -81,7 +81,7 @@
               <tbody>
               <p class="text-uppercase mb-2"><strong>Address</strong></p>
               <tr  *ngFor="let address of contact.addresses">
-                <th scope="row"><i class="fa fa-envelope"></i></th>
+                <th scope="row"><i class="fa fa-map-marker"></i></th>
 
                 <td>{{address.zip}} {{address.country}} {{address.city}} {{address.street}}</td>
                 <td>
