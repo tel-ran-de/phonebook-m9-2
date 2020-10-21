@@ -9,6 +9,46 @@
         <div class="card-body p-5">
           <div class="table-responsive">
             <table class="table m-0">
+              <thead>
+              <p class="text-uppercase mb-2"><strong>Contact</strong></p>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Description</th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody>
+
+
+              <tr>
+                <th scope="row"><i class="fa fa-address-book"></i></th>
+
+                <td> {{contact.firstName}}</td>
+                <td> {{contact.lastName}}</td>
+                <td> {{contact.description}}</td>
+                <td>
+                  <ul class="list-inline m-0">
+
+                    <li class="list-inline-item">
+                      <a class="pointer" (click)="updateContact(contact.id)"><i class="fa fa-edit fa_custom"></i></a>
+                    </li>
+
+                  </ul>
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+      <div class="card shadow mb-4">
+        <div class="card-body p-5">
+          <div class="table-responsive">
+            <table class="table m-0">
 
               <tbody>
               <p class="text-uppercase mb-2"><strong>Phone</strong></p>
@@ -17,7 +57,6 @@
 
                 <td>+{{phonenumber.countryCode}} {{phonenumber.phoneNumber}}</td>
                 <td>
-                  <!-- Call to action buttons -->
                   <ul class="list-inline m-0">
 
                     <li class="list-inline-item">
@@ -26,13 +65,10 @@
                     <li class="list-inline-item">
                       <a class="pointer" (click)="removePhone(phonenumber.id)"><i class="fa fa-trash fa_custom"></i></a>
                     </li>
-                    <li class="list-inline-item">
-                      <a class="pointer" [routerLink]="[ '/user/addphone', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
-                    </li>
                   </ul>
                 </td>
               </tr>
-
+              <a class="pointer position-absolute" [routerLink]="[ '/user/addphone', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
               </tbody>
             </table>
 
@@ -60,9 +96,6 @@
                     <li class="list-inline-item">
                       <a class="pointer" (click)="removeEmail(email.id)"><i class="fa fa-trash fa_custom"></i></a>
                     </li>
-<!--                    <li class="list-inline-item">-->
-<!--                      <a class="pointer" [routerLink]="[ '/user/addemail', contact.id]"><i class="fa fa-plus fa_custom"></i></a>-->
-<!--                    </li>-->
                   </ul>
                 </td>
               </tr>
@@ -80,7 +113,7 @@
 
               <tbody>
               <p class="text-uppercase mb-2"><strong>Address</strong></p>
-              <tr  *ngFor="let address of contact.addresses">
+              <tr *ngFor="let address of contact.addresses">
                 <th scope="row"><i class="fa fa-map-marker"></i></th>
 
                 <td>{{address.zip}} {{address.country}} {{address.city}} {{address.street}}</td>
@@ -94,13 +127,10 @@
                     <li class="list-inline-item">
                       <a class="pointer" (click)="removeAddress(address.id)"><i class="fa fa-trash fa_custom"></i></a>
                     </li>
-                    <li class="list-inline-item">
-                      <a class="pointer" [routerLink]="[ '/user/addaddress', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
-                    </li>
                   </ul>
                 </td>
               </tr>
-
+              <a class="pointer position-absolute" [routerLink]="[ '/user/addaddress', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
               </tbody>
             </table>
 

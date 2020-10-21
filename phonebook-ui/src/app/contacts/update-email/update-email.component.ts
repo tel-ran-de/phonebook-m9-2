@@ -19,10 +19,7 @@ export class UpdateEmailComponent implements OnInit {
     this.emailId = this.activatedRoute.snapshot.params.emailId;
 
     this.contactsService.getEmail(this.emailId).subscribe(response => {
-      console.log(response)
-      this.contact.email = response.email;
-      this.contact.contactId = response.contactId;
-
+      this.contact = response
     });
 
   }

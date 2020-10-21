@@ -10,7 +10,7 @@ import {CommonService} from "../../service/common.service";
   styleUrls: ['./update-phone.component.css']
 })
 export class UpdatePhoneComponent implements OnInit {
-  contact: Contact
+  contact: Contact;
   phoneId: number;
   phoneNumber: number;
   country_code: any;
@@ -25,8 +25,8 @@ export class UpdatePhoneComponent implements OnInit {
     this.phoneId = this.activatedRoute.snapshot.params.phoneId;
 
     this.contactsService.getPhone(this.phoneId).subscribe(response => {
-      this.contact.id = response.contactId;
-      this.contact.phoneNumber = response.phoneNumber;
+
+      this.contact = response
 
       this.contactsService.getCountry_code().subscribe(response => {
         this.country_code = response;

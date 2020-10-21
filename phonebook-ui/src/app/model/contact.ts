@@ -3,16 +3,18 @@ export class Contact {
   firstName: string;
   lastName: string;
   description: string;
-  countryCode: string;
-  phoneNumber: any;
-  addresses: any;
-  country: string;
-  phoneNumbers: any;
-  zip: string;
 
+  contactId: string;
+
+  phoneNumber: any;
+  phoneNumbers: any;
+
+  addresses: any;
+  zip: string;
+  country: string;
   city: string;
   street: string;
-  contactId: string;
+
   emails: any;
   email: any;
 }

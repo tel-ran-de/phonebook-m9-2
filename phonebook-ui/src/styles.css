@@ -1,3 +1,22 @@
+body {
+
+  overflow-x: hidden;
+  background-size: cover;
+  /*height: 100vh;*/
+  background: url(/assets/img/bg.jpg) no-repeat fixed;
+
+}
+
+@media screen and (min-width: 2000px) {
+  body {
+    overflow-x: hidden;
+    background-size: cover;
+    height: 100vh;
+    background-position-y: 30%;
+    background: url(/assets/img/bg3.jpg) no-repeat fixed;
+  }
+}
+
 .vertical-nav {
   min-width: 17rem;
   width: 17rem;
@@ -47,26 +66,7 @@
 }
 
 
-body {
 
-  overflow-x: hidden;
-  background-size: cover;
-  height: 100vh;
-  background: url(/assets/img/bg.jpg) no-repeat;
-  background-attachment: fixed;
-
-}
-
-@media screen and (min-width: 1950px) {
-  body {
-    overflow-x: hidden;
-    background-size: cover;
-    height: 100vh;
-    background: url(/assets/img/bg3.jpg) no-repeat;
-    background-position-y: 30%;
-    background-attachment: fixed;
-  }
-}
 
 .text-uppercase {
   letter-spacing: 0.1em;

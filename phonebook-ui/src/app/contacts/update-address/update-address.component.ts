@@ -19,11 +19,7 @@ export class UpdateAddressComponent implements OnInit {
     this.addressId = this.activatedRoute.snapshot.params.addressId;
 
     this.contactsService.getAddress(this.addressId).subscribe(response => {
-      console.log(response)
       this.contact = response
-      this.contact.addresses = response.addresses;
-      this.contact.contactId = response.contactId;
-
     });
 
   }

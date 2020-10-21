@@ -17,16 +17,17 @@
         Home
       </a>
     </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
-        <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
-        About
-      </a>
-    </li>
+
     <li class="nav-item">
       <a href="#" class="nav-link text-dark font-italic">
         <i class="fa fa-user mr-3 text-primary fa-fw"></i>
         Account
+      </a>
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/user/account/password']" class="nav-link text-dark font-italic">
+        <i class="fa fa-key mr-3  fa-fw" style="color: #ff3746"></i>
+        Change password
       </a>
     </li>
     <li class="nav-item">

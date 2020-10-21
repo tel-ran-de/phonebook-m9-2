@@ -3,6 +3,7 @@ import {User} from "../model/user";
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 import {Subject, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {Contact} from "../model/contact";
 
 @Injectable()
 export class UserService {
@@ -10,11 +11,20 @@ export class UserService {
   private readonly forgotPasswordPath = '/api/user/password/recovery/';
   private readonly resetPasswordPath = '/api/user/password/';
   private readonly userPath = '/api/user/';
+  private readonly profilePath = '/api/contact/profile/';
+  private readonly changePasswordPath = '/api/user/password/auth/';
   private readonly activationPath = '/api/user/activation/';
   public error$: Subject<string> = new Subject<string>()
 
 
   constructor(private http: HttpClient) {
+  }
+
+  changePassword(password){
+    return this.http
+      .put(this.changePasswordPath,{
+        password: password
+      })
   }
 
   newUserRegistration(user: User) {

@@ -11,7 +11,7 @@
 
         <select class="custom-select" name="my-select" [(ngModel)]="default_Country_Code" (change)="selectChange()">
           <option [value]="item.code" *ngFor="let item of country_code">
-            {{item.country}} (+{{item.code}})
+            {{item.country}} (+ {{item.code}})
           </option>
         </select>
 

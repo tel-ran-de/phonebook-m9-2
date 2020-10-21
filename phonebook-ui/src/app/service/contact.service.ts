@@ -82,6 +82,13 @@ export class ContactsService {
     return this.http
       .get<Contact>(this.contactAddressPath + '/' + id)
   }
+
+
+  getContactById(id): Observable<Contact> {
+    return this.http
+      .get<Contact>(this.contactPath + '/' + id)
+  }
+
   updatePhone(contact,phoneId: number, country_code){
     return this.http
       .put<Contact>(this.contactPhonePath,{
@@ -113,6 +120,16 @@ export class ContactsService {
       })
   }
 
+  updateContact(contact,contactId,){
+    return this.http
+      .put<Contact>(this.contactPath,{
+        id: contactId,
+        firstName: contact.firstName,
+        lastName: contact.lastName,
+        description: contact.description,
+      })
+  }
+
   addPhone(contact,contactId: number, country_code): Observable<Contact> {
     return this.http
       .post<Contact>(this.contactPhonePath, {
@@ -123,9 +140,6 @@ export class ContactsService {
       })
   }
 
-  getContactById(id): Observable<Contact> {
-    return this.http
-      .get<Contact>(this.contactPath + '/' + id)
-  }
+
 }
 

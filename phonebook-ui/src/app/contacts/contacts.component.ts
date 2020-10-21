@@ -32,6 +32,8 @@ export class ContactsComponent implements OnInit {
     }
   }
 
+
+
   removeContact(id: number) {
     this.contactsService.removeContact(id).subscribe(() =>{
       this.contacts = this.contacts.filter(post => post.id != id)
