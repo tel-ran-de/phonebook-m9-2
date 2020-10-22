@@ -8,12 +8,13 @@ import {AuthenticationService} from "../service/authentication.service";
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn: boolean;
+   email: string;
 
   constructor(private tokenService: AuthenticationService) {
   }
 
   ngOnInit(): void {
-
+    this.email = this.tokenService.getEmail()
     if (this.tokenService.isUserLoggedIn()) {
       this.isLoggedIn = true;
     }

@@ -1,0 +1,28 @@
+<app-header></app-header>
+
+<div class="page-content p-5" id="content">
+
+  <div class="row ">
+    <div class="col-lg-4 mx-auto">
+
+      <h3>Update Phone</h3>
+
+      <div class="form-group">
+
+        <select class="custom-select" name="my-select" [(ngModel)]="default_Country_Code" (change)="selectChange()">
+          <option [value]="item.code" *ngFor="let item of country_code">
+            {{item.country}} (+ {{item.code}})
+          </option>
+        </select>
+
+        <input type="text" class="form-control mt-3" id="country" [(ngModel)]="contact.phoneNumber" placeholder="Phone">
+      </div>
+
+      <button type="submit" class="btn btn-primary" (click)="submitForm()">Update</button>
+
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

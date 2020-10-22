@@ -21,6 +21,7 @@
     "@angular/router": "~10.1.2",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "bootstrap": "^4.5.0",
+    "lodash-es": "^4.17.15",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

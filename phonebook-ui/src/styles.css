@@ -1,1 +1,83 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+
+  overflow-x: hidden;
+  background-size: cover;
+  /*height: 100vh;*/
+  background: url(/assets/img/bg.jpg) no-repeat fixed;
+
+}
+
+@media screen and (min-width: 2000px) {
+  body {
+    overflow-x: hidden;
+    background-size: cover;
+    height: 100vh;
+    background-position-y: 30%;
+    background: url(/assets/img/bg3.jpg) no-repeat fixed;
+  }
+}
+
+.vertical-nav {
+  min-width: 17rem;
+  width: 17rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s;
+  opacity: 80%;
+}
+
+.page-content {
+  width: calc(100% - 17rem);
+  margin-left: 17rem;
+  transition: all 0.4s;
+}
+
+
+#sidebar.active {
+  margin-left: -17rem;
+}
+
+#content.active {
+  width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -17rem;
+  }
+
+  #sidebar.active {
+    margin-left: 0;
+  }
+
+  #content {
+    width: 100%;
+    margin: 0;
+  }
+
+  #content.active {
+    margin-left: 17rem;
+    width: calc(100% - 17rem);
+  }
+}
+
+
+
+
+.text-uppercase {
+  letter-spacing: 0.1em;
+}
+
+.text-gray {
+  color: #aaa;
+}
+
+
+.pointer {
+  cursor: pointer;
+}
+

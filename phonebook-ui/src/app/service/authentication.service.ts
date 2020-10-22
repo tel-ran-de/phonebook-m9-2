@@ -39,4 +39,7 @@ export class AuthenticationService {
   getToken() {
     return localStorage.getItem('access-token')
   }
+  getEmail(){
+    return localStorage.getItem('email')
+  }
 }

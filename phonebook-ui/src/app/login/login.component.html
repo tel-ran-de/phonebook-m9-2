@@ -1,5 +1,5 @@
-<app-header></app-header>
-<form [formGroup]="loginForm" novalidate class="border border-light p-5" (ngSubmit)="onSubmit()">
+
+<form [formGroup]="loginForm" novalidate class="border border-light p-5 " (ngSubmit)="onSubmit()">
   <p class="h4 mb-4 text-center">Sign in</p>
 
   <div class="form-group">
@@ -20,7 +20,7 @@
 
   <div class="form-group">
     <input class="form-control mb-2" id="registration-password" formControlName="password" type="password"
-           class="form-control mb-2"
+
            placeholder="Password" [(ngModel)]="password">
   </div>
 
@@ -38,7 +38,10 @@
     </div>
 
   </div>
-  <div class="text-danger">{{error}}</div>
+
+  <div class="alert alert-danger" *ngIf="error">
+    {{ error }}
+  </div>
   <button id="btn-login" class="btn btn-info btn-block" type="submit"
           [disabled]="loginForm.pristine || loginForm.invalid">Login
   </button>
@@ -47,4 +50,3 @@
     <a id="forgot-password" routerLink="/user/forgot-password">Forgot your password?</a>
   </div>
 </form>
-<app-footer></app-footer>

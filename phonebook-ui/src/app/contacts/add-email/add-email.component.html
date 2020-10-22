@@ -1,0 +1,16 @@
+<app-header></app-header>
+<div class="page-content p-5" id="content">
+
+  <div class="row ">
+    <div class="col-lg-4 mx-auto">
+      <div class="form-group">
+
+        <input type="text" class="form-control" id="email" [(ngModel)]="contact.email" placeholder="email">
+      </div>
+
+
+      <button type="submit" class="btn btn-primary" (click)="submitForm()">Add Address</button>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

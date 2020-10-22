@@ -1,9 +1,53 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-  <a class="navbar-brand" href="#">Phonebook</a>
-  <a *ngIf="isLoggedIn" routerLink="user/logout">Logout</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarCollapse">
+<div class="vertical-nav bg-white" id="sidebar">
+  <div class="py-4 px-3 mb-4 bg-light">
+    <div class="media d-flex align-items-center"><img src="/assets/img/profile.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+      <div class="media-body">
+        <h6 class="m-0">{{email}}</h6>
+        <p class="font-weight-light text-muted mb-0">Welcome</p>
+      </div>
+    </div>
   </div>
-</nav>
+
+  <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">My Profile</p>
+
+  <ul class="nav flex-column bg-white mb-0">
+    <li class="nav-item">
+      <a routerLink="/" class="nav-link text-dark font-italic bg-light">
+        <i class="fa fa-home mr-3 text-primary fa-fw"></i>
+        Home
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" class="nav-link text-dark font-italic">
+        <i class="fa fa-user mr-3 text-primary fa-fw"></i>
+        Account
+      </a>
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/user/account/password']" class="nav-link text-dark font-italic">
+        <i class="fa fa-key mr-3  fa-fw" style="color: #ff3746"></i>
+        Change password
+      </a>
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/user/logout']" class="nav-link text-dark font-italic">
+        <i class="fa fa-sign-out mr-3  fa-fw" style="color: #ff3746"></i>
+        Logout
+
+      </a>
+    </li>
+  </ul>
+
+  <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Contacts</p>
+
+  <ul class="nav flex-column bg-white mb-0">
+    <li class="nav-item">
+      <a routerLink="/user/addNewContact/" class="nav-link text-dark font-italic">
+        <i class="fa fa-plus mr-3 text-primary fa-fw"></i>
+        Add new Contact
+      </a>
+    </li>
+
+  </ul>
+</div>
