@@ -1,8 +1,6 @@
 # phonebook-m9-2
 The project of morning 9-2 group
 
-Here should lie all the steps to run the project on a local machine.
-
 1. Connecting the project to the Database
 The project creates phonebooks with contacts for different users.
 For keeping data the project uses PostgreSQL Database.
