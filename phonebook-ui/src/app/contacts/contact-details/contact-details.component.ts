@@ -46,7 +46,7 @@ export class ContactDetailsComponent implements OnInit {
 
   removePhone(id: number) {
     this.contactsService.removePhone(id).subscribe(() => {
-      this.contact.phoneNumber = this.contact.phoneNumbers.filter(phone => phone.id != id)
+      this.contact.phoneNumbers = this.contact.phoneNumbers.filter(phone => phone.id != id)
     })
   }
   removeEmail(id: number) {
