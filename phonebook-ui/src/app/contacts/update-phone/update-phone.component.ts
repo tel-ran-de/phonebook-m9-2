@@ -39,7 +39,7 @@ export class UpdatePhoneComponent implements OnInit {
   submitForm() {
 
     this.contactsService.updatePhone(this.contact, this.phoneId, this.selected_Country_Code).subscribe((response) => {
-      this.router.navigate(['/user/contact/' + this.contact.id]);
+      this.router.navigate(['/user/contact/' + this.contact.contactId]);
     });
 
   }

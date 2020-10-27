@@ -95,7 +95,7 @@ export class ContactsService {
         id: phoneId,
         countryCode: country_code,
         phoneNumber: contact.phoneNumber,
-        contactId: contact.id,
+        contactId: contact.contactId,
       })
   }
 
