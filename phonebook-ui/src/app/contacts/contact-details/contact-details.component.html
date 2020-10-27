@@ -52,6 +52,7 @@
 
               <tbody>
               <p class="text-uppercase mb-2"><strong>Phone</strong></p>
+              <a class="pointer position-absolute mt-5" [routerLink]="[ '/user/addphone', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
               <tr  *ngFor="let phonenumber of contact.phoneNumbers">
                 <th scope="row"><i class=" fa fa-phone"></i></th>
 
@@ -68,7 +69,7 @@
                   </ul>
                 </td>
               </tr>
-              <a class="pointer position-absolute" [routerLink]="[ '/user/addphone', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
+
               </tbody>
             </table>
 
@@ -82,6 +83,7 @@
 
               <tbody>
               <p class="text-uppercase mb-2"><strong>Email</strong></p>
+              <a class="pointer position-absolute mt-5" [routerLink]="[ '/user/addemail', contact.id]"><i class="fa fa-plus fa-1.5x "></i></a>
               <tr  *ngFor="let email of contact.emails">
                 <th scope="row"><i class="fa fa-envelope"></i></th>
 
@@ -99,7 +101,7 @@
                   </ul>
                 </td>
               </tr>
-              <a class="pointer position-absolute" [routerLink]="[ '/user/addemail', contact.id]"><i class="fa fa-plus fa-1.5x "></i></a>
+
               </tbody>
             </table>
 
@@ -113,6 +115,7 @@
 
               <tbody>
               <p class="text-uppercase mb-2"><strong>Address</strong></p>
+              <a class="pointer position-absolute mt-5" [routerLink]="[ '/user/addaddress', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
               <tr *ngFor="let address of contact.addresses">
                 <th scope="row"><i class="fa fa-map-marker"></i></th>
 
@@ -130,7 +133,7 @@
                   </ul>
                 </td>
               </tr>
-              <a class="pointer position-absolute" [routerLink]="[ '/user/addaddress', contact.id]"><i class="fa fa-plus fa_custom"></i></a>
+
               </tbody>
             </table>
 
