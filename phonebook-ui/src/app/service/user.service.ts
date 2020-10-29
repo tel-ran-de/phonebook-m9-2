@@ -20,10 +20,10 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  changePassword(password){
+  changePassword(user: User){
     return this.http
       .put(this.changePasswordPath,{
-        password: password
+        password: user.password
       })
   }
 
