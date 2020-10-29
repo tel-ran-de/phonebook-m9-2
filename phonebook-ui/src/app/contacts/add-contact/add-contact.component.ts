@@ -21,7 +21,7 @@ export class AddContactComponent implements OnInit {
   submitForm() {
     this.contactsService.addContact(this.contact).subscribe((response) => {
       console.log(response)
-      this.router.navigate(['/user/addphone/'+ response.id]);
+      this.router.navigate(['/user/add-phone/'+ response.id]);
     });
 
   }

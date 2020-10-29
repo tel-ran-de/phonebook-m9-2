@@ -1,6 +1,7 @@
 .position-absolute {
   position: absolute!important;
   right: 20px;
+  top: 0;
 }
 .fa-plus:before {
   color: #90dc43;
