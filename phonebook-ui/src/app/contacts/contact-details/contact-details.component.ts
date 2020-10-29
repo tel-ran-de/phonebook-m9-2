@@ -31,16 +31,16 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   updatePhone(id: number) {
-    this.router.navigate(['/user/updatephone/'+ id]);
+    this.router.navigate(['/user/update-phone/'+ id]);
   }
   updateEmail(id: number) {
-    this.router.navigate(['/user/updatemail/'+ id]);
+    this.router.navigate(['/user/update-email/'+ id]);
   }
   updateAddress(id: number) {
-    this.router.navigate(['/user/updateaddress/'+ id]);
+    this.router.navigate(['/user/update-address/'+ id]);
   }
   updateContact(id: number) {
-    this.router.navigate(['/user/updatecontact/'+ id]);
+    this.router.navigate(['/user/update-contact/'+ id]);
   }
 
 
