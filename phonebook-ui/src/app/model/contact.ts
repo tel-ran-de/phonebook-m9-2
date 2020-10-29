@@ -6,6 +6,7 @@ export class Contact {
 
   contactId: string;
 
+  countryCode: any;
   phoneNumber: any;
   phoneNumbers: any;
 
@@ -17,4 +18,5 @@ export class Contact {
 
   emails: any;
   email: any;
+
 }
