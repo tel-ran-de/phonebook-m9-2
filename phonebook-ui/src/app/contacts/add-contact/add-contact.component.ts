@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Contact} from "../../model/contact";
 import {ContactsService} from "../../service/contact.service";
 import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-add-contact',
@@ -10,19 +10,32 @@ import {Router} from "@angular/router";
 })
 export class AddContactComponent implements OnInit {
 
-  contact: Contact
-  constructor(private contactsService: ContactsService, public router: Router) {
-    this.contact = new Contact();
+  title = 'Add Contact';
+  AddContactForm: FormGroup;
+  loading: boolean;
+  constructor(private fb: FormBuilder,private contactsService: ContactsService, public router: Router) {
+    this.createForm();
   }
 
+  createForm() {
+    this.AddContactForm = this.fb.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      description:['']
+    });
+  }
   ngOnInit(): void {
   }
 
-  submitForm() {
-    this.contactsService.addContact(this.contact).subscribe((response) => {
-      console.log(response)
-      this.router.navigate(['/user/add-phone/'+ response.id]);
-    });
-
+  onSubmit() {
+    this.loading = true;
+    this.contactsService.addContact(this.AddContactForm.value)
+      .subscribe((response) => {
+          this.loading = false;
+          this.router.navigate(['/user/add-phone/'+ response.id]);
+        },
+        error => {
+          this.loading = false;
+        });
   }
 }

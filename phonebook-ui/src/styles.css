@@ -81,3 +81,8 @@ body {
   cursor: pointer;
 }
 
+form{
+  max-width:420px;
+  margin: auto;
+  margin-top: 30vh;
+}

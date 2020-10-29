@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {User} from "../model/user";
+import {tap} from 'rxjs/operators';
 import {Contact} from "../model/contact";
 
 
@@ -19,33 +18,8 @@ export class ContactsService {
   constructor(private http: HttpClient) {
   }
 
-  getAllContacts(): Observable<Contact[]> {
-    return this.http.get<Contact[]>(this.contactPath)
-      .pipe(tap(contacts => this.contacts = contacts));
-  }
 
-  removeContact(id: number) {
-    return this.http.delete(this.contactPath + id)
-
-  }
-  removePhone(id: number) {
-    return this.http.delete(this.contactPhonePath + id)
-
-  }
-  removeEmail(id: number) {
-    return this.http.delete(this.contactEmailPath + id)
-
-  }
-  removeAddress(id: number) {
-    return this.http.delete(this.contactAddressPath + id)
-
-  }
-  addContact(contact): Observable<Contact> {
-    return this.http
-      .post<Contact>(this.contactPath,contact)
-  }
-
-  addAddress(item,contactId: number): Observable<Contact> {
+  addAddress(item, contactId: number): Observable<Contact> {
     return this.http
       .post<Contact>(this.contactAddressPath, {
         contactId: contactId,
@@ -55,7 +29,14 @@ export class ContactsService {
         street: item.street
       })
   }
-  addEmail(contact,contactId: number): Observable<Contact> {
+
+  addContact(contact: Contact): Observable<Contact> {
+
+    return this.http
+      .post<Contact>(this.contactPath, contact)
+  }
+
+  addEmail(contact, contactId: number): Observable<Contact> {
     return this.http
       .post<Contact>(this.contactEmailPath, {
         contactId: contactId,
@@ -63,54 +44,69 @@ export class ContactsService {
       })
   }
 
-  getCountry_code(): Observable<Contact> {
+  addPhone(contact: Contact, contactId: number): Observable<Contact> {
     return this.http
-      .get<Contact>(this.country_code)
+      .post<Contact>(this.contactPhonePath, {
+        contactId: contactId,
+        countryCode: contact.countryCode,
+        phoneNumber: contact.phoneNumber,
+      })
   }
 
-  getPhone(id): Observable<Contact>{
-    return this.http
-      .get<Contact>(this.contactPhonePath + '/' + id)
-  }
-
-  getEmail(id): Observable<Contact>{
-    return this.http
-      .get<Contact>(this.contactEmailPath + '/' + id)
-  }
-
-  getAddress(id): Observable<Contact>{
+  getAddress(id): Observable<Contact> {
     return this.http
       .get<Contact>(this.contactAddressPath + '/' + id)
   }
 
+  getAllContacts(): Observable<Contact[]> {
+    return this.http.get<Contact[]>(this.contactPath)
+      .pipe(tap(contacts => this.contacts = contacts));
+  }
 
   getContactById(id): Observable<Contact> {
     return this.http
       .get<Contact>(this.contactPath + '/' + id)
   }
 
-  updatePhone(contact,phoneId: number, country_code){
+  getCountry_code(): Observable<Contact> {
     return this.http
-      .put<Contact>(this.contactPhonePath,{
-        id: phoneId,
-        countryCode: country_code,
-        phoneNumber: contact.phoneNumber,
-        contactId: contact.contactId,
-      })
+      .get<Contact>(this.country_code)
   }
 
-  updateEmail(contact,emailId,){
+  getEmail(id): Observable<Contact> {
     return this.http
-      .put<Contact>(this.contactEmailPath,{
-        id: emailId,
-        email: contact.email,
-        contactId: contact.contactId
-      })
+      .get<Contact>(this.contactEmailPath + '/' + id)
   }
 
-  updateAddress(contact,addressId,){
+  getPhone(id): Observable<Contact> {
     return this.http
-      .put<Contact>(this.contactAddressPath,{
+      .get<Contact>(this.contactPhonePath + '/' + id)
+  }
+
+
+  removeAddress(id: number) {
+    return this.http.delete(this.contactAddressPath + id)
+
+  }
+
+  removeContact(id: number) {
+    return this.http.delete(this.contactPath + id)
+
+  }
+
+  removeEmail(id: number) {
+    return this.http.delete(this.contactEmailPath + id)
+
+  }
+
+  removePhone(id: number) {
+    return this.http.delete(this.contactPhonePath + id)
+
+  }
+
+  updateAddress(contact, addressId,) {
+    return this.http
+      .put<Contact>(this.contactAddressPath, {
         id: addressId,
         zip: contact.zip,
         country: contact.country,
@@ -120,9 +116,9 @@ export class ContactsService {
       })
   }
 
-  updateContact(contact,contactId,){
+  updateContact(contact, contactId,) {
     return this.http
-      .put<Contact>(this.contactPath,{
+      .put<Contact>(this.contactPath, {
         id: contactId,
         firstName: contact.firstName,
         lastName: contact.lastName,
@@ -130,16 +126,24 @@ export class ContactsService {
       })
   }
 
-  addPhone(contact,contactId: number, country_code): Observable<Contact> {
+  updateEmail(contact, emailId,) {
     return this.http
-      .post<Contact>(this.contactPhonePath, {
-        contactId: contactId,
-        countryCode: country_code,
-        phoneNumber: contact.phoneNumber,
-
+      .put<Contact>(this.contactEmailPath, {
+        id: emailId,
+        email: contact.email,
+        contactId: contact.contactId
       })
   }
 
 
+  updatePhone(contact, phoneId: number, country_code) {
+    return this.http
+      .put<Contact>(this.contactPhonePath, {
+        id: phoneId,
+        countryCode: country_code,
+        phoneNumber: contact.phoneNumber,
+        contactId: contact.contactId,
+      })
+  }
 }
 
