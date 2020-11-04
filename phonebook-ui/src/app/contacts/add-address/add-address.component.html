@@ -1,26 +1,66 @@
+
 <app-header></app-header>
-<div class="page-content p-5" id="content">
+<form [formGroup]="AddAddressForm" class="border border-light p-5" (ngSubmit)="onSubmit()">
+  <p class="h4 mb-4 text-center font-weight-bold">{{title}}</p>
+  <div>
 
-  <div class="row ">
-    <div class="col-lg-4 mx-auto">
-      <div class="form-group">
-
-        <input type="text" class="form-control" id="zip" [(ngModel)]="contact.zip" placeholder="zip">
-      </div>
-      <div class="form-group">
-
-        <input type="text" class="form-control" id="country" [(ngModel)]="contact.country" placeholder="country">
-      </div>
-      <div class="form-group">
-
-        <input type="text" class="form-control" id="city" [(ngModel)]="contact.city" placeholder="city">
-      </div>
-      <div class="form-group">
-
-        <input type="text" class="form-control" id="street" required [(ngModel)]="contact.street" placeholder="street">
-      </div>
-      <button type="submit" class="btn btn-primary" (click)="submitForm()">Add Address</button>
+    <div class="form-group">
+      <input type="text" id="zip" formControlName="zip" placeholder="Zip"
+             class="form-control mb-2">
     </div>
+    <div
+      *ngIf="AddAddressForm.controls['zip'].invalid && (AddAddressForm.controls['zip'].dirty || AddAddressForm.controls['zip'].touched)"
+      class="alert alert-danger">
+      <div id="empty-zip" *ngIf="AddAddressForm.controls['zip'].errors.required">
+        Zip is required.
+      </div>
+      <div id="wrong-zip" *ngIf="AddAddressForm.controls['zip'].errors.pattern">
+        Zip must contain only Number.
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" id="country" formControlName="country" placeholder="Country"
+             class="form-control mb-2">
+    </div>
+    <div
+      *ngIf="AddAddressForm.controls['country'].invalid && (AddAddressForm.controls['country'].dirty || AddAddressForm.controls['country'].touched)"
+      class="alert alert-danger">
+      <div id="empty-country" *ngIf="AddAddressForm.controls['country'].errors.required">
+        Country is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" id="city" formControlName="city" placeholder="City"
+             class="form-control mb-2">
+    </div>
+    <div
+      *ngIf="AddAddressForm.controls['city'].invalid && (AddAddressForm.controls['city'].dirty || AddAddressForm.controls['city'].touched)"
+      class="alert alert-danger">
+      <div id="empty-city" *ngIf="AddAddressForm.controls['city'].errors.required">
+        City is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" id="street" formControlName="street" placeholder="Street"
+             class="form-control mb-2">
+    </div>
+    <div
+      *ngIf="AddAddressForm.controls['street'].invalid && (AddAddressForm.controls['street'].dirty || AddAddressForm.controls['street'].touched)"
+      class="alert alert-danger">
+      <div id="empty-street" *ngIf="AddAddressForm.controls['street'].errors.required">
+        Street is required.
+      </div>
+    </div>
+
+
+    <button class="btn btn-primary my-4 btn-block" type="submit"
+            [disabled]="AddAddressForm.pristine || AddAddressForm.invalid">Add
+    </button>
   </div>
-</div>
+  <section *ngIf="loading" class="jumbotron text-center">
+    <div class="container">
+      <h4>Please wait.....</h4>
+    </div>
+  </section>
+</form>
 <app-footer></app-footer>

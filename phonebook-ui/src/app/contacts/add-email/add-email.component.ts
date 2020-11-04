@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Contact} from "../../model/contact";
 import {ContactsService} from "../../service/contact.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-add-email',
@@ -9,22 +9,36 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./add-email.component.css']
 })
 export class AddEmailComponent implements OnInit {
-  contact: Contact
+
+  title = 'Add Email';
+  AddEmailForm: FormGroup;
+  loading: boolean;
   private contactId: number;
 
-  constructor(private contactsService: ContactsService, public router: Router, public activatedRoute: ActivatedRoute) {
-    this.contact = new Contact();
+  constructor(private fb: FormBuilder,private contactsService: ContactsService, public router: Router, public activatedRoute: ActivatedRoute) {
+
+    this.createForm();
   }
 
   ngOnInit(){
     this.contactId = this.activatedRoute.snapshot.params.contactId;
   }
 
-  submitForm() {
-    this.contactsService.addEmail(this.contact, this.contactId).subscribe((response) => {
-      this.router.navigate(['/user/contact/' + this.contactId]);
+  createForm() {
+    this.AddEmailForm = this.fb.group({
+      email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,10}$")]]
     });
-
   }
 
+  onSubmit() {
+    this.loading = true;
+    this.contactsService.addEmail(this.AddEmailForm.value,this.contactId)
+      .subscribe((response) => {
+          this.loading = false;
+          this.router.navigate(['/user/contact/' + this.contactId]);
+        },
+        error => {
+          this.loading = false;
+        });
+  }
 }
