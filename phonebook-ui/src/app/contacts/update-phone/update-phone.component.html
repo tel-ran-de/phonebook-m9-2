@@ -1,10 +1,10 @@
 <app-header></app-header>
-<form [formGroup]="UpdatePhoneForm" class="border border-light p-5" (ngSubmit)="onSubmit()" (change)="selectChange()">
+<form [formGroup]="UpdatePhoneForm" class="border border-light p-5" (ngSubmit)="onSubmit()">
   <p class="h4 mb-4 text-center font-weight-bold">{{title}}</p>
   <div>
     <div class="form-group">
       <select class="form-control mb-2" name="my-select" formControlName="countryCode">
-        <option [value]="item.code" *ngFor="let item of country_code">
+        <option *ngFor="let item of country_code" [ngValue]="item.code" >
           {{item.country}} (+{{item.code}})
         </option>
       </select>

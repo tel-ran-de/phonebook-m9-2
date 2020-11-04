@@ -136,11 +136,11 @@ export class ContactsService {
   }
 
 
-  updatePhone(contact, country_code,contactId, phoneId ) {
+  updatePhone(contact,contactId, phoneId ) {
     return this.http
       .put<Contact>(this.contactPhonePath, {
         id: phoneId,
-        countryCode: country_code,
+        countryCode: contact.countryCode,
         phoneNumber: contact.phoneNumber,
         contactId: contactId,
       })
