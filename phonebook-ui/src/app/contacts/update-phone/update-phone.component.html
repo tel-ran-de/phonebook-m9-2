@@ -1,5 +1,5 @@
 <app-header></app-header>
-<form [formGroup]="UpdatePhoneForm" class="border border-light p-5" (ngSubmit)="onSubmit()">
+<form [formGroup]="UpdatePhoneForm" class="border border-light p-5" (ngSubmit)="onSubmit()" (change)="selectChange()">
   <p class="h4 mb-4 text-center font-weight-bold">{{title}}</p>
   <div>
     <div class="form-group">
