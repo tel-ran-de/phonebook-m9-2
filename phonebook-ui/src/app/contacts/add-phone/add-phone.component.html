@@ -19,8 +19,11 @@
     <div
       *ngIf="AddContactForm.controls['phoneNumber'].invalid && (AddContactForm.controls['phoneNumber'].dirty || AddContactForm.controls['phoneNumber'].touched)"
       class="alert alert-danger">
-      <div id="empty-firstName" *ngIf="AddContactForm.controls['phoneNumber'].errors.required">
+      <div id="empty-phoneNumber" *ngIf="AddContactForm.controls['phoneNumber'].errors.required">
         Phone Number is required.
+      </div>
+      <div id="wrong-phoneNumber" *ngIf="AddContactForm.controls['phoneNumber'].errors.pattern">
+        PhoneNumber must contain only Number.
       </div>
     </div>
 

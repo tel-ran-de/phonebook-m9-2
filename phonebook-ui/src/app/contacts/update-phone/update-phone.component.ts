@@ -21,23 +21,26 @@ export class UpdatePhoneComponent implements OnInit {
 
 
   constructor(private fb: FormBuilder, private contactsService: ContactsService, public router: Router, public activatedRoute: ActivatedRoute) {
-    this.contact = new Contact();
+   // this.contact = new Contact();
     this.createForm();
+
   }
 
   ngOnInit() {
     this.phoneId = this.activatedRoute.snapshot.params.phoneId;
     this.contactsService.getPhone(this.phoneId).subscribe(response => {
       this.contact = response;
-      this.contactsService.getCountry_code().subscribe(response => {
-        this.country_code = response;
-        this.setDefault();
-      });
+      this.getCountry_Code();
     });
   }
 
+  getCountry_Code(){
+    this.contactsService.getCountry_code().subscribe(response => {
+      this.country_code = response;
+      this.setDefault();
+    });
+}
   setDefault() {
-
     let phone = {
       countryCode: this.contact.countryCode,
       phoneNumber: this.contact.phoneNumber
@@ -50,15 +53,11 @@ export class UpdatePhoneComponent implements OnInit {
       countryCode: [''],
       phoneNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$")]]
     });
-
   }
 
-
   onSubmit() {
-
     this.loading = true;
     this.contactsService.updatePhone(this.UpdatePhoneForm.value, this.contact.contactId, this.phoneId)
-
       .subscribe((response) => {
         this.loading = false;
         this.router.navigate(['/user/contact/' + this.contact.contactId]);
