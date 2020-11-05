@@ -24,11 +24,11 @@
 #    and best practices on handling the access key credentials.
 
 on:
-#  push:
-#    branches: [master]
-  pull_request_target:
+  push:
     branches: [master]
-    types: [closed]
+#  pull_request_target:
+#    branches: [master]
+#    types: [closed]
 
 name: Deploy to Amazon ECS
 
