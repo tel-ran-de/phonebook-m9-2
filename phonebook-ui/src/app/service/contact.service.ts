@@ -104,7 +104,7 @@ export class ContactsService {
 
   }
 
-  updateAddress(contact, addressId,) {
+  updateAddress(contact, contactId, addressId) {
     return this.http
       .put<Contact>(this.contactAddressPath, {
         id: addressId,
@@ -112,7 +112,7 @@ export class ContactsService {
         country: contact.country,
         city: contact.city,
         street: contact.street,
-        contactId: contact.contactId
+        contactId: contactId
       })
   }
 
@@ -126,23 +126,23 @@ export class ContactsService {
       })
   }
 
-  updateEmail(contact, emailId,) {
+  updateEmail(contact,contactId, emailId) {
     return this.http
       .put<Contact>(this.contactEmailPath, {
         id: emailId,
         email: contact.email,
-        contactId: contact.contactId
+        contactId: contactId
       })
   }
 
 
-  updatePhone(contact, phoneId: number, country_code) {
+  updatePhone(contact,contactId, phoneId ) {
     return this.http
       .put<Contact>(this.contactPhonePath, {
         id: phoneId,
-        countryCode: country_code,
+        countryCode: contact.countryCode,
         phoneNumber: contact.phoneNumber,
-        contactId: contact.contactId,
+        contactId: contactId,
       })
   }
 }
