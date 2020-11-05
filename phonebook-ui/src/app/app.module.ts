@@ -29,6 +29,7 @@ import { UpdateEmailComponent } from './contacts/update-email/update-email.compo
 import { UpdateAddressComponent } from './contacts/update-address/update-address.component';
 import { UpdateContactComponent } from './contacts/update-contact/update-contact.component';
 import { ChangePasswordComponent } from './user-page/change-password/change-password.component';
+import { UserProfileComponent } from './user-page/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ChangePasswordComponent } from './user-page/change-password/change-pass
     UpdateEmailComponent,
     UpdateAddressComponent,
     UpdateContactComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

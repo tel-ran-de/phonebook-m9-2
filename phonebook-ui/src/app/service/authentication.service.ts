@@ -33,6 +33,8 @@ export class AuthenticationService {
   logOut() {
     localStorage.removeItem('email');
     localStorage.removeItem('access-token');
+    localStorage.removeItem('firstName');
+    localStorage.removeItem('lastName');
   }
 
 

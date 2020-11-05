@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {User} from "../model/user";
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
-import {Subject, throwError} from "rxjs";
+import {Observable, Subject, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {Contact} from "../model/contact";
 
@@ -20,6 +20,10 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
+  getProfile(): Observable<Contact>{
+    return this.http
+      .get<Contact>(this.profilePath)
+  }
   changePassword(user: User){
     return this.http
       .put(this.changePasswordPath,{

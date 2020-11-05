@@ -19,6 +19,7 @@ import {UpdateEmailComponent} from "./contacts/update-email/update-email.compone
 import {UpdateAddressComponent} from "./contacts/update-address/update-address.component";
 import {UpdateContactComponent} from "./contacts/update-contact/update-contact.component";
 import {ChangePasswordComponent} from "./user-page/change-password/change-password.component";
+import {UserProfileComponent} from "./user-page/user-profile/user-profile.component";
 
 const routes: Routes = [
   {path: '', component: UserPageComponent, canActivate: [AuthGaurdService]},
@@ -39,6 +40,7 @@ const routes: Routes = [
   {path: 'user/update-address/:addressId', component: UpdateAddressComponent, canActivate: [AuthGaurdService]},
   {path: 'user/update-contact/:contactId', component: UpdateContactComponent, canActivate: [AuthGaurdService]},
   {path: 'user/account/password', component: ChangePasswordComponent, canActivate: [AuthGaurdService]},
+  {path: 'user/profile/:id', component: UserProfileComponent, canActivate: [AuthGaurdService]},
 ];
 
 @NgModule({
