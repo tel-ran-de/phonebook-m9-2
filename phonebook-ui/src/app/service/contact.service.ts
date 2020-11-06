@@ -55,7 +55,7 @@ export class ContactsService {
 
   getAddress(id): Observable<Contact> {
     return this.http
-      .get<Contact>(this.contactAddressPath + '/' + id)
+      .get<Contact>(this.contactAddressPath + id)
   }
 
   getAllContacts(): Observable<Contact[]> {
@@ -65,7 +65,7 @@ export class ContactsService {
 
   getContactById(id): Observable<Contact> {
     return this.http
-      .get<Contact>(this.contactPath + '/' + id)
+      .get<Contact>(this.contactPath + id)
   }
 
   getCountry_code(): Observable<Contact> {
@@ -75,12 +75,12 @@ export class ContactsService {
 
   getEmail(id): Observable<Contact> {
     return this.http
-      .get<Contact>(this.contactEmailPath + '/' + id)
+      .get<Contact>(this.contactEmailPath + id)
   }
 
   getPhone(id): Observable<Contact> {
     return this.http
-      .get<Contact>(this.contactPhonePath + '/' + id)
+      .get<Contact>(this.contactPhonePath + id)
   }
 
 

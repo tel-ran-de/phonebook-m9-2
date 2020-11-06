@@ -26,15 +26,12 @@ export class AuthenticationService {
 
   isUserLoggedIn() {
     let user = localStorage.getItem('email');
-    //console.log(!(user === null));
     return !(user === null);
   }
 
   logOut() {
     localStorage.removeItem('email');
     localStorage.removeItem('access-token');
-    localStorage.removeItem('firstName');
-    localStorage.removeItem('lastName');
   }
 
 

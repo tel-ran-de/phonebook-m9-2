@@ -14,7 +14,8 @@ export class HeaderComponent implements OnInit {
   viewUserInfo: string;
   id: number;
 
-  constructor(private tokenService: AuthenticationService, private userService: UserService,) {}
+  constructor(private tokenService: AuthenticationService, private userService: UserService,) {
+  }
 
   ngOnInit(): void {
     this.userService.getProfile().subscribe(response => {
@@ -25,21 +26,15 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  isUserLoggedIn(){
+  isUserLoggedIn() {
     if (this.tokenService.isUserLoggedIn()) {
       this.isLoggedIn = true;
     }
   }
 
   checkUserInfo() {
-    localStorage.setItem('firstName', this.contact.firstName);
-    localStorage.setItem('lastName', this.contact.lastName);
-
-    if (localStorage.getItem('firstName') != "") {
-      this.viewUserInfo = localStorage.getItem('firstName') + " " + localStorage.getItem('lastName');
-    } else {
-      this.viewUserInfo = this.tokenService.getEmail()
-    }
+    this.viewUserInfo = this.contact.firstName ? this.contact.firstName + " "
+        + this.contact.lastName : this.tokenService.getEmail()
   }
 
 }
