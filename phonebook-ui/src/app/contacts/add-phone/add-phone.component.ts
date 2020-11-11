@@ -33,8 +33,8 @@ export class AddPhoneComponent implements OnInit {
 
   createForm() {
     this.AddContactForm = this.fb.group({
-      countryCode:[''],
-      phoneNumber: ['', [Validators.required]]
+      countryCode: [''],
+      phoneNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$")]]
     });
   }
 

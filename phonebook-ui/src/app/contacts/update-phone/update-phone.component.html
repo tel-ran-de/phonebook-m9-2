@@ -1,28 +1,40 @@
 <app-header></app-header>
-
-<div class="page-content p-5" id="content">
-
-  <div class="row ">
-    <div class="col-lg-4 mx-auto">
-
-      <h3>Update Phone</h3>
-
-      <div class="form-group">
-
-        <select class="custom-select" name="my-select" [(ngModel)]="default_Country_Code" (change)="selectChange()">
-          <option [value]="item.code" *ngFor="let item of country_code">
-            {{item.country}} (+ {{item.code}})
-          </option>
-        </select>
-
-        <input type="text" class="form-control mt-3" id="country" [(ngModel)]="contact.phoneNumber" placeholder="Phone">
-      </div>
-
-      <button type="submit" class="btn btn-primary" (click)="submitForm()">Update</button>
+<form [formGroup]="UpdatePhoneForm" class="border border-light p-5" (ngSubmit)="onSubmit()">
+  <p class="h4 mb-4 text-center font-weight-bold">{{title}}</p>
+  <div>
+    <div class="form-group">
+      <select class="form-control mb-2" name="my-select" formControlName="countryCode">
+        <option *ngFor="let item of country_code" [ngValue]="item.code" >
+          {{item.country}} (+{{item.code}})
+        </option>
+      </select>
 
     </div>
+
+
+    <div class="form-group">
+      <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="PhoneNumber"
+             class="form-control mb-2">
+    </div>
+    <div
+      *ngIf="UpdatePhoneForm.controls['phoneNumber'].invalid && (UpdatePhoneForm.controls['phoneNumber'].dirty || UpdatePhoneForm.controls['phoneNumber'].touched)"
+      class="alert alert-danger">
+      <div id="empty-phoneNumber" *ngIf="UpdatePhoneForm.controls['phoneNumber'].errors.required">
+        PhoneNumber is required.
+      </div>
+      <div id="wrong-phoneNumber" *ngIf="UpdatePhoneForm.controls['phoneNumber'].errors.pattern">
+        PhoneNumber must contain only Number.
+      </div>
+    </div>
+
+    <button class="btn btn-primary my-4 btn-block" type="submit"
+            [disabled]="UpdatePhoneForm.pristine || UpdatePhoneForm.invalid">Update
+    </button>
   </div>
-</div>
-
-
+  <section *ngIf="loading" class="jumbotron text-center">
+    <div class="container">
+      <h4>Please wait.....</h4>
+    </div>
+  </section>
+</form>
 <app-footer></app-footer>

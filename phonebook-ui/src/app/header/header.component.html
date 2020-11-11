@@ -2,10 +2,11 @@
   <div class="py-4 px-3 mb-4 bg-light">
     <div class="media d-flex align-items-center"><img src="/assets/img/profile.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
       <div class="media-body">
-        <h6 class="m-0">{{email}}</h6>
-        <p class="font-weight-light text-muted mb-0">Welcome</p>
+
       </div>
     </div>
+    <div><p class="font-weight-light text-muted mb-0">Welcome</p></div>
+    <div><h6 class="m-0">{{viewUserInfo}}</h6></div>
   </div>
 
   <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">My Profile</p>
@@ -19,7 +20,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
+      <a [routerLink]="['/user/profile', id ]" class="nav-link text-dark font-italic">
         <i class="fa fa-user mr-3 text-primary fa-fw"></i>
         Account
       </a>

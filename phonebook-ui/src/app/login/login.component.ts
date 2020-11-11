@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
         },
         error => {
           this.invalidLogin = true;
-          this.error = error.statusText;
-          if (this.error  == 'Unauthorized'){
+          this.error = error.status;
+          if (this.error  == '401'){
             this.error = "Login or Password incorrect"
           }
         }
