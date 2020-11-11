@@ -1,19 +1,18 @@
 package com.telran.phonebookapi.dto;
 
+import com.telran.phonebookapi.validation.annotation.ValidPhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Size;
-
 @NoArgsConstructor
 @AllArgsConstructor
+@ValidPhoneNumber(maxValue = 16, minValue = 9)
 public class PhoneDto {
 
     public int id;
 
     public int countryCode;
-
-    @Size(min = 9, max = 15)
+    //@Value("^\\d{10||11||12||13||14||15}$")
     public long phoneNumber;
 
     public int contactId;
