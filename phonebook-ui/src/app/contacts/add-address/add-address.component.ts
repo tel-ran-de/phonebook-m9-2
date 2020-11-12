@@ -24,7 +24,7 @@ export class AddAddressComponent implements OnInit {
 
   createForm() {
     this.AddAddressForm = this.fb.group({
-      zip: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      zip: ['', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(3), Validators.maxLength(8)]],
       country: ['', [Validators.required]],
       city: ['', [Validators.required]],
       street: ['', [Validators.required]],
