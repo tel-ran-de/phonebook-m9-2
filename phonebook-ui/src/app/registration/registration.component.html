@@ -41,6 +41,9 @@
     <div id="not-match-password" *ngIf="angForm.controls['confirm_password'].errors.confirmedValidator">
       Passwords do not match.
     </div>
+    <div id="match-required-password" *ngIf="angForm.controls['confirm_password'].errors.required">
+      Passwords do not match.
+    </div>
   </div>
   <div class="alert alert-danger" *ngIf="userService.error$ | async as error">
     {{ error }}

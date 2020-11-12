@@ -17,6 +17,12 @@
       <div id="wrong-zip" *ngIf="UpdateAddressForm.controls['zip'].errors.pattern">
         Zip must contain only Number.
       </div>
+      <div id="minLength-zip" *ngIf="UpdateAddressForm.controls['zip'].errors.minlength">
+        Zip must be at least 3 characters long.
+      </div>
+      <div id="maxLength-zip" *ngIf="UpdateAddressForm.controls['zip'].errors.maxlength">
+        Zip must be no longer than 8 characters.
+      </div>
     </div>
     <div class="form-group">
       <input type="text" id="country" formControlName="country" placeholder="Country"

@@ -25,6 +25,12 @@
       <div id="wrong-phoneNumber" *ngIf="AddContactForm.controls['phoneNumber'].errors.pattern">
         PhoneNumber must contain only Number.
       </div>
+      <div id="minLength-phoneNumber" *ngIf="AddContactForm.controls['phoneNumber'].errors.minlength">
+        PhoneNumber must be at least 10 characters long.
+      </div>
+      <div id="maxLength-phoneNumber" *ngIf="AddContactForm.controls['phoneNumber'].errors.maxlength">
+        PhoneNumber must be no longer than 15 characters.
+      </div>
     </div>
 
     <button class="btn btn-primary my-4 btn-block" type="submit"

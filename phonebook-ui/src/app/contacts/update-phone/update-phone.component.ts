@@ -51,7 +51,7 @@ export class UpdatePhoneComponent implements OnInit {
   createForm() {
     this.UpdatePhoneForm = this.fb.group({
       countryCode: [''],
-      phoneNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$")]]
+      phoneNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)]]
     });
   }
 
