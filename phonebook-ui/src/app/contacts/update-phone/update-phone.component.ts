@@ -21,7 +21,7 @@ export class UpdatePhoneComponent implements OnInit {
 
 
   constructor(private fb: FormBuilder, private contactsService: ContactsService, public router: Router, public activatedRoute: ActivatedRoute) {
-   // this.contact = new Contact();
+
     this.createForm();
 
   }
