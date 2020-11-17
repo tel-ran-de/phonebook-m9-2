@@ -113,7 +113,7 @@ public class UserService {
         return userRepository.findById(userEmail).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
     }
 
-    public void changePasswordAuthorizedUser(String email, String password) {
+    public void  changePasswordAuthorizedUser(String email, String password) {
         String userEmail = email.toLowerCase();
         User user = userRepository.findById(userEmail).orElseThrow(() -> new EntityNotFoundException(USER_DOES_NOT_EXIST));
         final String encryptedPassword = bCryptPasswordEncoder.encode(password);

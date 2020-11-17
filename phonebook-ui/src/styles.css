@@ -1,7 +1,7 @@
 body {
 
   overflow-x: hidden;
-  background-size: cover;
+  background-size: cover !important;
   /*height: 100vh;*/
   background: url(/assets/img/bg.jpg) no-repeat fixed;
 

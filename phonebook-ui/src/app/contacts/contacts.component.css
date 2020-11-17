@@ -33,3 +33,31 @@ h1{
   -webkit-filter: sepia(50%);
   -webkit-transform: sepia(1.01);
 }
+
+@media only screen
+and (max-width : 1440px)
+and (max-height : 900px) {
+
+  ul.social.mb-0.list-inline.mt-3 {
+    bottom: 25px;
+    position: absolute;
+    left: 25px;
+  }
+
+  .p-4 {
+    padding: 1.5rem!important;
+    min-height: 160px;
+  }
+}
+
+
+@media only screen
+and (max-width : 1366px)
+and (max-height : 768px) {
+
+  .col-md-3 {
+
+    max-width: 33.3%;
+  }
+
+}
